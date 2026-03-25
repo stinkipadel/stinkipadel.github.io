@@ -18,7 +18,7 @@
 <title>RacketAI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"></noscript>
 <style>
   
@@ -4246,7 +4246,7 @@ function navigate(id) {
   }
   currentScreen = id;
 
-  if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 2200); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 4000); }
+  if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 1200); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 2500); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 5000); }
   if (id === 'screen-loading-results') { setTimeout(function() { try { runAIAnalysis(); } catch(e) { navigate('screen-results'); } }, 300); }
   if (id === 'screen-results') setTimeout(function() { try { renderResults(); } catch(e) {} }, 50);
   if (id === 'screen-purchase') renderPurchaseList();
@@ -7004,6 +7004,15 @@ function showProWaitlist() {
   }
   showToast('🎉 Perfetto! Ti avviseremo quando RacketAI Pro sarà disponibile.');
 }
+
+// ── Fallback loading: se DOM pronto naviga subito ──
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    if (typeof currentScreen !== 'undefined' && currentScreen === 'screen-loading') {
+      try { navigate('screen-home'); } catch(e) {}
+    }
+  }, 800);
+});
 
 // ── Safari iOS: remove 300ms click delay ──
 if (document.addEventListener) {
