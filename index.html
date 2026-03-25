@@ -896,6 +896,15 @@
     background: var(--navy);
     gap: 20px;
   }
+  /* Fallback CSS: nasconde loading screen dopo 3s anche senza JS */
+  @keyframes hideLoading {
+    0%, 90% { opacity: 1; pointer-events: all; }
+    100% { opacity: 0; pointer-events: none; display: none; }
+  }
+  #screen-loading.active {
+    animation: hideLoading 3s forwards;
+    animation-delay: 0s;
+  }
   .loading-logo {
     font-family: 'Bebas Neue', cursive;
     font-size: 42px;
@@ -4246,7 +4255,7 @@ function navigate(id) {
   }
   currentScreen = id;
 
-  if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 1200); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 2500); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 5000); }
+  if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 600); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 1500); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 3500); }
   if (id === 'screen-loading-results') { setTimeout(function() { try { runAIAnalysis(); } catch(e) { navigate('screen-results'); } }, 300); }
   if (id === 'screen-results') setTimeout(function() { try { renderResults(); } catch(e) {} }, 50);
   if (id === 'screen-purchase') renderPurchaseList();
@@ -7025,6 +7034,10 @@ try { renderNavbar(); } catch(e) {}
 try { if (currentUser) updateCollectionBadges(); } catch(e) {}
 try { initDarkMode(); } catch(e) {}
 navigate('screen-loading');
+// Forza transizione dopo che il DOM è pronto
+if (document.readyState === 'complete') {
+  setTimeout(function(){ try { navigate('screen-home'); } catch(e){} }, 500);
+}
 setTimeout(function() { try { if (!cookieConsent) showCookieBanner(); } catch(e) {} }, 2800);
 setTimeout(function() { try { if (window.requestAnimationFrame) { requestAnimationFrame(function(){ try { renderDB(); } catch(e) {} }); } else { renderDB(); } } catch(e) {} }, 800);
 
