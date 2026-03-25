@@ -5235,4 +5235,1792 @@ function renderResults() {
         + '</div>' : '')
       + '<div class="racket-actions">'
       + '<button type="button" class="action-btn action-btn-primary" onclick="openBuyModal(\'' + r[0] + '\')">🛒 Acquista</button>'
-      
+      + '<button type="button" class="action-btn action-btn-secondary" onclick="openDetail(\'' + r[0] + '\')">📖 Dettagli</button>'
+      + '</div>'
+      + '</div></div>';
+  });
+
+  // ── Set DOM ──────────────────────────────────────
+  var rl = document.getElementById('rackets-list');
+  if (rl) {
+    rl.innerHTML = cardsHtml;
+    setTimeout(function(){
+      Array.prototype.slice.call(rl.querySelectorAll('.affinity-bar-fill')).forEach(function(b, i){
+        if (combined[i] && !(!inBudget[combined[i].r[0]])) b.style.width = combined[i].pct + '%';
+      });
+    }, 150);
+  }
+
+  // ── Subtitle ──────────────────────────────────────
+  var bud = quizAnswers['fq-budget'] || quizAnswers.budget;
+  var budLabel = {budget:'< €100', mid:'€100–180', top:'Senza limiti'}[bud] || '';
+  var sub = document.querySelector('#screen-results .results-sub');
+  if (sub) sub.textContent = matches.length + ' nel budget' + (budLabel ? ' (' + budLabel + ')' : '') + ' · ' + outBudget.length + ' fuori budget';
+
+  // ── Filter bar reset ──────────────────────────────
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('#filter-bar .filter-btn'));
+  filterBtns.forEach(function(b){ b.classList.remove('active-filter'); });
+  var allBtn = document.getElementById('filter-all');
+  if (allBtn) allBtn.classList.add('active-filter');
+}
+
+
+function saveTestToProfile(matches) {
+  if (!currentUser) return;
+  var users = getUsers();
+  var ud = users[currentUser.email];
+  if (!ud) return;
+  if (!ud.tests) ud.tests = [];
+  var top = matches[0];
+  ud.tests.unshift({
+    date: Date.now(),
+    answers: JSON.parse(JSON.stringify(quizAnswers)),
+    topRacket: { id: top.r[0], name: top.r[2] + ' ' + top.r[1], pct: top.pct,
+                 img_id: top.r[10], img_file: top.r[11], price: top.r[12] },
+    top3: matches.slice(0,3).map(function(m) { return { id: m.r[0], name: m.r[2]+' '+m.r[1], pct: m.pct }; })
+  });
+  if (ud.tests.length > 10) ud.tests = ud.tests.slice(0, 10);
+  if (!ud.testsCount) ud.testsCount = 0;
+  ud.testsCount++;
+  users[currentUser.email] = ud;
+  saveUsers(users);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PURCHASE + DYNAMIC LIST
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var selectedPurchaseRacket = null;
+
+function renderPurchaseList() {
+  var matches = computeMatches();
+  var allIds = Object.keys(RACKET_SCORES);
+  // Tutti i match + racchette non matchate (senza duplicati)
+  var matchedIds = matches.map(function(m){ return m.r[0]; });
+  var extra = allIds.filter(function(id){ return matchedIds.indexOf(id) < 0; }).map(function(id){
+    var r = RACKET_SCORES[id];
+    return { r:[id,r.name,r.brand,r.year,'','','','','','','','',r.price||''], pct: 0 };
+  });
+  var combined = matches.concat(extra).slice(0, 30);
+
+  var container = document.getElementById('purchase-list-dynamic');
+  if (!container) return;
+  var icons = ['🥇','🥈','🥉'];
+  var html = '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Seleziona la racchetta acquistata</div>';
+
+  combined.forEach(function(m, idx) {
+    var rid   = m.r[0];
+    var sc    = RACKET_SCORES[rid] || {};
+    var brand = sc.brand || m.r[2] || '';
+    var name  = sc.name  || m.r[1] || '';
+    var year  = sc.year  || m.r[3] || '';
+    var price = (sc.price ? '~€' + sc.price : '') || m.r[12] || '';
+    var pct   = m.pct;
+    var rank  = idx < 3 ? icons[idx] + ' ' : '';
+    var label = (brand + ' ' + name + (year ? ' ' + year : '')).replace(/'/g, '');
+    html += '<div class="purchase-radio-card" id="prc-' + rid + '"'
+          + ' style="gap:10px;padding:9px 12px;align-items:center;cursor:pointer;"'
+          + ' data-rid="' + rid.replace(/"/g,'') + '"'
+          + ' data-label="' + label.replace(/"/g,'').replace(/'/g,'') + '"'
+          + ' data-price="' + (price+'').replace(/"/g,'') + '"'
+          + ' onclick="selectPurchaseFromCard(this)">'
+          + '<div class="purchase-radio-dot" style="flex-shrink:0;"></div>'
+          + '<div style="flex:1;min-width:0;">'
+          + '<div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + rank + brand + ' ' + name + (year ? ' ' + year : '') + '</div>'
+          + '<div style="font-size:11px;color:var(--gray);">' + price + (pct ? ' · ' + pct + '% affinità' : '') + '</div>'
+          + '</div></div>';
+  });
+  html += '<div style="margin-top:8px;font-size:12px;color:var(--gray);">Non vedi la tua? <span style="color:var(--blue);cursor:pointer;" onclick="navigate(\'screen-submit\')">Aggiungila al database</span></div>';
+  container.innerHTML = html;
+  selectedPurchaseRacket = null;
+}
+
+function selectPurchaseFromCard(el) {
+  var id    = el.getAttribute('data-rid');
+  var name  = el.getAttribute('data-label');
+  var price = el.getAttribute('data-price');
+  selectPurchase(id, name, price);
+}
+
+function selectPurchase(id, name, price) {
+  Array.prototype.slice.call(document.querySelectorAll('.purchase-radio-card')).forEach(function(el) { el.classList.remove('selected'); });
+  var card = document.getElementById('prc-' + id);
+  if (card) card.classList.add('selected');
+  var sc = RACKET_SCORES[id] || {};
+  selectedPurchaseRacket = { id: id, name: name, price: price, imgUrl: sc.img || '', brand: sc.brand || '', date: Date.now() };
+}
+
+function confirmPurchase() {
+  if (!selectedPurchaseRacket) {
+    var btn = document.getElementById('btn-confirm-purchase');
+    if (btn) { btn.style.background = '#ef4444'; btn.textContent = 'Seleziona prima una racchetta!'; setTimeout(function(){ btn.style.background=''; btn.textContent='&#10003; Conferma acquisto'; }, 1500); }
+    return;
+  }
+  var users = getUsers();
+  var ud = users[currentUser ? currentUser.email : '_guest'] || {};
+  if (!ud.purchases) ud.purchases = [];
+  ud.purchases.unshift({ racket: selectedPurchaseRacket, date: Date.now(), feedback: null });
+  users[currentUser ? currentUser.email : '_guest'] = ud;
+  try { saveUsers(users); } catch(e) {}
+  // Show share panel
+  showPurchaseShare();
+}
+
+function showPurchaseShare() {
+  var r = selectedPurchaseRacket;
+  if (!r) { navigate('screen-success'); return; }
+  var name = r.brand + ' ' + r.name + (r.year ? ' ' + r.year : '');
+  var msg = '🎾 Ho appena comprato la ' + name + '! 🏆\n'
+    + 'L\'ho trovata grazie a RacketAI — il tool che ti consiglia la racchetta di padel perfetta in base al tuo stile di gioco. 🤖\n'
+    + 'Prova anche tu → stinkipadel.com/racketai';
+  // Show share modal
+  var panel = document.getElementById('purchase-share-panel');
+  if (panel) {
+    document.getElementById('share-msg-preview').textContent = msg;
+    panel.style.display = 'flex';
+  } else {
+    navigate('screen-success');
+  }
+}
+
+function sharePurchase(platform) {
+  var r = selectedPurchaseRacket;
+  if (!r) return;
+  var name = r.brand + ' ' + r.name + (r.year ? ' ' + r.year : '');
+  var msg = '🎾 Ho appena comprato la ' + name + '! 🏆\nL\'ho trovata grazie a RacketAI — il tool che ti consiglia la racchetta di padel perfetta in base al tuo stile di gioco. 🤖\nProva anche tu → stinkipadel.com/racketai';
+  var enc = encodeURIComponent(msg);
+  var urls = {
+    whatsapp: 'https://wa.me/?text=' + enc,
+    telegram: 'https://t.me/share/url?url=stinkipadel.com/racketai&text=' + enc,
+    copy: null
+  };
+  if (platform === 'copy') {
+    navigator.clipboard ? navigator.clipboard.writeText(msg).then(function(){ showToast('Messaggio copiato! 📋'); })
+      : (function(){ var ta=document.createElement('textarea'); ta.value=msg; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Copiato!'); })();
+  } else {
+    window.open(urls[platform], '_blank');
+  }
+}
+
+function closePurchaseShare() {
+  var panel = document.getElementById('purchase-share-panel');
+  if (panel) panel.style.display = 'none';
+  navigate('screen-success');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FEEDBACK
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setFeedbackStar(purchaseIdx, stars) {
+  for (var i = 1; i <= 5; i++) {
+    var s = document.getElementById('star-' + purchaseIdx + '-' + i);
+    if (s) s.className = 'feedback-star' + (i <= stars ? ' active' : '');
+  }
+  var inp = document.getElementById('rating-val-' + purchaseIdx);
+  if (inp) inp.value = stars;
+}
+
+function submitFeedback(purchaseIdx) {
+  if (!currentUser) return;
+  var ratingEl = document.getElementById('rating-val-' + purchaseIdx);
+  var textEl   = document.getElementById('feedback-text-' + purchaseIdx);
+  var rating = ratingEl ? parseInt(ratingEl.value) : 0;
+  var text   = textEl ? textEl.value.trim() : '';
+  if (!rating) {
+    alert('Seleziona almeno una stella prima di inviare.');
+    return;
+  }
+  var users = getUsers();
+  var ud = users[currentUser.email];
+  if (!ud || !ud.purchases || !ud.purchases[purchaseIdx]) return;
+  ud.purchases[purchaseIdx].feedback = { rating: rating, text: text, date: Date.now() };
+  users[currentUser.email] = ud;
+  saveUsers(users);
+  // Replace feedback form with confirmation
+  var wrap = document.getElementById('feedback-wrap-' + purchaseIdx);
+  if (wrap) wrap.innerHTML = '<div class="feedback-submitted">&#10004; Grazie! Feedback salvato (' + rating + '/5 stelle)</div>';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER PROFILE (extended)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderProfile() {
+  try { showCoffeCardIfNeeded(); } catch(e) {}
+  if (!currentUser) return;
+  var users = getUsers();
+  var ud = users[currentUser.email] || {};
+
+  // ── Avatar + stats ──
+  var av = document.getElementById('prf-av');
+  if (av) av.textContent = currentUser.name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+  var pn = document.getElementById('prf-name');   if (pn) pn.textContent = currentUser.name;
+  var pe = document.getElementById('prf-email');  if (pe) pe.textContent = currentUser.email;
+  var pt = document.getElementById('prf-tests');  if (pt) pt.textContent = (ud.tests || []).length;
+  checkRetestBanner(ud);
+  var pp = document.getElementById('prf-purchases'); if (pp) pp.textContent = (ud.purchases || []).length;
+  var ppr= document.getElementById('prf-props');  if (ppr) ppr.textContent = (ud.proposals || []).length;
+
+  // ── Saved tests ──
+  var tl = document.getElementById('prf-tests-list');
+  if (tl) {
+    var tests = ud.tests || [];
+    if (tests.length === 0) {
+      tl.innerHTML = '<div style="font-size:13px;color:var(--gray);padding:8px 0;">Nessun test ancora — fai il tuo primo test!</div>';
+    } else {
+      tl.innerHTML = tests.slice(0,3).map(function(t) {
+        var top = t.topRacket || {};
+        var img = top.img_id ? 'https://cdn.racketpedia.com/media/padel-rackets-data-sheets/' + top.img_id + '/300x300/' + top.img_file : '';
+        var d = new Date(t.date).toLocaleDateString('it-IT');
+        var answers = t.answers || {};
+        var tags = [];
+        if (answers.level) tags.push(answers.level==='advanced'?'Avanzato':answers.level==='intermediate'?'Intermedio':'Principiante');
+        if (answers.style) tags.push(answers.style==='aggressive'?'Aggressivo':answers.style==='balanced'?'Equilibrato':'Difensivo');
+        if (answers.side)  tags.push(answers.side==='right'?'Destro':answers.side==='left'?'Sinistro':'Entrambi');
+        return '<div class="saved-test-card">'
+          + '<div class="saved-test-header"><span class="saved-test-title">Test del ' + d + '</span>'
+          + '<span style="font-size:11px;color:var(--gray);">' + tags.join(' · ') + '</span></div>'
+          + '<div class="saved-test-top">'
+          + '<img class="saved-test-img" src="' + img + '" onerror="this.style.opacity=0.2">'
+          + '<div style="flex:1;">'
+          + '<div class="saved-test-racket-name">&#127863; ' + (top.name || '—') + '</div>'
+          + '<div class="saved-test-pct">' + (top.pct || '—') + '% affinit&agrave;</div>'
+          + '</div></div></div>';
+      }).join('');
+    }
+  }
+
+  // ── Purchased rackets + feedback ──
+  var pl = document.getElementById('prf-purchases-list');
+  if (pl) {
+    var purchases = ud.purchases || [];
+    if (purchases.length === 0) {
+      pl.innerHTML = '<div style="font-size:13px;color:var(--gray);padding:8px 0;">Nessun acquisto registrato</div>';
+    } else {
+      pl.innerHTML = purchases.map(function(p, idx) {
+        var r = p.racket || {};
+        var d = new Date(p.date).toLocaleDateString('it-IT');
+        var fb = p.feedback;
+        var starsHtml = '';
+        for (var i = 1; i <= 5; i++) {
+          starsHtml += '<span class="feedback-star' + (fb && i <= fb.rating ? ' active' : '') + '"'
+            + ' id="star-' + idx + '-' + i + '"'
+            + ' onclick="setFeedbackStar(' + idx + ',' + i + ')">&#9733;</span>';
+        }
+        var feedbackSection = '';
+        if (fb) {
+          feedbackSection = '<div class="feedback-submitted" id="feedback-wrap-' + idx + '">&#10004; Hai valutato: ' + fb.rating + '/5 stelle' + (fb.text ? ' &mdash; ' + fb.text : '') + '</div>';
+        } else {
+          feedbackSection = '<div id="feedback-wrap-' + idx + '">'
+            + '<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;">Come ti trovi? Dai un voto:</div>'
+            + '<div class="feedback-stars">' + starsHtml + '</div>'
+            + '<input type="hidden" id="rating-val-' + idx + '" value="0">'
+            + '<textarea class="feedback-textarea" id="feedback-text-' + idx + '" rows="2" placeholder="Commento opzionale..."></textarea>'
+            + '<button type="button" onclick="submitFeedback(' + idx + ')" style="margin-top:8px;padding:9px 16px;background:var(--orange);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Invia feedback</button>'
+            + '</div>';
+        }
+        return '<div class="purchased-card">'
+          + '<div class="purchased-card-header">'
+          + '<img class="purchased-card-img" src="' + (r.imgUrl || '') + '" onerror="this.style.opacity=0.2">'
+          + '<div style="flex:1;">'
+          + '<div class="purchased-card-name">&#127863; ' + (r.name || '—') + '</div>'
+          + '<div class="purchased-card-date">Acquistata il ' + d + ' &middot; ' + (r.price || '') + '</div>'
+          + '</div></div>'
+          + feedbackSection
+          + '</div>';
+      }).join('');
+    }
+  }
+
+  // ── Proposals ──
+  var props = ud.proposals || [];
+  var pw = document.getElementById('prf-proposals-wrap');
+  if (pw) pw.style.display = props.length > 0 ? 'block' : 'none';
+  var prl = document.getElementById('prf-proposals-list');
+  if (prl && props.length > 0) {
+    prl.innerHTML = props.map(function(p) {
+      var cls   = p.status==='approved' ? 'badge-ok' : p.status==='rejected' ? 'badge-no' : 'badge-wait';
+      var label = p.status==='approved' ? '&#10003; Approvata' : p.status==='rejected' ? '&#10007; Rifiutata' : '&#8987; In revisione';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-light);">'
+           + '<div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + p.brand + ' ' + p.model + '</div>'
+           + '<div style="font-size:11px;color:var(--gray);">' + new Date(p.date).toLocaleDateString('it-IT') + '</div></div>'
+           + '<span class="status-badge ' + cls + '">' + label + '</span></div>';
+    }).join('');
+  }
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// COLLECTION (personal racket wishlist)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function getCollection() {
+  try { return JSON.parse(localStorage.getItem('rai_collection') || '[]'); } catch(e) { return []; }
+}
+
+function saveCollection(col) {
+  try { localStorage.setItem('rai_collection', JSON.stringify(col)); } catch(e) {}
+}
+
+function isInCollection(id) {
+  return getCollection().some(function(r) { return r.id === id; });
+}
+
+function toggleCollection(btn, id, brand, name, imgUrl) {
+  var col = getCollection();
+  var idx = col.findIndex(function(r) { return r.id === id; });
+  if (idx >= 0) {
+    col.splice(idx, 1);
+    btn.classList.remove('saved');
+    btn.innerHTML = '&#9825;';
+    btn.title = 'Aggiungi alla collezione';
+    showToast('Rimossa dalla collezione');
+  } else {
+    col.unshift({ id: id, brand: brand, name: name, imgUrl: imgUrl, addedAt: Date.now() });
+    btn.classList.add('saved');
+    btn.innerHTML = '&#9829;';
+    btn.title = 'Rimuovi dalla collezione';
+    showToast('&#9829; Aggiunta alla tua collezione!');
+  }
+  saveCollection(col);
+  updateCollectionBadges();
+}
+
+function updateCollectionBadges() {
+  var col = getCollection();
+  var ids = col.map(function(r) { return r.id; });
+  Array.prototype.slice.call(document.querySelectorAll('.db-save-btn')).forEach(function(btn) {
+    var id = btn.id.replace('savebtn-', '');
+    if (ids.indexOf(id) >= 0) {
+      btn.classList.add('saved');
+      btn.innerHTML = '&#9829;';
+      btn.title = 'Rimuovi dalla collezione';
+    } else {
+      btn.classList.remove('saved');
+      btn.innerHTML = '&#9825;';
+      btn.title = 'Aggiungi alla collezione';
+    }
+  });
+  // Update counter badge on database header if present
+  var cnt = document.getElementById('collection-count-badge');
+  if (cnt) cnt.textContent = col.length > 0 ? col.length : '';
+  // Update profile stat
+  var pct = document.getElementById('prf-collection');
+  if (pct) pct.textContent = col.length;
+}
+
+function renderCollection() {
+  var col = getCollection();
+  var el = document.getElementById('prf-collection-list');
+  if (!el) return;
+  var pct = document.getElementById('prf-collection');
+  if (pct) pct.textContent = col.length;
+  if (col.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--gray);padding:8px 0;">Nessuna racchetta salvata ancora.<br>'
+      + 'Sfoglia il <span style="color:var(--blue);cursor:pointer;" onclick="navigate(\'screen-database\')">database</span>'
+      + ' e premi &#9825; per aggiungere.</div>';
+    return;
+  }
+  el.innerHTML = col.map(function(r, idx) {
+    var d = new Date(r.addedAt).toLocaleDateString('it-IT');
+    return '<div class="collection-card">'
+      + '<img src="' + (r.imgUrl||'') + '" onerror="this.style.opacity=0.2">'
+      + '<div class="collection-card-info">'
+      + '<div class="collection-card-brand">' + (r.brand||'') + '</div>'
+      + '<div class="collection-card-name">' + (r.name||'') + '</div>'
+      + '<div class="collection-card-tags">Aggiunta il ' + d + '</div>'
+      + '</div>'
+      + '<button type="button" class="collection-remove-btn" onclick="removeFromCollection(' + idx + ')" title="Rimuovi">&#10005;</button>'
+      + '</div>';
+  }).join('');
+}
+
+function removeFromCollection(idx) {
+  var col = getCollection();
+  col.splice(idx, 1);
+  saveCollection(col);
+  renderCollection();
+  updateCollectionBadges();
+  showToast('Rimossa dalla collezione');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+
+// sortDB replaced by sortDBByField + cyclePriceSort above
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// COMPARE SYSTEM
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var compareList = []; // max 2 items: [{id, brand, name, img}]
+
+function toggleCompare(id, brand, name, imgUrl) {
+  // Recupera dati da RACKET_SCORES se non passati
+  var sc = RACKET_SCORES[id] || {};
+  var b = brand || sc.brand || '';
+  var n = name  || sc.name  || '';
+  var img = imgUrl || sc.img || '';
+
+  var idx = -1;
+  for (var i = 0; i < compareList.length; i++) { if (compareList[i].id === id) { idx = i; break; } }
+  if (idx >= 0) {
+    compareList.splice(idx, 1);
+    var btn = document.getElementById('cmpbtn-' + id);
+    if (btn) { btn.classList.remove('in-compare'); btn.innerHTML = '&#9878;'; }
+  } else {
+    if (compareList.length >= 2) {
+      showToast('Puoi confrontare al massimo 2 racchette');
+      return;
+    }
+    compareList.push({ id:id, brand:b, name:n, img:img });
+    var btn = document.getElementById('cmpbtn-' + id);
+    if (btn) { btn.classList.add('in-compare'); btn.innerHTML = '&#10003;'; }
+  }
+  updateCompareTray();
+  // Se chiamato dal detail modal, mostra feedback visivo inline
+  var modal = document.getElementById('detail-modal');
+  if (modal && modal.style.display !== 'none') {
+    var inList = false;
+    for (var j = 0; j < compareList.length; j++) { if (compareList[j].id === id) { inList = true; break; } }
+    if (inList) {
+      if (compareList.length === 2) {
+        // Entrambe le racchette pronte - offri di confrontare subito
+        showCompareReadyBanner();
+      } else {
+        showToast('Aggiunta al confronto ⚡ — seleziona la seconda dal database');
+      }
+    } else {
+      showToast('Rimossa dal confronto');
+    }
+  }
+}
+
+function showCompareReadyBanner() {
+  // Piccolo banner in fondo al detail modal
+  var existing = document.getElementById('compare-ready-banner');
+  if (existing) existing.remove();
+  var body = document.getElementById('detail-body');
+  if (!body) return;
+  var banner = document.createElement('div');
+  banner.id = 'compare-ready-banner';
+  banner.style.cssText = 'position:sticky;bottom:0;background:var(--navy);color:white;padding:14px 16px;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px;z-index:10;margin-top:8px;';
+  banner.innerHTML = '<div style="flex:1;"><div style="font-size:13px;font-weight:700;">⚡ 2 racchette selezionate!</div><div style="font-size:11px;opacity:0.7;">Puoi confrontarle ora</div></div>'
+    + '<button onclick="closeDetailModal();setTimeout(function(){navigate(\'screen-compare\');},100);" style="padding:10px 16px;background:var(--orange);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap;">Confronta →</button>';
+  body.insertAdjacentElement('afterend', banner);
+}
+
+function updateCompareTray() {
+  var tray = document.getElementById('compare-tray');
+  var btnGo = document.getElementById('btn-do-compare');
+  if (!tray) return;
+  tray.style.display = compareList.length > 0 ? 'block' : 'none';
+  if (btnGo) { btnGo.disabled = compareList.length < 2; btnGo.style.opacity = compareList.length < 2 ? '0.4' : '1'; }
+
+  for (var i = 0; i < 2; i++) {
+    var slot = document.getElementById('compare-slot-' + i);
+    if (!slot) continue;
+    if (compareList[i]) {
+      var r = compareList[i];
+      slot.classList.add('filled');
+      slot.innerHTML =
+        '<button type="button" class="compare-slot-remove" onclick="toggleCompare(\'' + r.id + '\',\'\',\'\',\'\')">&#10005;</button>'
+        + '<div style="text-align:center;">'
+        + '<img src="' + r.img + '" onerror="this.style.opacity=0.2" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.1);padding:2px;">'
+        + '<div class="compare-slot-name">' + r.brand + '<br>' + r.name.split(' ').slice(0,2).join(' ') + '</div>'
+        + '</div>';
+    } else {
+      slot.classList.remove('filled');
+      slot.innerHTML = '<span class="compare-slot-empty">+</span>';
+    }
+  }
+}
+
+function clearCompare() {
+  compareList.forEach(function(r) {
+    var btn = document.getElementById('cmpbtn-' + r.id);
+    if (btn) { btn.classList.remove('in-compare'); btn.innerHTML = '&#9878;'; }
+  });
+  compareList = [];
+  updateCompareTray();
+}
+
+function renderCompare() {
+  var container = document.getElementById('compare-content');
+  if (!container || compareList.length < 2) return;
+
+  var r1 = RACKET_SCORES[compareList[0].id];
+  var r2 = RACKET_SCORES[compareList[1].id];
+  if (!r1 || !r2) {
+    // Fallback: build from compareList data
+    r1 = r1 || { brand:compareList[0].brand, name:compareList[0].name, img:compareList[0].img,
+                  overall:0, power:0, control:0, sweetspot:0, maneuverability:0, comfort:0, spin:0, price:'—', weight:'—', balance:'—', surface:'—', core:'—', hardness:'—', year:'—' };
+    r2 = r2 || { brand:compareList[1].brand, name:compareList[1].name, img:compareList[1].img,
+                  overall:0, power:0, control:0, sweetspot:0, maneuverability:0, comfort:0, spin:0, price:'—', weight:'—', balance:'—', surface:'—', core:'—', hardness:'—', year:'—' };
+  }
+
+  var scores = [
+    { key:'overall',       label:'Overall',       icon:'⭐' },
+    { key:'power',         label:'Potenza',        icon:'⚡' },
+    { key:'control',       label:'Controllo',      icon:'🎯' },
+    { key:'sweetspot',     label:'Sweet Spot',     icon:'📍' },
+    { key:'maneuverability',label:'Manegg.',       icon:'💫' },
+    { key:'comfort',       label:'Comfort',        icon:'😌' },
+    { key:'spin',          label:'Spin',           icon:'🌀' }
+  ];
+
+  // Determine overall winner
+  var wins1 = 0, wins2 = 0;
+  scores.forEach(function(s) {
+    if ((r1[s.key]||0) > (r2[s.key]||0)) wins1++;
+    else if ((r2[s.key]||0) > (r1[s.key]||0)) wins2++;
+  });
+  var winner = wins1 > wins2 ? 0 : wins2 > wins1 ? 1 : -1; // -1 = tie
+
+  function scoreBar(val, isWinner) {
+    var color = isWinner ? 'linear-gradient(90deg,var(--orange),#fb923c)' : 'linear-gradient(90deg,var(--blue),#60a5fa)';
+    var pct = Math.round((val / 10) * 100);
+    return '<div class="compare-bar-bg"><div class="compare-bar-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>';
+  }
+
+  function scoreVal(v1, v2, col) {
+    var val = col === 0 ? v1 : v2;
+    var isWin = col === 0 ? (v1 > v2) : (v2 > v1);
+    var cls = isWin ? 'winner' : (v1 === v2 ? '' : 'loser');
+    return '<div class="compare-score-val ' + cls + '">' + (val || '—') + '</div>';
+  }
+
+  // Scores rows HTML
+  var scoresHtml = scores.map(function(s) {
+    var v1 = r1[s.key] || 0, v2 = r2[s.key] || 0;
+    return '<div class="compare-row">'
+      + '<div style="width:26px;text-align:center;font-size:14px;">' + s.icon + '</div>'
+      + '<div class="compare-bar-wrap">'
+      + '<div class="compare-bar-label" style="font-size:9px;">' + s.label + '</div>'
+      + scoreBar(v1, v1 >= v2)
+      + '</div>'
+      + scoreVal(v1, v2, 0)
+      + '<div style="font-size:10px;color:var(--gray);width:8px;text-align:center;">vs</div>'
+      + scoreVal(v1, v2, 1)
+      + '<div class="compare-bar-wrap">'
+      + '<div class="compare-bar-label" style="font-size:9px;">' + s.label + '</div>'
+      + scoreBar(v2, v2 >= v1)
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Specs comparison
+  var specs = [
+    { label:'Peso',      k:'weight',    fmt:function(v){return v ? v+'g' : '—';} },
+    { label:'Bilanc.',   k:'balance',   fmt:function(v){return v||'—';} },
+    { label:'Superficie',k:'surface',   fmt:function(v){return v||'—';} },
+    { label:'Core',      k:'core',      fmt:function(v){return v||'—';} },
+    { label:'Rigidità',  k:'hardness',  fmt:function(v){return v||'—';} },
+    { label:'Prezzo',    k:'price',     fmt:function(v){return v ? '~€'+v : '—';} },
+  ];
+  var specsHtml = specs.map(function(s) {
+    var v1 = s.fmt(r1[s.k]), v2 = s.fmt(r2[s.k]);
+    return '<div class="compare-spec-row">'
+      + '<div class="compare-spec-label">' + s.label + '</div>'
+      + '<div class="compare-spec-val ' + (v1 !== v2 ? 'highlight' : '') + '">' + v1 + '</div>'
+      + '<div style="width:20px;text-align:center;font-size:10px;color:var(--gray);">vs</div>'
+      + '<div class="compare-spec-val ' + (v1 !== v2 ? 'highlight' : '') + '">' + v2 + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Verdict text
+  var verdictText = '';
+  if (winner === -1) {
+    verdictText = 'Le due racchette sono praticamente equivalenti. La scelta dipende dal tuo stile personale.';
+  } else {
+    var wData = winner === 0 ? r1 : r2;
+    var lData = winner === 0 ? r2 : r1;
+    var adv = [];
+    if ((wData.power||0) > (lData.power||0) + 0.5) adv.push('più potente');
+    if ((wData.control||0) > (lData.control||0) + 0.5) adv.push('più precisa');
+    if ((wData.maneuverability||0) > (lData.maneuverability||0) + 0.5) adv.push('più maneggevole');
+    if ((wData.comfort||0) > (lData.comfort||0) + 0.5) adv.push('più comoda');
+    if ((wData.sweetspot||0) > (lData.sweetspot||0) + 0.5) adv.push('sweet spot più ampio');
+    var advStr = adv.length > 0 ? ' (' + adv.join(', ') + ')' : '';
+    verdictText = 'La <b>' + wData.brand + ' ' + wData.name + '</b> vince il confronto'
+      + advStr + ' con ' + wins1 + '/' + scores.length + ' categorie. '
+      + 'La ' + lData.name + ' rimane valida se cerchi specificamente '
+      + (lData.control > wData.control ? 'più controllo' : lData.comfort > wData.comfort ? 'più comfort' : 'un prezzo inferiore') + '.';
+  }
+
+  // Render headers
+  function racketHeader(r, idx, isWinner) {
+    return '<div class="compare-racket-header">'
+      + (isWinner ? '<div class="compare-winner-badge">🏆 Vincitore</div>' : '')
+      + '<img class="compare-racket-img" src="' + r.img + '" onerror="this.style.opacity=0.2">'
+      + '<div class="compare-racket-brand">' + (r.brand||'') + '</div>'
+      + '<div class="compare-racket-name">' + (r.name||'') + ' ' + (r.year||'') + '</div>'
+      + '<div class="compare-racket-price">~€' + (r.price||'—') + '</div>'
+      + '</div>';
+  }
+
+  container.innerHTML =
+    '<div style="display:flex;gap:10px;margin-bottom:6px;">'
+    + '<div class="compare-racket-col">' + racketHeader(r1, 0, winner===0) + '</div>'
+    + '<div style="display:flex;align-items:center;padding:0 2px;"><div style="width:2px;height:40px;background:var(--gray-light);"></div></div>'
+    + '<div class="compare-racket-col">' + racketHeader(r2, 1, winner===1) + '</div>'
+    + '</div>'
+    + '<div class="compare-section-title">Performance Scorecard</div>'
+    + scoresHtml
+    + '<div class="compare-section-title" style="margin-top:18px;">Specifiche tecniche</div>'
+    + specsHtml
+    + '<div class="compare-verdict" style="margin-top:16px;">'
+    + '<div class="compare-verdict-title">🤖 Verdetto</div>'
+    + '<div class="compare-verdict-text">' + verdictText + '</div>'
+    + '</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 40px;">'
+    + '<button type="button" class="cta-btn cta-btn-orange" style="font-size:13px;" onclick="clearCompare();navigate(\'screen-database\')">+ Nuovo confronto</button>'
+    + '<button type="button" class="cta-btn" style="background:var(--gray-light);color:var(--text);font-size:13px;" onclick="navigate(\'screen-database\')">Torna al database</button>'
+    + '</div>';
+
+  // Animate bars
+  setTimeout(function() {
+    Array.prototype.slice.call(document.querySelectorAll('.compare-bar-fill')).forEach(function(b) {
+      var w = b.style.width; b.style.width = '0%';
+      setTimeout(function() { b.style.width = w; }, 50);
+    });
+  }, 50);
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// COOKIE CONSENT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var cookieConsent = null;
+
+function loadCookieConsent() {
+  try {
+    var raw = localStorage.getItem('rai_cookie_consent');
+    cookieConsent = raw ? JSON.parse(raw) : null;
+  } catch(e) { cookieConsent = null; }
+}
+
+function saveCookieConsent(functional) {
+  var consent = { essential:true, functional:functional, date: Date.now() };
+  try { localStorage.setItem('rai_cookie_consent', JSON.stringify(consent)); } catch(e) {}
+  cookieConsent = consent;
+}
+
+function showCookieBanner() {
+  var banner = document.getElementById('cookie-banner');
+  if (banner) banner.classList.add('show');
+}
+
+function hideCookieBanner() {
+  var banner = document.getElementById('cookie-banner');
+  if (banner) banner.classList.remove('show');
+}
+
+function acceptCookies() {
+  saveCookieConsent(true);
+  hideCookieBanner();
+  showToast('Preferenze salvate ✓');
+}
+
+function rejectOptional() {
+  saveCookieConsent(false);
+  hideCookieBanner();
+  showToast('Solo cookie essenziali attivi');
+}
+
+function toggleCookieSwitch(btn) {
+  btn.classList.toggle('on');
+}
+
+function clearAllData() {
+  if (!confirm('Cancellare tutti i dati? Questa azione è irreversibile.')) return;
+  try { localStorage.clear(); } catch(e) {}
+  cookieConsent = null;
+  showToast('Tutti i dati cancellati');
+  setTimeout(function() { navigate('screen-home'); showCookieBanner(); }, 800);
+}
+
+// Wrap getUsers/saveUsers to respect consent
+function getUsers() {
+  if (cookieConsent && cookieConsent.functional === false) return {};
+  return _pm_getUsers_raw();
+}
+function _pm_saveUsers_raw(u) {
+  try { localStorage.setItem('rai_users', JSON.stringify(u)); } catch(e) {}
+}
+var _saveUsersTimeout = null;
+function saveUsers(u) {
+  if (cookieConsent && cookieConsent.functional === false) return;
+  // Debounce 400ms per non scrivere su localStorage ad ogni keystroke
+  clearTimeout(_saveUsersTimeout);
+  _saveUsersTimeout = setTimeout(function() {
+    try { _pm_saveUsers_raw(u); } catch(e) {}
+  }, 400);
+}
+
+
+function openDetail(racketId) {
+  var r = RACKET_SCORES[racketId];
+  if (!r) { showToast('Racchetta non trovata'); return; }
+
+  var shapeLabel = {diamond:'💠 Diamante',round:'⭕ Rotonda',teardrop:'🔻 Teardrop',hybrid:'🔀 Ibrida'}[r.shape] || r.shape;
+  var levelLabel = {advanced:'🏆 Avanzato',intermediate:'🎯 Intermedio',beginner:'🌱 Principiante'}[r.level] || r.level;
+  var sideLabel  = {right:'👉 Lato Destro',left:'👈 Lato Sinistro',both:'🔄 Entrambi'}[r.side] || r.side;
+  var styleLabel = {aggressive:'⚡ Attaccante',defensive:'🛡️ Difensore',balanced:'⚖️ Polivalente'}[r.style] || r.style;
+
+  function scoreBar(label, val, color) {
+    return '<div style="margin-bottom:10px;">'
+      + '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">'
+      + '<span style="font-size:12px;color:var(--gray);">' + label + '</span>'
+      + '<span style="font-size:13px;font-weight:700;color:' + color + ';">' + val + '</span>'
+      + '</div>'
+      + '<div style="height:7px;background:var(--gray-light);border-radius:999px;overflow:hidden;">'
+      + '<div style="height:100%;width:' + Math.round(val/10*100) + '%;background:' + color + ';border-radius:999px;transition:width 0.6s ease;"></div>'
+      + '</div></div>';
+  }
+
+  var html =
+    '<div style="background:var(--cream);display:flex;align-items:center;justify-content:center;padding:24px 0;">'
+    + '<img src="' + r.img + '" onerror="dbImgError(this,\'' + (r.brand||'') + '\')" style="width:140px;height:140px;object-fit:contain;">'
+    + '</div>'
+    + '<div style="padding:20px;">'
+    + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;">' + r.brand + '</div>'
+    + '<div style="font-family:\'DM Serif Display\',serif;font-size:24px;color:var(--text);margin-bottom:4px;">' + r.name + ' <span style="font-size:14px;color:var(--gray);">' + r.year + '</span></div>'
+    + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 18px;">'
+    + '<span style="background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + levelLabel + '</span>'
+    + '<span style="background:#fef9c3;color:#854d0e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + shapeLabel + '</span>'
+    + '<span style="background:#f0fdf4;color:#15803d;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + styleLabel + '</span>'
+    + '<span style="background:#fff7ed;color:#c2410c;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;">~€' + r.price + '</span>'
+    + '</div>'
+
+    + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Performance</div>'
+    + '<div style="background:#ffffff;border-radius:14px;padding:12px 8px;margin-bottom:14px;border:1px solid #e8ecf0;">'
+    + buildRadarSVG(r)
+    + '</div>'
+    + '<div style="background:#ffffff;border-radius:14px;padding:16px;margin-bottom:18px;border:1px solid #e8ecf0;">'
+    + '<div style="text-align:center;margin-bottom:14px;">'
+    + '<div style="font-size:36px;font-weight:800;color:var(--orange);">' + r.overall + '</div>'
+    + '<div style="font-size:11px;color:var(--gray);">Score complessivo / 10</div>'
+    + '</div>'
+    + scoreBar('⚡ Potenza', r.power, '#f97316')
+    + scoreBar('🎯 Controllo', r.control, '#3b82f6')
+    + scoreBar('📍 Sweet Spot', r.sweetspot, '#8b5cf6')
+    + scoreBar('💫 Maneggevolezza', r.maneuverability, '#10b981')
+    + scoreBar('😌 Comfort', r.comfort, '#ec4899')
+    + scoreBar('🌀 Spin', r.spin, '#f59e0b')
+    + '</div>'
+
+    + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Specifiche tecniche</div>'
+    + '<div style="background:#e8ecf0;border-radius:14px;overflow:hidden;margin-bottom:18px;">'
+    + [
+        ['Peso',      r.weight ? r.weight + 'g' : '—'],
+        ['Bilanciamento', r.balance || '—'],
+        ['Superficie', r.surface || '—'],
+        ['Core',      r.core || '—'],
+        ['Rigidità',  r.hardness || '—'],
+        ['Livello',   levelLabel],
+        ['Lato',      sideLabel],
+      ].map(function(row, i) {
+        return '<div style="display:flex;padding:10px 14px;' + (i%2===0 ? 'background:#f8f9fa;' : 'background:#ffffff;') + '">'
+          + '<div style="flex:1;font-size:12px;color:#6b7280;">' + row[0] + '</div>'
+          + '<div style="font-size:12px;font-weight:600;color:#1a202c;">' + row[1] + '</div>'
+          + '</div>';
+      }).join('')
+    + '</div>'
+
+    + (function() {
+        var bl2 = BUY_LINKS[racketId] || {};
+        var pr2 = bl2.price || r.price || 0;
+        var bt2 = bl2.best || 'both';
+        var amzP2 = pr2 ? Math.round(pr2 * (bt2==='amazon' ? 0.92 : 1.02)) : 0;
+        var pnP2  = pr2 ? Math.round(pr2 * (bt2==='padelnuestro' ? 0.94 : 1.04)) : 0;
+        var bestIsAmz = amzP2 <= pnP2;
+        var amzHref2 = bl2.amazon || ('https://www.amazon.it/s?k=' + encodeURIComponent(r.brand+' '+r.name)+'+padel&tag=stinkipadel-21');
+        var pnSlug = r.brand.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + '-' + r.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + (r.year ? '-'+r.year : '');
+        var pnHref2 = (bl2.padelnuestro && bl2.padelnuestro.indexOf('padelnuestro.com/it/') >= 0) ? bl2.padelnuestro : 'https://www.padelnuestro.com/it/' + pnSlug;
+        var shopHref2 = 'https://www.google.it/search?tbm=shop&q=' + encodeURIComponent(r.brand+' '+r.name+' padel racchetta');
+        var decHref2 = bl2.decathlon || null;
+        var html2 = '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Acquista</div>';
+        // Amazon
+        html2 += '<a href="'+amzHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:#fff;">'
+          + '<div style="font-size:22px;flex-shrink:0;">📦</div>'
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Amazon Italia</div><div style="font-size:11px;color:#64748b;">Consegna rapida Prime · Resi facili</div></div>'
+          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+amzP2+'</div>'+(bestIsAmz?'<div style="font-size:9px;font-weight:700;color:#16a34a;">✓ Miglior prezzo</div>':'')+'</div></a>';
+        // Padel Nuestro
+        html2 += '<a href="'+pnHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(!bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:#fff;">'
+          + '<div style="font-size:22px;flex-shrink:0;">🎾</div>'
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Padel Nuestro IT</div><div style="font-size:11px;color:#64748b;">Shop specializzato · Spedizione EU</div></div>'
+          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+pnP2+'</div>'+(!bestIsAmz?'<div style="font-size:9px;font-weight:700;color:#16a34a;">✓ Miglior prezzo</div>':'')+'</div></a>';
+        // Decathlon (se disponibile)
+        if (decHref2) {
+          html2 += '<a href="'+decHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid #e2e8f0;margin-bottom:8px;text-decoration:none;background:#fff;">'
+            + '<div style="font-size:22px;flex-shrink:0;">🏬</div>'
+            + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Decathlon</div><div style="font-size:11px;color:#64748b;">Kuikma · Reso in negozio</div></div></a>';
+        }
+        // Google Shopping
+        html2 += '<a href="'+shopHref2+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:2px solid #e2e8f0;margin-bottom:18px;text-decoration:none;background:#fff;">'
+          + '<div style="font-size:22px;flex-shrink:0;">🔍</div>'
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Confronta prezzi</div><div style="font-size:11px;color:#64748b;">Google Shopping · Tutti gli store</div></div>'
+          + '<div style="font-size:12px;font-weight:700;color:#4285f4;">Cerca →</div></a>';
+        return html2;
+      })()
+    + '<div style="display:flex;gap:8px;margin-bottom:40px;">'
+    + '<button type="button" onclick="toggleCollection(document.getElementById(\'detail-save-btn\'),\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + ' ' + r.year + '\',\'' + r.img + '\')" id="detail-save-btn" style="flex:1;padding:13px;border-radius:12px;background:var(--gray-light);border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">&#9825; Collezione</button>'
+    + '<button type="button" onclick="toggleCompare(\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + '\',\'' + r.img + '\')" style="flex:1;padding:13px;border-radius:12px;background:var(--navy);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">&#9878; Confronta</button>'
+    + '</div>'
+
+    + '</div>';
+
+  html += renderSimilarSection(racketId);
+  var titleEl = document.getElementById('detail-modal-title');
+  var bodyEl  = document.getElementById('detail-body');
+  var modal   = document.getElementById('detail-modal');
+  if (titleEl) titleEl.textContent = r.brand + ' ' + r.name;
+  if (bodyEl)  bodyEl.innerHTML = html;
+  if (modal) {
+    var pov = document.getElementById('partner-overlay');
+    if (pov && pov.style.display !== 'none') pov.setAttribute('data-pf-was-open','1');
+    modal.style.display = 'block';
+    modal.scrollTop = 0;
+    // Don't lock body overflow — causes about:blank on Chrome Android with local file
+  }
+}
+
+
+
+function sharePartnerRacket(racketId) {
+  var r = RACKET_SCORES[racketId];
+  if (!r) return;
+  var bl = BUY_LINKS[racketId] || {};
+  var name = r.brand + ' ' + r.name + (r.year ? ' ' + r.year : '');
+  var pnUrl = (bl.padelnuestro && bl.padelnuestro.indexOf('padelnuestro.com/it/') >= 0)
+    ? bl.padelnuestro
+    : 'https://www.padelnuestro.com/it/' + r.brand.toLowerCase().replace(/\s+/g,'-') + '-' + r.name.toLowerCase().replace(/\s+/g,'-') + (r.year?'-'+r.year:'');
+  var price = bl.price ? '~€' + Math.round(bl.price * (bl.best==='padelnuestro'?0.94:1.02)) : '';
+  var msg = '🎾 Ho trovato la racchetta perfetta per te!\n\n'
+    + '👉 ' + name + (price ? ' · ' + price : '') + '\n'
+    + (r.level ? '📊 Livello: ' + ({advanced:'Avanzato',intermediate:'Intermedio',beginner:'Principiante'}[r.level]||r.level) : '') + '\n'
+    + (r.style ? '⚡ Stile: ' + ({aggressive:'Attaccante',defensive:'Difensore',balanced:'Polivalente'}[r.style]||r.style) : '') + '\n\n'
+    + '🔗 Compra qui: ' + pnUrl + '\n\n'
+    + '🤖 Consigliata da RacketAI → stinkipadel.com/racketai';
+  var enc = encodeURIComponent(msg);
+  // Try Web Share API first
+  if (navigator.share) {
+    navigator.share({ title: name, text: msg }).catch(function(){});
+  } else {
+    window.open('https://wa.me/?text=' + enc, '_blank');
+  }
+}
+
+function renderSuccess() {
+  var matches = computeMatches();
+  var top3 = matches.slice(0,3);
+  var icons = ['🥇','🥈','🥉'];
+  var list = document.getElementById('success-rackets-list');
+  if (list && top3.length > 0) {
+    list.innerHTML = top3.map(function(m, i) {
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);">'
+        + icons[i]
+        + ' <div style="flex:1;font-size:14px;font-weight:600;">' + m.r[2] + ' ' + m.r[1] + '</div>'
+        + '<div style="font-size:13px;color:var(--orange);font-weight:700;">' + m.pct + '%</div>'
+        + '</div>';
+    }).join('');
+  }
+  // Also update purchase if one was made
+  if (selectedPurchaseRacket) {
+    var title = document.getElementById('success-title');
+    var sub   = document.getElementById('success-sub');
+    if (title) title.textContent = 'Acquisto registrato! 🎉';
+    if (sub) sub.textContent = selectedPurchaseRacket.name + ' aggiunta alla tua collezione.';
+  }
+}
+
+
+function openDetailFromCard(btn) {
+  var card = btn.closest ? btn.closest('.racket-card') : btn.parentElement.parentElement;
+  if (!card) { navigate('screen-results'); return; }
+  var brand = (card.getAttribute('data-brand') || '').toLowerCase();
+  var name  = (card.getAttribute('data-name')  || '').toLowerCase();
+  var bestId = null, bestScore = 0;
+  Object.keys(RACKET_SCORES).forEach(function(id) {
+    var r = RACKET_SCORES[id];
+    var rb = (r.brand||'').toLowerCase();
+    var rn = (r.name||'').toLowerCase();
+    var score = 0;
+    if (rb === brand || rb.indexOf(brand) >= 0 || brand.indexOf(rb) >= 0) score += 2;
+    name.split(' ').forEach(function(w) { if (w.length > 2 && rn.indexOf(w) >= 0) score++; });
+    if (score > bestScore) { bestScore = score; bestId = id; }
+  });
+  if (bestId) openDetail(bestId);
+  else navigate('screen-results');
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// BUY / AFFILIATE LINKS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function openBuyModal(racketId) {
+  var links  = BUY_LINKS[racketId];
+  var scores = RACKET_SCORES[racketId];
+  var name   = scores ? scores.brand + ' ' + scores.name + (scores.year ? ' ' + scores.year : '') : racketId;
+  var price  = (links && links.price) ? links.price : (scores ? scores.price : 0);
+  var best   = links ? links.best : 'both';
+
+  var g = function(id) { return document.getElementById(id); };
+  if (g('buy-modal-racket')) g('buy-modal-racket').textContent = name;
+  if (g('buy-modal-sub'))   g('buy-modal-sub').textContent = price ? 'Prezzo di riferimento ~€' + price : 'Scegli dove acquistare';
+
+  // ── Prezzi — stessa formula delle card ──
+  var amzPrice = links ? Math.round(links.price * (best === 'amazon'       ? 0.92 : 1.02)) : price;
+  var pnPrice  = links ? Math.round(links.price * (best === 'padelnuestro' ? 0.94 : 1.04)) : price;
+  var decPrice = (links && links.decathlon_price) ? links.decathlon_price : 0;
+
+  // ── Link Amazon ──
+  var amzHref = (links && links.amazon) ? links.amazon
+    : 'https://www.amazon.it/s?k=' + encodeURIComponent(name + ' padel') + '&tag=stinkipadel-21';
+
+  // ── Link PadelNuestro — URL diretto se disponibile ──
+  var pnHref;
+  if (links && links.padelnuestro && links.padelnuestro.indexOf('padelnuestro.com/it/') >= 0) {
+    pnHref = links.padelnuestro;
+  } else {
+    var pnSlug = (scores ? scores.brand + '-' + scores.name + (scores.year ? '-' + scores.year : '') : name)
+      .toLowerCase().replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìí]/g,'i')
+      .replace(/[òó]/g,'o').replace(/[ùú]/g,'u').replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-');
+    pnHref = 'https://www.padelnuestro.com/it/' + pnSlug;
+  }
+
+  // ── Link Google Shopping ──
+  var shopHref = 'https://www.google.it/search?tbm=shop&q=' + encodeURIComponent(name + ' padel racchetta');
+
+  // ── Popola Amazon ──
+  if (g('buy-link-amazon'))   { g('buy-link-amazon').href = amzHref; }
+  if (g('buy-price-amazon'))  { g('buy-price-amazon').textContent = amzPrice ? '~€' + amzPrice : '—'; }
+
+  // ── Popola PN ──
+  if (g('buy-link-pn'))  { g('buy-link-pn').href = pnHref; }
+  if (g('buy-price-pn')) { g('buy-price-pn').textContent = pnPrice ? '~€' + pnPrice : '—'; }
+
+  // ── Badge miglior prezzo ──
+  var bestPriceIsAmz = amzPrice > 0 && pnPrice > 0 && amzPrice <= pnPrice;
+  var bestPriceIsPn  = pnPrice > 0 && amzPrice > 0 && pnPrice < amzPrice;
+  if (g('buy-badge-amazon')) g('buy-badge-amazon').style.display = bestPriceIsAmz ? 'block' : 'none';
+  if (g('buy-badge-pn'))     g('buy-badge-pn').style.display     = bestPriceIsPn  ? 'block' : 'none';
+
+  // ── Decathlon (solo se esiste il link) ──
+  var decEl = g('buy-row-decathlon');
+  if (decEl) {
+    var decUrl = links && links.decathlon;
+    decEl.style.display = decUrl ? 'flex' : 'none';
+    if (decUrl) {
+      decEl.href = decUrl;
+      if (g('buy-price-dec')) g('buy-price-dec').textContent = decPrice ? '~€' + decPrice : '—';
+    }
+  }
+
+  // ── Google Shopping ──
+  if (g('buy-link-shopping')) { g('buy-link-shopping').href = shopHref; }
+
+  var modal = document.getElementById('buy-modal');
+  if (modal) { modal.style.display = 'flex'; modal.style.pointerEvents = 'auto'; }
+}
+
+function closeBuyModal() {
+  var modal = document.getElementById('buy-modal');
+  if (modal) { modal.style.display='none'; modal.style.pointerEvents='none'; }
+}
+
+function buyFromCard(btn) {
+  var card = btn.closest ? btn.closest('.racket-card') : null;
+  if (!card) { card = btn.parentElement; while(card && !card.classList.contains('racket-card')) card = card.parentElement; }
+  if (!card) return;
+  var brand = (card.getAttribute('data-brand') || '').toLowerCase();
+  var name  = (card.getAttribute('data-name')  || '').toLowerCase();
+  var bestId = null, bestScore = 0;
+  Object.keys(RACKET_SCORES).forEach(function(id) {
+    var r = RACKET_SCORES[id];
+    var rb = (r.brand || '').toLowerCase();
+    var rn = (r.name  || '').toLowerCase();
+    var s = 0;
+    if (rb === brand || brand.indexOf(rb) >= 0 || rb.indexOf(brand) >= 0) s += 2;
+    name.split(' ').forEach(function(w) { if (w.length > 2 && rn.indexOf(w) >= 0) s++; });
+    if (s > bestScore) { bestScore = s; bestId = id; }
+  });
+  if (bestId) openBuyModal(bestId);
+  else showToast('Link non trovato — cerca su Amazon');
+}
+
+function buyTopMatch() {
+  var matches = computeMatches();
+  if (matches.length > 0) openBuyModal(matches[0].r[0]);
+}
+
+function buyFromDetail(racketId) {
+  openBuyModal(racketId);
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DARK MODE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initDarkMode() {
+  try {
+    var saved = localStorage.getItem('rai_theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyDarkMode(saved ? saved === 'dark' : prefersDark, false);
+  } catch(e) {}
+}
+function applyDarkMode(dark, save) {
+  document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
+  if (save) { try { localStorage.setItem('rai_theme', dark ? 'dark' : 'light'); } catch(e) {} }
+  var icon = document.getElementById('dark-icon');
+  var sub  = document.getElementById('dark-sub');
+  if (icon) icon.textContent = dark ? '☀️' : '🌙';
+  if (sub)  sub.textContent  = dark ? 'Tema chiaro attivo' : 'Tema scuro';
+}
+function toggleDarkMode() {
+  applyDarkMode(document.body.getAttribute('data-theme') !== 'dark', true);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SHARE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var _shareRacketName = '';
+var _shareRacketPct  = '';
+function renderShareCard(matches) {
+  var card = document.getElementById('share-card');
+  if (!card || !matches || !matches.length) return;
+  _shareRacketName = matches[0].r[2] + ' ' + matches[0].r[1];
+  _shareRacketPct  = matches[0].pct + '%';
+  var el = document.getElementById('share-racket-name'); if (!el) return;
+  var ep = document.getElementById('share-racket-pct') || document.createElement('span');
+  if (el) el.textContent = _shareRacketName;
+  if (ep) ep.textContent = _shareRacketPct;
+  card.style.display = 'block';
+}
+function getShareText() {
+  return '🎾 Ho trovato la mia racchetta ideale con RacketAI!\n\n🏆 '
+    + (_shareRacketName || '—') + '\n⚡ ' + (_shareRacketPct || '—')
+    + ' di affinit\u00e0\n\nTest gratuito → racketai.app\n\n#padel #racketai';
+}
+function shareWhatsapp() {
+  window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(getShareText()), '_blank');
+}
+function copyShareLink() {
+  var text = getShareText();
+  var btn  = document.getElementById('share-copy-btn');
+  function done() {
+    showToast('\u2705 Testo copiato! Incollalo dove vuoi.');
+    if (btn) { var o=btn.textContent; btn.textContent='\u2713 Copiato!'; setTimeout(function(){ btn.textContent=o; },2500); }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function() {
+      try { var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.focus();t.select();document.execCommand('copy');document.body.removeChild(t);done(); } catch(e){}
+    });
+  } else {
+    try { var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.focus();t.select();document.execCommand('copy');document.body.removeChild(t);done(); } catch(e){}
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RACCHETTE SIMILI
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function getSimilarRackets(racketId, count) {
+  var r = RACKET_SCORES[racketId];
+  if (!r) return [];
+  return Object.keys(RACKET_SCORES)
+    .filter(function(id) { return id !== racketId; })
+    .map(function(id) {
+      var s = RACKET_SCORES[id];
+      var score = 0;
+      if (s.shape === r.shape) score += 3;
+      if (s.level === r.level) score += 3;
+      if (s.style === r.style) score += 2;
+      if (s.side === r.side || s.side === 'both' || r.side === 'both') score += 1;
+      var pd = Math.abs((s.price - r.price) / (r.price || 1));
+      if (pd < 0.3) score += 2;
+      if (Math.abs(s.overall - r.overall) <= 1) score += 1;
+      return { id:id, s:s, score:score };
+    })
+    .filter(function(x) { return x.score >= 5; })
+    .sort(function(a,b) { return b.score - a.score; })
+    .slice(0, count || 3);
+}
+function renderSimilarSection(racketId) {
+  var similar = getSimilarRackets(racketId, 3);
+  if (!similar.length) return '';
+  var html = '<div style="margin-bottom:8px;">'
+    + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Potrebbe interessarti</div>'
+    + '<div style="display:flex;flex-direction:column;gap:10px;">';
+  similar.forEach(function(item) {
+    var s = item.s;
+    var bl = BUY_LINKS[item.id];
+    var price = bl ? bl.price : s.price;
+    var imgSrc = s.img || '';
+    var sid = item.id.replace(/[^a-z0-9-]/g,'');
+    html += '<div onclick="openDetail(\'' + sid + '\')" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--gray-light);border-radius:14px;cursor:pointer;">'
+      + '<img src="' + imgSrc + '" onerror="this.style.opacity=0.2" style="width:52px;height:52px;object-fit:contain;border-radius:10px;background:white;padding:4px;flex-shrink:0;">'
+      + '<div style="flex:1;min-width:0;">'
+      + '<div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;">' + (s.brand||'') + '</div>'
+      + '<div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (s.name||'') + ' ' + (s.year||'') + '</div>'
+      + '<div style="font-size:11px;color:var(--gray);">' + (s.overall ? '\u2b50 ' + s.overall : '') + (price ? ' \u00b7 ~€' + price : '') + '</div>'
+      + '</div><div style="font-size:18px;color:var(--gray);">\u203a</div>'
+      + '</div>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RETEST BANNER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function checkRetestBanner(ud) {
+  var wrap = document.getElementById('retest-banner-wrap'); if (!wrap) return;
+  if (!wrap) return;
+  var tests = ud.tests || [];
+  if (!tests.length) { wrap.style.display='none'; return; }
+  var daysSince = Math.floor((Date.now() - (tests[0].date||0)) / 86400000);
+  if (daysSince >= 45) {
+    wrap.style.display = 'block';
+    var el = document.getElementById('retest-days-text'); if (!el) return;
+    if (el) el.textContent = daysSince >= 180
+      ? 'Non fai un test da ' + Math.floor(daysSince/30) + ' mesi!'
+      : 'Sono passati ' + daysSince + ' giorni dal tuo ultimo test.';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+
+function filterRackets(level) {
+  var cards = document.querySelectorAll('#rackets-list .racket-card');
+  var btns  = document.querySelectorAll('#filter-bar .filter-btn');
+  btns.forEach(function(b){ b.classList.remove('active-filter'); });
+  var ab = document.getElementById('filter-' + level);
+  if (ab) ab.classList.add('active-filter');
+
+  var visible = 0;
+  cards.forEach(function(card) {
+    var cardLevel = card.getAttribute('data-level') || '';
+    var show = (level === 'all') || (cardLevel === level);
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  // Update subtitle
+  var sub = document.querySelector('#screen-results .results-sub');
+  if (sub) {
+    var orig = sub.getAttribute('data-orig') || sub.textContent;
+    if (!sub.getAttribute('data-orig')) sub.setAttribute('data-orig', orig);
+    if (level === 'all') {
+      sub.textContent = orig;
+    } else {
+      var lbl = {beginner:'🌱 Principianti', intermediate:'🎯 Intermedi', advanced:'🏆 Avanzati'}[level] || level;
+      sub.textContent = visible + ' racchette · ' + lbl;
+    }
+  }
+}
+
+
+// ── EXTRA FEATURES ──
+var _priceMax = 400;
+var _dbTab = 'all';
+
+function onPriceSlider(val) {
+  _priceMax = parseInt(val);
+  var lbl = document.getElementById('price-slider-val');
+  if (lbl) lbl.textContent = _priceMax >= 400 ? 'Nessun limite' : '≤€' + _priceMax;
+  filterDB();
+  dbUpdateFilterBadge();
+}
+
+function computeAllMatches() {
+  var ans = quizAnswers;
+  var scored = RACKET_DB.map(function(r) {
+    var realPrice = 9999;
+    var bl = BUY_LINKS[r[0]];
+    if (bl && bl.price) realPrice = bl.price;
+    else { var pm = (r[12]||'').match(/\d+/); if(pm) realPrice = parseInt(pm[0]); }
+    return { r:r, pct:scoreRacket(r, ans), price:realPrice };
+  });
+  scored.sort(function(a,b){ return b.pct - a.pct; });
+  return scored;
+}
+
+function buildRadarSVG(r) {
+  var axes = [
+    {key:'power',       label:'⚡', caption:'Potenza',       color:'#f97316'},
+    {key:'control',     label:'🎯', caption:'Controllo',     color:'#3b82f6'},
+    {key:'sweetspot',   label:'📍', caption:'Sweet Spot',    color:'#8b5cf6'},
+    {key:'maneuverability',label:'💫',caption:'Manegg.',     color:'#10b981'},
+    {key:'comfort',     label:'😌', caption:'Comfort',       color:'#ec4899'},
+    {key:'spin',        label:'🌀', caption:'Spin',          color:'#f59e0b'}
+  ];
+  var n=axes.length, cx=145, cy=145, R=88, step=(Math.PI*2)/n;
+  function pt(i,val){ var a=step*i-Math.PI/2, r2=(val/10)*R; return [cx+r2*Math.cos(a), cy+r2*Math.sin(a)]; }
+  function ptF(i,f){ var a=step*i-Math.PI/2; return [cx+f*R*Math.cos(a), cy+f*R*Math.sin(a)]; }
+  var rings='';
+  for(var ring=2;ring<=10;ring+=2){ var pp=[]; for(var i=0;i<n;i++){var p=ptF(i,ring/10);pp.push(p[0]+','+p[1]);} rings+='<polygon points="'+pp.join(' ')+'" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>'; }
+  var axes_lines='';
+  for(var i=0;i<n;i++){var p=ptF(i,1);axes_lines+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>';}
+  var valPts=[];
+  for(var i=0;i<n;i++){var v=r[axes[i].key]||0;var p=pt(i,v);valPts.push(p[0]+','+p[1]);}
+  var poly='<polygon points="'+valPts.join(' ')+'" fill="rgba(244,101,10,0.18)" stroke="#f4650a" stroke-width="2" stroke-linejoin="round"/>';
+  var dots='',labels='';
+  for(var i=0;i<n;i++){
+    var v=r[axes[i].key]||0, p=pt(i,v), lp=ptF(i,1.28);
+    // Value label offset: slightly further for caption
+    var cp=ptF(i,1.58);
+    dots+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#f4650a"/>';
+    labels+='<text x="'+lp[0]+'" y="'+lp[1]+'" text-anchor="middle" dominant-baseline="middle" font-size="14">'+axes[i].label+'</text>';
+    labels+='<text x="'+cp[0]+'" y="'+cp[1]+'" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="#6b7280" font-family="DM Sans,sans-serif" font-weight="600">'+axes[i].caption+'</text>';
+  }
+  return '<svg viewBox="0 0 290 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;display:block;margin:0 auto;">'+rings+axes_lines+poly+dots+labels+'</svg>';
+}
+
+function switchDBTab(tab) {
+  _dbTab = tab;
+  var panelAll    = ['db-panel-all-search'];
+  var panelCol    = document.getElementById('db-panel-collection');
+  var listAll     = document.getElementById('db-list');
+  var listCol     = document.getElementById('db-collection-list');
+  var btnAll      = document.getElementById('db-tab-all');
+  var btnCol      = document.getElementById('db-tab-collection');
+
+  if (tab === 'all') {
+    panelAll.forEach(function(id){ var el=document.getElementById(id); if(el)el.style.display=''; });
+    if (panelCol)  panelCol.style.display  = 'none';
+    if (listAll)   listAll.style.display   = '';
+    if (listCol)   listCol.style.display   = 'none';
+    if (btnAll)  { btnAll.style.background  = 'var(--orange)';  btnAll.style.color  = 'white'; }
+    if (btnCol)  { btnCol.style.background  = 'var(--white)';   btnCol.style.color  = 'var(--gray)'; }
+  } else {
+    panelAll.forEach(function(id){ var el=document.getElementById(id); if(el)el.style.display='none'; });
+    if (panelCol)  panelCol.style.display  = '';
+    if (listAll)   listAll.style.display   = 'none';
+    if (listCol)   listCol.style.display   = '';
+    if (btnAll)  { btnAll.style.background  = 'var(--white)';   btnAll.style.color  = 'var(--gray)'; }
+    if (btnCol)  { btnCol.style.background  = 'var(--orange)';  btnCol.style.color  = 'white'; }
+    renderCollectionList();
+  }
+}
+
+function renderCollectionList() {
+  var col=getCollection(), list=document.getElementById('db-collection-list'), cnt=document.getElementById('db-collection-count');
+  if(!list)return;
+  if(cnt)cnt.textContent=col.length>0?col.length+' racchett'+(col.length===1?'a salvata':'e salvate'):'';
+  if(col.length===0){
+    list.innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--gray);"><div style="font-size:48px;margin-bottom:12px;">♡</div><div style="font-weight:700;font-size:16px;margin-bottom:6px;">Nessuna racchetta salvata</div><div style="font-size:13px;">Sfoglia il catalogo e premi ♡ per aggiungere</div></div>';
+    return;
+  }
+  var shapeL={diamond:'💠',round:'⭕',teardrop:'🔻',hybrid:'🔀'};
+  var levelC={advanced:'purple',intermediate:'blue2',beginner:'green'};
+  var levelL={advanced:'🏆 Avanzato',intermediate:'🎯 Intermedio',beginner:'🌱 Principiante'};
+  list.innerHTML=col.map(function(c){
+    var r=RACKET_SCORES[c.id]||{}, bl=BUY_LINKS[c.id]||{};
+    var price=bl.price||r.price||'', img=r.img||c.imgUrl||'';
+    return '<div class="db-card" onclick="openDetail(\''+c.id+'\')">'
+      +'<img src="'+img+'" class="db-img" onerror="this.style.opacity=0.15" loading="lazy">'
+      +'<div class="db-info"><div class="db-brand">'+(r.brand||c.brand||'')+'</div>'
+      +'<div class="db-name">'+(r.name||c.name||'')+' <span style="color:var(--gray);font-weight:400;">'+(r.year||'')+'</span></div>'
+      +'<div class="db-chips-row">'
+      +'<span class="db-tag '+(levelC[r.level]||'gray')+'">'+(levelL[r.level]||r.level||'')+'</span>'
+      +(price?'<span class="db-tag orange">€'+price+'</span>':'')
+      +'</div></div>'
+      +'<div class="db-actions" onclick="event.stopPropagation();">'
+      +'<button type="button" class="db-save-btn saved" onclick="removeFromCollectionDB(\''+c.id+'\');event.stopPropagation();" title="Rimuovi">♥</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function removeFromCollectionDB(id) {
+  var col=getCollection(), idx=col.findIndex(function(r){return r.id===id;});
+  if(idx>=0){col.splice(idx,1);saveCollection(col);}
+  updateCollectionBadges(); renderCollectionList(); showToast('Rimossa dalla collezione');
+}
+
+function getWatchlist() {
+  try{return JSON.parse(localStorage.getItem('rai_watchlist')||'[]');}catch(e){return[];}
+}
+function saveWatchlist(wl){try{localStorage.setItem('rai_watchlist',JSON.stringify(wl));}catch(e){}}
+function toggleWatchlist(racketId){
+  var wl=getWatchlist(), idx=wl.findIndex(function(w){return w.id===racketId;}), r=RACKET_SCORES[racketId];
+  if(!r)return;
+  var bl=BUY_LINKS[racketId]||{}, price=bl.price||r.price;
+  if(idx>=0){wl.splice(idx,1);showToast('Rimosso dalla lista offerte');}
+  else{wl.push({id:racketId,name:r.brand+' '+r.name,price:price,addedAt:Date.now()});showToast('🔔 Aggiunto alla lista offerte!');}
+  saveWatchlist(wl);
+  var btn=document.getElementById('watch-btn-'+racketId);
+  if(btn)btn.textContent=idx>=0?'🔔 Avvisami offerte':'🔕 Rimuovi da offerte';
+}
+function isWatched(id){return getWatchlist().some(function(w){return w.id===id;});}
+function renderWatchlist(){
+  var wl=getWatchlist(), el=document.getElementById('prf-watchlist'), sec=document.getElementById('prf-watchlist-section'); if(!el) return;
+  if(!el||!sec)return;
+  sec.style.display=wl.length>0?'block':'none';
+  el.innerHTML=wl.map(function(w){
+    var r=RACKET_SCORES[w.id]||{}, bl=BUY_LINKS[w.id]||{};
+    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-light);" onclick="openDetail(\''+w.id+'\')">'
+      +'<img src="'+(r.img||'')+'" onerror="this.style.opacity=0.1" style="width:40px;height:40px;object-fit:contain;border-radius:6px;background:var(--gray-light);padding:3px;flex-shrink:0;">'
+      +'<div style="flex:1;"><div style="font-size:13px;font-weight:700;">'+w.name+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);">~€'+(bl.price||w.price)+'</div></div>'
+      +'<button type="button" onclick="event.stopPropagation();toggleWatchlist(\''+w.id+'\')" style="font-size:11px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:8px;background:none;cursor:pointer;">✕</button>'
+      +'</div>';
+  }).join('');
+}
+
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PARTNER MODULE v4 — flat form
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var _pfRacketId  = null;
+var _pfSide      = 'both';
+
+var _pfLevelLabel = { advanced:'🏆 Avanzato', intermediate:'🎯 Intermedio', beginner:'🌱 Principiante' };
+var _pfStyleLabel = { aggressive:'⚡ Attaccante', defensive:'🛡️ Difensore', balanced:'⚖️ Equilibrato' };
+var _pfSideLabel  = { right:'👉 Destro', left:'👈 Sinistro', both:'🔄 Entrambi' };
+
+function pfOpen() {
+  // Reset selects
+  var brandSel = document.getElementById('pf-brand-select');
+  var modelSel = document.getElementById('pf-model-select');
+  if (brandSel) brandSel.value = '';
+  if (modelSel) { modelSel.innerHTML = '<option value="">— Prima scegli il brand —</option>'; modelSel.disabled = true; }
+  _pfRacketId = null; _pfSide = 'both';
+  pfSetSide('both'); pfSetCTA(false);
+  var budget = document.getElementById('pf-budget');
+  if (budget) budget.value = '';
+  var res = document.getElementById('pf-results');
+  if (res) res.style.display = 'none';
+  // Show overlay
+  var ov = document.getElementById('partner-overlay');
+  if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+}
+
+function pfClose() {
+  var ov = document.getElementById('partner-overlay');
+  if (ov) ov.style.display = 'none';
+}
+
+function pfInitDropdowns() {}
+function pfReset() {}
+
+function pfOnBrandChange(brand) {
+  var modelSel = document.getElementById('pf-model-select');
+  if (!modelSel) return;
+  _pfRacketId = null;
+  pfSetCTA(false);
+  var res = document.getElementById('pf-results');
+  if (res) res.style.display = 'none';
+
+  if (!brand) {
+    modelSel.innerHTML = '<option value="">— Prima scegli il brand —</option>';
+    modelSel.disabled = true;
+    return;
+  }
+  // Match brand case-insensitively to handle data inconsistencies
+  var models = Object.keys(RACKET_SCORES)
+    .filter(function(id) { return RACKET_SCORES[id].brand.toLowerCase() === brand.toLowerCase(); })
+    .sort(function(a, b) {
+      return (RACKET_SCORES[b].year||'').localeCompare(RACKET_SCORES[a].year||'') || RACKET_SCORES[a].name.localeCompare(RACKET_SCORES[b].name);
+    });
+  modelSel.innerHTML = '<option value="">— Seleziona modello —</option>'
+    + models.map(function(id) {
+      var r = RACKET_SCORES[id];
+      return '<option value="'+id+'">'+r.name+(r.year?' ('+r.year+')':'')+'</option>';
+    }).join('');
+  modelSel.disabled = false;
+  modelSel.value = '';
+}
+
+function pfOnModelChange(id) {
+  _pfRacketId = id || null;
+  pfSetCTA(!!id);
+  var res = document.getElementById('pf-results');
+  if (res) res.style.display = 'none';
+}
+
+function pfSetCTA(active) {
+  var cta = document.getElementById('pf-cta');
+  if (!cta) return;
+  cta.disabled = !active;
+  cta.style.background = active ? 'var(--orange)' : 'var(--gray-light)';
+  cta.style.color       = active ? 'white'         : 'var(--gray)';
+  cta.style.cursor      = active ? 'pointer'        : 'not-allowed';
+}
+
+function pfSetSide(side) {
+  _pfSide = side;
+  ['both','left','right'].forEach(function(s) {
+    var btn = document.getElementById('pf-side-' + s);
+    if (!btn) return;
+    if (s === side) {
+      btn.style.background   = 'var(--orange)';
+      btn.style.borderColor  = 'var(--orange)';
+      btn.style.color        = 'white';
+    } else {
+      btn.style.background   = 'white';
+      btn.style.borderColor  = 'var(--gray-light)';
+      btn.style.color        = 'var(--gray)';
+    }
+  });
+}
+
+function pfCompute() {
+  if (!_pfRacketId) { showToast('Seleziona prima la tua racchetta'); return; }
+  var myR = RACKET_SCORES[_pfRacketId];
+  if (!myR) return;
+
+  var compStyle  = myR.style === 'aggressive' ? 'defensive'
+                 : myR.style === 'defensive'  ? 'aggressive'
+                 : 'balanced';
+  var myLevel    = myR.level;
+  var targetSide = _pfSide !== 'both' ? _pfSide
+                 : (myR.side === 'right' ? 'left' : myR.side === 'left' ? 'right' : 'both');
+
+  var budgetVal = parseInt(document.getElementById('pf-budget').value) || 0;
+
+  var results = Object.keys(RACKET_SCORES)
+    .filter(function(id) { return id !== _pfRacketId; })
+    .map(function(id) {
+      var r  = RACKET_SCORES[id];
+      var bl = BUY_LINKS[id] || {};
+      var price = bl.price || r.price || 0;
+      if (budgetVal > 0 && price > 0 && price > budgetVal) return null;
+      var score = 0;
+      if (r.style === compStyle)  score += 40;
+      else if (r.style === 'balanced') score += 20;
+      else score += 5;
+      if (r.level === myLevel) score += 35;
+      else if ((myLevel==='advanced' && r.level==='intermediate') || (myLevel==='intermediate' && r.level==='advanced')) score += 18;
+      else score += 4;
+      if (r.side === targetSide) score += 15;
+      else if (r.side === 'both' || targetSide === 'both') score += 10;
+      else score += 2;
+      score += Math.round((r.overall || 7) / 10 * 10);
+      return { id:id, r:r, score:score, bl:bl };
+    })
+    .filter(Boolean)
+    .sort(function(a, b) { return b.score - a.score; })
+    .slice(0, 3);
+
+  // Pill
+  var pill = document.getElementById('pf-logic-pill');
+  if (pill) pill.innerHTML =
+    'La tua: <b>' + (_pfStyleLabel[myR.style]||myR.style) + '</b> · <b>' + (_pfSideLabel[myR.side]||myR.side) + '</b>'
+    + ' → Partner: <b>' + (_pfStyleLabel[compStyle]||compStyle) + '</b>'
+    + ' · <b>' + (_pfLevelLabel[myLevel]||myLevel) + '</b>'
+    + (targetSide !== 'both' ? ' · <b>' + _pfSideLabel[targetSide] + '</b>' : '');
+
+  // Cards
+  var listEl = document.getElementById('pf-results-list');
+  if (!listEl) return;
+  if (!results.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--gray);"><div style="font-size:40px;margin-bottom:8px;">😔</div><div style="font-weight:700;">Nessun abbinamento trovato</div></div>';
+  } else {
+    listEl.innerHTML = results.map(function(item, i) {
+      var r = item.r, bl = item.bl, isTop = i === 0;
+      var price = bl.price || r.price || 0;
+      var amzP  = price ? Math.round(price * (bl.best==='amazon'       ? 0.92 : 1.02)) : 0;
+      var pnP   = price ? Math.round(price * (bl.best==='padelnuestro' ? 0.94 : 1.04)) : 0;
+      var bestP = (amzP && pnP) ? Math.min(amzP,pnP) : (amzP||pnP||price);
+      var lvlCls   = {advanced:'pf-badge-level-adv',intermediate:'pf-badge-level-int',beginner:'pf-badge-level-beg'}[r.level]||'';
+      var styCls   = {aggressive:'pf-badge-style-agg',defensive:'pf-badge-style-def',balanced:'pf-badge-style-bal'}[r.style]||'';
+      var compLbl  = r.style===compStyle ? '✓ Stile complementare' : (r.style==='balanced' ? '✓ Bilanciato' : '');
+      return '<div class="pf-result-card'+(isTop?' pf-top':'')+'" onclick="openDetail(\''+item.id+'\')">'
+        +'<div class="pf-result-img-wrap">'
+        +'<img src="'+(r.img||'')+'" onerror="this.style.opacity=0.12">'
+        +'<div class="pf-result-rank">'+(i+1)+'</div>'
+        +(isTop?'<div class="pf-top-label">🥇 Best match</div>':'')
+        +'</div>'
+        +'<div class="pf-result-body">'
+        +'<div class="pf-result-brand">'+(r.brand||'')+'</div>'
+        +'<div class="pf-result-name">'+(r.name||'')+' <span style="color:var(--gray);font-weight:400;font-size:13px;">'+(r.year||'')+'</span></div>'
+        +'<div class="pf-result-badges">'
+        +'<span class="pf-badge '+lvlCls+'">'+(_pfLevelLabel[r.level]||'')+'</span>'
+        +'<span class="pf-badge '+styCls+'">'+(_pfStyleLabel[r.style]||'')+'</span>'
+        +(compLbl?'<span class="pf-badge pf-badge-comp">'+compLbl+'</span>':'')
+        +(r.level===myLevel?'<span class="pf-badge pf-badge-comp">✓ Stesso livello</span>':'')
+        +'</div>'
+        +'<div class="pf-result-price-row">'
+        +(bestP?'<span class="pf-result-price">~€'+bestP+'</span>':'')
+        +'<button type="button" class="pf-result-buy" onclick="event.stopPropagation();openBuyModal(\''+item.id+'\')">🛒 Acquista</button>'
+        +'</div></div></div>';
+    }).join('');
+  }
+
+  // Aggiungi pulsante condivisione dopo i risultati
+  if (results.length > 0) {
+    var shareHtml = '<div style="margin-top:16px;">'
+      + '<div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Condividi le racchette col tuo partner</div>'
+      + '<button type="button" onclick="sharePartnerResults()" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#14532d,#166534);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;"><span>🤝</span><span>Invia le 3 racchette al partner</span></button>'
+      + '</div>';
+    listEl.insertAdjacentHTML('afterend', shareHtml);
+  }
+
+  var res = document.getElementById('pf-results');
+  if (res) {
+    res.style.display = 'block';
+    setTimeout(function() { res.scrollIntoView({ behavior:'smooth', block:'start' }); }, 150);
+  }
+  showToast('🤝 ' + results.length + ' abbinamenti trovati!');
+}
+
+// Condivide i risultati partner via WhatsApp / Web Share
+function sharePartnerResults() {
+  var items = Array.prototype.slice.call(document.querySelectorAll('#pf-results-list .pf-result-card'));
+  if (!items.length) { showToast('Prima cerca le racchette!'); return; }
+  // Leggi le ultime 3 card dai dati
+  var msg = '🎾 Ecco le racchette perfette per te!\n\nLe ho trovate con RacketAI — il tool che consiglia la racchetta di padel ideale in base al tuo stile di gioco. 🤖\n\n';
+  var ranks = ['🥇','🥈','🥉'];
+  var resultBtns = Array.prototype.slice.call(document.querySelectorAll('#pf-results-list .pf-result-buy'));
+  var resultCards = Array.prototype.slice.call(document.querySelectorAll('#pf-results-list .pf-result-card'));
+  resultCards.slice(0,3).forEach(function(card, i) {
+    var brandEl = card.querySelector('.pf-result-brand');
+    var nameEl  = card.querySelector('.pf-result-name');
+    var priceEl = card.querySelector('.pf-result-price');
+    var brand = brandEl ? brandEl.textContent.trim() : '';
+    var name  = nameEl  ? nameEl.textContent.trim() : '';
+    var price = priceEl ? priceEl.textContent.trim() : '';
+    msg += ranks[i] + ' ' + brand + ' ' + name + (price ? ' · ' + price : '') + '\n';
+  });
+  msg += '\n🔍 Scopri anche tu la tua racchetta → stinkipadel.com/racketai';
+  if (navigator.share) {
+    navigator.share({ title: 'Racchette per il tuo partner', text: msg }).catch(function(){});
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+}
+
+
+function closeDetailModal() {
+  var banner = document.getElementById('compare-ready-banner');
+  if (banner) banner.remove();
+
+  var modal = document.getElementById('detail-modal');
+  if (modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+  // Restore partner overlay if it was open before detail
+  var pov = document.getElementById('partner-overlay');
+  if (pov && pov.getAttribute('data-pf-was-open')) {
+    pov.style.display = 'block';
+    pov.removeAttribute('data-pf-was-open');
+  }
+}
+
+
+
+
+// ── Brand logo map — GLOBAL scope (used in onerror) ──
+var DB_BRAND_LOGOS = {
+  'adidas':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/160px-Adidas_Logo.svg.png',
+  'babolat':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Babolat.svg/160px-Babolat.svg.png',
+  'head':        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Head_Sport_logo.svg/160px-Head_Sport_logo.svg.png',
+  'wilson':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Wilson_Sporting_Goods_logo.svg/160px-Wilson_Sporting_Goods_logo.svg.png',
+  'puma':        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_PUMA_AG.svg/160px-Logo_PUMA_AG.svg.png',
+  'dunlop':      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Dunlop_Sport_logo.svg/160px-Dunlop_Sport_logo.svg.png',
+  'bullpadel':   'https://www.bullpadel.com/img/logos/bullpadel-padel-rackets.png',
+  'nox':         'https://noxsport.com/img/logo-nox-sport.png',
+  'siux':        'https://siux.es/img/siux_logo.png',
+  'starvie':     'https://www.starvie.com/img/cms/STARVIE-LOGO.png',
+  'varlion':     'https://www.varlion.com/img/logo-varlion.png',
+  'oxdog':       'https://www.oxdog.com/assets/images/logos/oxdog-logo-black.png',
+  'drop shot':   'https://www.dropshot.es/img/logo-drop-shot.png',
+  'royal padel': 'https://www.royalpadel.com/img/logo-royal-padel.png',
+  'munich':      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Munich_sports_logo.svg/160px-Munich_sports_logo.svg.png',
+  'stiga':       'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Stiga_logo.svg/160px-Stiga_logo.svg.png',
+};
+var DB_BRAND_COLORS = {
+  'adidas':'#000','babolat':'#d40000','bullpadel':'#00a0e3','head':'#000','nox':'#1a1a2e',
+  'siux':'#e30613','wilson':'#d40000','starvie':'#1a1a2e','dunlop':'#dd0000','puma':'#000',
+  'oxdog':'#f5a000','varlion':'#002855','drop shot':'#e30613','royal padel':'#1a3a6b',
+  'munich':'#e30613','kuikma':'#0082c3','kombat':'#ff6600','lok':'#444','osaka':'#ff6b35',
+  'stiga':'#d40000','virtufit':'#2ecc71',
+};
+
+function dbImgError(img, brand) {
+  var key = (brand||'').toLowerCase();
+  var logoUrl = DB_BRAND_LOGOS[key];
+  if (logoUrl) {
+    img.src = logoUrl;
+    img.style.objectFit = 'contain';
+    img.style.padding = '12px';
+    img.style.opacity = '0.85';
+    img.onerror = function() { dbImgShowInitial(img, brand); };
+  } else {
+    dbImgShowInitial(img, brand);
+  }
+}
+
+function dbImgShowInitial(img, brand) {
+  var key = (brand||'').toLowerCase();
+  var color = DB_BRAND_COLORS[key] || '#6b7280';
+  var initial = (brand||'?').charAt(0).toUpperCase();
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">'
+    + '<rect width="80" height="80" rx="12" fill="' + color + '"/>'
+    + '<text x="40" y="52" font-size="32" font-weight="700" fill="white" text-anchor="middle" font-family="DM Sans,sans-serif">' + initial + '</text>'
+    + '</svg>';
+  img.src = 'data:image/svg+xml;base64,' + btoa(svg);
+  img.style.padding = '8px';
+  img.style.opacity = '0.9';
+}
+
+function renderDB() {
+  var list = document.getElementById('db-list');
+  if (!list) return;
+
+  var shapeLabel = {diamond:'💠 Diamante',round:'⭕ Rotonda',teardrop:'🔻 Teardrop',hybrid:'🔀 Ibrida'};
+  var levelCls   = {advanced:'purple',intermediate:'blue2',beginner:'green'};
+  var levelLbl   = {advanced:'🏆 Avanzato',intermediate:'🎯 Intermedio',beginner:'🌱 Principiante'};
+
+  var col    = getCollection ? getCollection() : [];
+  var colIds = col.map(function(r){ return r.id; });
+  var cmpIds = (compareList||[]).map(function(r){ return r.id; });
+
+  var ids = Object.keys(RACKET_SCORES);
+  var html = '<div id="db-empty-dynamic" style="display:none;text-align:center;padding:60px 20px;color:var(--gray);">'
+    + '<div style="font-size:48px;margin-bottom:12px;">🔍</div>'
+    + '<div style="font-weight:700;font-size:16px;margin-bottom:6px;">Nessun risultato</div>'
+    + '<div style="font-size:13px;">Prova con un altro filtro</div></div>';
+
+  ids.forEach(function(id) {
+    var r   = RACKET_SCORES[id];
+    var bl  = BUY_LINKS[id] || {};
+    var imgSrc   = r.img || '';
+    var isSaved  = colIds.indexOf(id) >= 0;
+    var isCmp    = cmpIds.indexOf(id) >= 0;
+    var priceNum = bl.price || r.price || 0;
+
+    // ── 3-price row ──
+    var amzPrice  = (bl && bl.price) ? Math.round(bl.price * (bl.best==='amazon'       ? 0.92 : 1.02)) : 0;
+    var pnPrice   = (bl && bl.price) ? Math.round(bl.price * (bl.best==='padelnuestro' ? 0.94 : 1.04)) : 0;
+    var decPrice  = (bl && bl.decathlon) ? priceNum : 0;
+
+    // Find best (lowest non-zero)
+    var prices = [];
+    if(amzPrice)  prices.push({label:'Amazon',  val:amzPrice,  key:'amazon'});
+    if(pnPrice)   prices.push({label:'Padel N.', val:pnPrice,  key:'pn'});
+    if(decPrice)  prices.push({label:'Decathlon',val:decPrice, key:'dec'});
+    prices.sort(function(a,b){return a.val-b.val;});
+    var bestKey = prices.length ? prices[0].key : '';
+
+    var priceHtml = '';
+    if(prices.length){
+      priceHtml = '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;">';
+      prices.forEach(function(p){
+        var isBest = p.key === bestKey;
+        priceHtml += '<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;'
+          + (isBest ? 'background:#dcfce7;color:#15803d;' : 'background:var(--gray-light);color:var(--gray);') + '">'
+          + (isBest ? '✓ ' : '') + p.label + ' €' + p.val + '</span>';
+      });
+      priceHtml += '</div>';
+    }
+
+    html += '<div class="db-card"'
+      + ' data-level="'   + (r.level||'')   + '"'
+      + ' data-side="'    + (r.side||'both') + '"'
+      + ' data-shape="'   + (r.shape||'')   + '"'
+      + ' data-brand="'   + (r.brand||'').toLowerCase() + '"'
+      + ' data-name="'    + (r.name||'').toLowerCase()  + '"'
+      + ' data-overall="' + (r.overall||0)  + '"'
+      + ' data-price="'   + priceNum        + '"'
+      + ' onclick="openDetail(\'' + id + '\')">'
+
+      // Image — brand logo / SVG initial fallback if racket photo fails
+      + '<img src="' + imgSrc + '" class="db-img" loading="lazy"'
+      + ' onerror="dbImgError(this,\'' + (r.brand||'').replace(/'/g,"\\'") + '\')" >'
+
+      // Info
+      + '<div class="db-info">'
+      + '<div class="db-brand">' + (r.brand||'') + '</div>'
+      + '<div class="db-name">'  + (r.name||'')  + ' <span style="color:var(--gray);font-weight:400;">' + (r.year||'') + '</span></div>'
+      + '<div class="db-chips-row">'
+      + '<span class="db-tag ' + (levelCls[r.level]||'gray') + '">' + (levelLbl[r.level]||r.level||'') + '</span>'
+      + '<span class="db-tag blue">'  + (shapeLabel[r.shape]||r.shape||'') + '</span>'
+      + (r.overall ? '<span style="font-size:10px;color:var(--orange);font-weight:700;">⭐ ' + r.overall + '</span>' : '')
+      + '</div>'
+      + priceHtml
+      + '</div>'
+
+      // Actions
+      + '<div class="db-actions" onclick="event.stopPropagation();">'
+      + '<button type="button" class="db-save-btn' + (isSaved?' saved':'') + '" id="savebtn-' + id + '"'
+      + ' onclick="toggleCollection(this,\'' + id + '\',\'' + (r.brand||'').replace(/'/g,'') + '\',\'' + (r.name||'').replace(/'/g,'') + '\',\'' + imgSrc + '\')"'
+      + ' title="' + (isSaved?'Rimuovi':'Aggiungi') + '">' + (isSaved?'♥':'♡') + '</button>'
+      + '<button type="button" class="db-compare-btn' + (isCmp?' in-compare':'') + '" id="cmpbtn-' + id + '"'
+      + ' onclick="toggleCompare(' + JSON.stringify(id) + ')" title="Confronta">⚡</button>'
+      + '</div>'
+      + '</div>';
+  });
+
+  list.innerHTML = html;
+
+  var cnt = document.getElementById('db-counter');
+  if(cnt) cnt.textContent = ids.length + ' racchette';
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MONETIZZAZIONE — contatore test, Pro teaser, Coffee
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function getTestCount() {
+  try { return parseInt(localStorage.getItem('rai_test_count') || '0'); } catch(e) { return 0; }
+}
+function incrementTestCount() {
+  try { localStorage.setItem('rai_test_count', String(getTestCount() + 1)); } catch(e) {}
+}
+function hasCompletedTest() {
+  try { return localStorage.getItem('rai_test_count') !== null; } catch(e) { return false; }
+}
+
+function showProTeaserIfNeeded() {
+  var count = getTestCount();
+  var teaser = document.getElementById('pro-teaser');
+  if (teaser && count >= 2) {
+    teaser.style.display = 'block';
+  }
+}
+
+function showCoffeCardIfNeeded() {
+  var card = document.getElementById('coffee-card');
+  if (card && hasCompletedTest()) {
+    card.style.display = 'block';
+  }
+}
+
+function showProWaitlist() {
+  // Salva interesse in localStorage
+  try { localStorage.setItem('rai_pro_interest', Date.now().toString()); } catch(e) {}
+  // Feedback visivo
+  var btn = document.querySelector('.pro-teaser-btn');
+  if (btn) {
+    btn.textContent = '✅ Ti avvisiamo al lancio!';
+    btn.style.background = '#15803d';
+    btn.disabled = true;
+  }
+  showToast('🎉 Perfetto! Ti avviseremo quando RacketAI Pro sarà disponibile.');
+}
+
+// ── Safari iOS: remove 300ms click delay ──
+if (document.addEventListener) {
+  document.addEventListener('touchstart', function(){}, {passive:true});
+}
+// ── INIT ──
+try { loadCookieConsent(); } catch(e) {}
+try { loadAuth(); } catch(e) {}
+try { renderNavbar(); } catch(e) {}
+try { if (currentUser) updateCollectionBadges(); } catch(e) {}
+try { initDarkMode(); } catch(e) {}
+navigate('screen-loading');
+setTimeout(function() { try { if (!cookieConsent) showCookieBanner(); } catch(e) {} }, 2800);
+setTimeout(function() { try { if (window.requestAnimationFrame) { requestAnimationFrame(function(){ try { renderDB(); } catch(e) {} }); } else { renderDB(); } } catch(e) {} }, 800);
+
+
+
+</script>
+</body>
+</html>
