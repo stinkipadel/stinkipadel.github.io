@@ -896,15 +896,7 @@
     background: var(--navy);
     gap: 20px;
   }
-  /* Fallback CSS: nasconde loading screen dopo 3s anche senza JS */
-  @keyframes hideLoading {
-    0%, 90% { opacity: 1; pointer-events: all; }
-    100% { opacity: 0; pointer-events: none; display: none; }
-  }
-  #screen-loading.active {
-    animation: hideLoading 3s forwards;
-    animation-delay: 0s;
-  }
+
   .loading-logo {
     font-family: 'Bebas Neue', cursive;
     font-size: 42px;
@@ -2085,6 +2077,7 @@
         <div class="dot"></div>
       </div>
       <div class="loading-text">Caricamento in corso...</div>
+      <button id="loading-skip-btn" onclick="navigate('screen-home')" style="display:none;margin-top:20px;padding:12px 24px;background:#f4650a;color:white;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">Entra nell'app →</button>
     </div>
   </div>
 
@@ -7034,11 +7027,18 @@ try { renderNavbar(); } catch(e) {}
 try { if (currentUser) updateCollectionBadges(); } catch(e) {}
 try { initDarkMode(); } catch(e) {}
 navigate('screen-loading');
-// Forza transizione dopo che il DOM è pronto
-if (document.readyState === 'complete') {
-  setTimeout(function(){ try { navigate('screen-home'); } catch(e){} }, 500);
-}
+// window.onload: garantito su tutti i browser dopo che TUTTO è caricato
+window.addEventListener('load', function() {
+  setTimeout(function(){ try { navigate('screen-home'); } catch(e){} }, 300);
+});
+// Fallback se window.load non scatta
+setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 600);
 setTimeout(function() { try { if (!cookieConsent) showCookieBanner(); } catch(e) {} }, 2800);
+// Mostra bottone di emergenza se ancora in loading dopo 3s
+setTimeout(function() {
+  var btn = document.getElementById('loading-skip-btn');
+  if (btn && currentScreen === 'screen-loading') btn.style.display = 'block';
+}, 3000);
 setTimeout(function() { try { if (window.requestAnimationFrame) { requestAnimationFrame(function(){ try { renderDB(); } catch(e) {} }); } else { renderDB(); } } catch(e) {} }, 800);
 
 
