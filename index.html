@@ -45,22 +45,16 @@
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    max-width: 480px;
+    width: 100vw;
     height: 100%;
     height: 100vh;
     height: -webkit-fill-available;
     background: var(--cream);
     overflow: hidden;
-  }
-  body { background: var(--cream); }
-  @media (max-width: 420px) {
-    .phone-shell { width: 100%; }
-  }
-
+    -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
 
 
 :root {
@@ -616,12 +610,17 @@
   }
   .pro-con-title.pro { color: var(--green); }
   .pro-con-title.con { color: var(--red); }
-  .pro-con-item { font-size: 12px; color: var(--text); margin-bottom: 3px; }
-  [data-theme=dark] .pros-cons { background: rgba(255,255,255,0.05); }
-  [data-theme=dark] .pros-cons > div { background: transparent; }
+  .pro-con-item {
+    font-size: 12px;
+    color: var(--text);
+    display: flex;
+    gap: 5px;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
 
   .match-reason {
-    background: linear-gradient(135deg, rgba(30,95,168,0.1), rgba(244,101,10,0.08));
+    background: linear-gradient(135deg, #eff6ff, #fff7ed);
     border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 14px;
@@ -1612,7 +1611,6 @@
       overflow: hidden;
       height: 100%;
       margin: 0; padding: 0;
-      background: #1a1a2e;
     }
     body { background: var(--cream); }
     [data-theme="dark"] body { background: #0f1923; }
@@ -2052,51 +2050,6 @@
     word-break: break-word;
   }
 
-  /* ── GENDER STICKY BAR ── */
-  .gender-sticky-bar {
-    position: sticky;
-    bottom: 0;
-    background: linear-gradient(135deg, #1e3a5f, #0d1b2a);
-    border-top: 2px solid rgba(244,101,10,0.4);
-    padding: 12px 16px;
-    z-index: 50;
-    flex-shrink: 0;
-  }
-  .gender-sticky-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.7);
-    text-align: center;
-    margin-bottom: 10px;
-    letter-spacing: 0.3px;
-  }
-  .gender-pill {
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.7);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: "DM Sans", sans-serif;
-    transition: all 0.18s;
-  }
-  .gender-pill.gender-pill-active {
-    background: var(--orange);
-    border-color: var(--orange);
-    color: white;
-  }
-  [data-theme=dark] .gender-sticky-bar { background: linear-gradient(135deg,#0d1b2a,#162030); }
-
-  /* ── COMPARE dark mode ── */
-  [data-theme=dark] .compare-spec-row { border-bottom-color: var(--gray-light); }
-  [data-theme=dark] .compare-spec-val { color: var(--text); }
-  [data-theme=dark] .compare-spec-val.highlight { color: #60a5fa; }
-  [data-theme=dark] .compare-score-val.loser { color: var(--gray); }
-  [data-theme=dark] .compare-bar-label { color: var(--gray); }
-  [data-theme=dark] #screen-compare .scroll-content { background: var(--cream); }
-
 </style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2146,9 +2099,7 @@
             </div>
             <div class="logo-text">Racket<span>AI</span></div>
           </div>
-          <button type="button" onclick="navigateWithHistory('screen-profile')" title="Il mio profilo" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px;">
-            <svg viewBox="0 0 40 40" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="9" r="4" fill="white"/><line x1="22" y1="13" x2="22" y2="24" stroke="white" stroke-width="3" stroke-linecap="round"/><line x1="22" y1="18" x2="15" y2="22" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="18" x2="29" y2="17" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="24" x2="18" y2="33" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="24" x2="26" y2="33" stroke="white" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="31" cy="16" rx="4.5" ry="6" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"/></svg>
-          </button>
+          <button type="button" onclick="navigateWithHistory('screen-profile')" title="Il mio profilo" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">👤</button>
         </div>
         <div class="hero-title">Trova la tua racchetta padel perfetta</div>
         <div class="hero-subtitle">Rispondi a poche domande e scopri quale racchetta ti converrà di più</div>
@@ -2201,6 +2152,10 @@
           <div class="test-btn-arrow">&#8250;</div>
         </button>
 
+        <div class="footer-note">
+          🔒 Nessuna registrazione richiesta.<br>
+          <span>Salva i risultati dopo il test.</span>
+        </div>
 
       <!-- ── SUPPORTA NELLA HOME ── -->
       <div style="background:linear-gradient(135deg,#f0fdf4,#dbeafe);border-radius:14px;padding:14px 16px;margin:8px 0 12px;border:1px solid rgba(34,197,94,0.2);">
@@ -2212,9 +2167,6 @@
         </div>
       </div>
 
-      <div style="text-align:center;font-size:12px;color:rgba(255,255,255,0.45);padding:8px 0 4px;">
-        🔒 Nessuna registrazione richiesta · Salva i risultati dopo il test
-      </div>
       <div class="stinki-footer">
         <div class="stinki-logo-row">
           <div class="stinki-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><text x="50%" y="72%" dominant-baseline="middle" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="800" font-size="10" fill="white">SP</text></svg></div>
@@ -2429,17 +2381,24 @@
     </div>
     <div class="bottom-bar">
 
-        
-      </div><!-- end scroll-content -->
-      <div class="gender-sticky-bar">
-        <div class="gender-sticky-label">⚧️ Per chi stai cercando la racchetta?</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;" id="gender-quick-options">
-          <button type="button" class="gender-pill" data-q="gender" data-v="male" onclick="selectGenderPill(this,'gender-quick-options')">👨 Uomo</button>
-          <button type="button" class="gender-pill" data-q="gender" data-v="female" onclick="selectGenderPill(this,'gender-quick-options')">👩 Donna</button>
-          <button type="button" class="gender-pill gender-pill-active" data-q="gender" data-v="any" onclick="selectGenderPill(this,'gender-quick-options')">🤷 Non specificato</button>
+        <div style="height:1px;background:rgba(255,255,255,0.1);margin:20px 0 18px"></div>
+        <div class="question-group-label">⚧️ Genere</div>
+        <div class="question-group-sub" style="font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:12px;">Ci aiuta a trovare modelli pensati per te</div>
+        <div class="options-grid" id="gender-quick-options">
+          <button type="button" class="option-btn" data-q="gender" data-v="male" onclick="selectOption(this,'gender-quick-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">👨</span>
+            <span class="option-text"><span class="option-title">Uomo</span></span>
+          </button>
+          <button type="button" class="option-btn" data-q="gender" data-v="female" onclick="selectOption(this,'gender-quick-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">👩</span>
+            <span class="option-text"><span class="option-title">Donna</span><span class="option-desc">Priorità ai modelli femminili</span></span>
+          </button>
+          <button type="button" class="option-btn" data-q="gender" data-v="any" onclick="selectOption(this,'gender-quick-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">🤷</span>
+            <span class="option-text"><span class="option-title">Preferisco non dirlo</span></span>
+          </button>
         </div>
-        <button type="button" class="cta-btn cta-btn-orange" style="margin-top:12px;" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
-      </div>
+      <button type="button" class="cta-btn cta-btn-orange" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
     </div>
   </div>
 
@@ -2819,17 +2778,24 @@
     </div>
     <div class="bottom-bar">
 
-        
-      </div><!-- end scroll-content -->
-      <div class="gender-sticky-bar">
-        <div class="gender-sticky-label">⚧️ Per chi stai cercando la racchetta?</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;" id="gender-full-options">
-          <button type="button" class="gender-pill" data-q="gender" data-v="male" onclick="selectGenderPill(this,'gender-full-options')">👨 Uomo</button>
-          <button type="button" class="gender-pill" data-q="gender" data-v="female" onclick="selectGenderPill(this,'gender-full-options')">👩 Donna</button>
-          <button type="button" class="gender-pill gender-pill-active" data-q="gender" data-v="any" onclick="selectGenderPill(this,'gender-full-options')">🤷 Non specificato</button>
+        <div style="height:1px;background:rgba(255,255,255,0.1);margin:20px 0 18px"></div>
+        <div class="question-group-label">⚧️ Genere</div>
+        <div class="question-group-sub" style="font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:12px;">Ci aiuta a trovare modelli pensati per te</div>
+        <div class="options-grid" id="gender-full-options">
+          <button type="button" class="option-btn" data-q="gender" data-v="male" onclick="selectOption(this,'gender-full-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">👨</span>
+            <span class="option-text"><span class="option-title">Uomo</span></span>
+          </button>
+          <button type="button" class="option-btn" data-q="gender" data-v="female" onclick="selectOption(this,'gender-full-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">👩</span>
+            <span class="option-text"><span class="option-title">Donna</span><span class="option-desc">Priorità ai modelli femminili</span></span>
+          </button>
+          <button type="button" class="option-btn" data-q="gender" data-v="any" onclick="selectOption(this,'gender-full-options',null)">
+            <span class="option-check">✓</span><span class="option-icon">🤷</span>
+            <span class="option-text"><span class="option-title">Preferisco non dirlo</span></span>
+          </button>
         </div>
-        <button type="button" class="cta-btn cta-btn-orange" style="margin-top:12px;" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
-      </div>
+      <button type="button" class="cta-btn cta-btn-orange" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
     </div>
   </div>
 
@@ -2850,10 +2816,8 @@
   <!-- RESULTS PAGE -->
   <div class="screen" id="screen-results">
     <div class="scroll-content">
-      <div style="position:absolute;top:0;left:0;right:0;z-index:10;padding:52px 16px 0;pointer-events:none;">
-        <button type="button" class="back-btn" style="background:rgba(255,255,255,0.18);color:white;pointer-events:all;" onclick="navigateWithHistory('screen-home')">‹</button>
-      </div>
       <div class="results-header">
+        <button type="button" class="back-btn" style="position:absolute;top:52px;left:16px;background:rgba(255,255,255,0.15);color:white;" onclick="navigateWithHistory('screen-home')">‹</button>
         <div class="results-tag">✨ Analisi completata</div>
         <div class="results-title">Le tue racchette consigliate</div>
         <div class="results-sub">In base alle tue risposte, ecco le 3 racchette più adatte a te</div>
@@ -2885,7 +2849,7 @@
         <div class="level-divider" data-label="🌱 Principianti" style="display:none;padding:8px 0 4px;font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;"></div>
 
         <!-- Adidas Drive 3.1 2025 -->
-        <div class="racket-card" data-racket-id="adidas-drive-3-1-2025" data-level="beginner" data-style="defensive" data-budget="budget">
+        <div class="racket-card" data-level="beginner" data-style="defensive" data-budget="budget">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f5e8,#c8e8c8);">
             <div class="racket-match-badge" style="background:#22c55e;">🌱 Budget</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/139/500x500/adidas-metalbone-carbon-ctrl-3-4-2025-68e2ef1e-39db-496d-a22d-bcc7c035f4f2.webp"
@@ -2910,7 +2874,7 @@
         </div>
 
         <!-- Head Flash 2024 – Beginner Balanced -->
-        <div class="racket-card" data-racket-id="head-flash-2024" data-level="beginner" data-style="balanced" data-budget="budget">
+        <div class="racket-card" data-level="beginner" data-style="balanced" data-budget="budget">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fff8e1,#ffecb3);">
             <div class="racket-match-badge" style="background:#22c55e;">🌱 Entry</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/157/500x500/babolat-air-veron-2025-aa9f6f80-8285-400b-a1c5-fedfa64c6460.jpg"
@@ -2937,7 +2901,7 @@
         <!-- ══ INTERMEDI ══ -->
 
         <!-- Bullpadel Vertex 04 2024 – Mid Aggressive -->
-        <div class="racket-card" data-racket-id="bullpadel-vertex-04-2024" data-level="intermediate" data-style="aggressive" data-budget="mid">
+        <div class="racket-card" data-level="intermediate" data-style="aggressive" data-budget="mid">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Intermedio</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/121/500x500/bullpadel-vertex-04-w-2025-85338bbc-f62f-475b-b97c-137ade8625b4.jpg"
@@ -2963,7 +2927,7 @@
         </div>
 
         <!-- Babolat Counter Viper 2023 – Mid Balanced -->
-        <div class="racket-card" data-racket-id="babolat-counter-viper-2023" data-level="intermediate" data-style="balanced" data-budget="mid">
+        <div class="racket-card" data-level="intermediate" data-style="balanced" data-budget="mid">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Intermedio</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/23/500x500/babolat-counter-viper-2023-28626486-b39e-470d-9db8-8a43d081af50.jpeg"
@@ -2989,7 +2953,7 @@
         </div>
 
         <!-- Adidas Metalbone Carbon CTRL 3.4 2025 – Mid-Premium Defensive -->
-        <div class="racket-card" data-racket-id="adidas-metalbone-carbon-ctrl-3-4-2025" data-level="intermediate" data-style="defensive" data-budget="premium">
+        <div class="racket-card" data-level="intermediate" data-style="defensive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Controllo</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/139/300x300/adidas-metalbone-carbon-ctrl-3-4-2025-68e2ef1e-39db-496d-a22d-bcc7c035f4f2.webp"
@@ -3017,7 +2981,7 @@
         <!-- ══ AVANZATI ══ -->
 
         <!-- Babolat Air Viper 2025 -->
-        <div class="racket-card" data-racket-id="babolat-air-viper-2025" data-level="advanced" data-style="balanced" data-budget="premium">
+        <div class="racket-card" data-level="advanced" data-style="balanced" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f0f8,#d0ddf0);">
             <div class="racket-match-badge">🥇 #1 Racketpedia</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/152/500x500/babolat-air-viper-2025-ac658f31-d035-4db0-b2fe-bca9df6d7a1b.jpg"
@@ -3043,7 +3007,7 @@
         </div>
 
         <!-- Adidas Metalbone HRD 3.4 2025 -->
-        <div class="racket-card" data-racket-id="adidas-metalbone-hrd-3-4-2025" data-level="advanced" data-style="aggressive" data-budget="premium">
+        <div class="racket-card" data-level="advanced" data-style="aggressive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f5f0e8,#ede0cc);">
             <div class="racket-match-badge">⚡ Più popolare</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/136/500x500/adidas-metalbone-hrd-3-4-2025-a62199f5-8edb-4f24-9f12-56064f249e2c.webp"
@@ -3069,7 +3033,7 @@
         </div>
 
         <!-- Siux Trilogy Pro 4 2024 -->
-        <div class="racket-card" data-racket-id="siux-trilogy-pro-4-2024" data-level="advanced" data-style="defensive" data-budget="premium">
+        <div class="racket-card" data-level="advanced" data-style="defensive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f5f0,#cce8dc);">
             <div class="racket-match-badge">🛡️ Top controllo</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/114/500x500/siux-trilogy-pro-4-2024-72c6f9aa-5741-4230-8ab0-f83b201e6ff0.webp"
@@ -3095,7 +3059,7 @@
         </div>
 
         <!-- Siux Electra Pro 2026 -->
-        <div class="racket-card" data-racket-id="siux-electra-pro-2026" data-level="advanced" data-style="balanced" data-budget="premium">
+        <div class="racket-card" data-level="advanced" data-style="balanced" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f0e8f5,#e0ccee);">
             <div class="racket-match-badge" style="background:var(--navy);">🆕 2026</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/200/500x500/siux-electra-pro-2026-38fbe900-c1db-40a1-8ac3-921f8980a1ba.webp"
@@ -3121,7 +3085,7 @@
         </div>
 
         <!-- Bullpadel Vertex 05 2026 – Advanced Aggressive -->
-        <div class="racket-card" data-racket-id="bullpadel-vertex-05-2026" data-level="advanced" data-style="aggressive" data-budget="premium">
+        <div class="racket-card" data-level="advanced" data-style="aggressive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fbe9e7,#ffccbc);">
             <div class="racket-match-badge" style="background:var(--orange);">🔥 Top 2026</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/177/500x500/bullpadel-vertex-05-2026-6330856b-f1b2-4ec2-9440-fdb2c60cd45f.jpg"
@@ -3378,10 +3342,10 @@
   </div>
   <!-- DETAIL MODAL (overlay) -->
   <div id="detail-modal" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:3000;background:rgba(0,0,0,0.45);overflow-y:auto;-webkit-overflow-scrolling:touch;">
-    <div id="detail-modal-inner" style="background:var(--white);margin:0 auto;max-width:680px;min-height:100vh;position:relative;padding-bottom:60px;">
-      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #e8ecf0;position:-webkit-sticky;position:sticky;top:0;background:var(--white);z-index:10;">
+    <div id="detail-modal-inner" style="background:#ffffff;margin:0 auto;max-width:680px;min-height:100vh;position:relative;padding-bottom:60px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #e8ecf0;position:-webkit-sticky;position:sticky;top:0;background:#ffffff;z-index:10;">
         <button type="button" onclick="closeDetailModal()" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e8ecf0;background:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1a202c;">‹</button>
-        <div id="detail-modal-title" class="page-title" style="margin:0;font-size:17px;flex:1;color:var(--text);"></div>
+        <div id="detail-modal-title" class="page-title" style="margin:0;font-size:17px;flex:1;color:#1a202c;"></div>
       </div>
       <div id="detail-body"></div>
     </div>
@@ -3471,9 +3435,7 @@
   <div class="screen" id="screen-profile">
     <div class="profile-hero">
       <button type="button" class="back-btn" style="background:rgba(255,255,255,0.12);color:white;position:absolute;top:52px;left:20px;" onclick="navigateWithHistory('screen-home')">‹</button>
-      <div class="profile-av" id="prf-av">
-        <svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="8" r="4" fill="white"/><line x1="22" y1="12" x2="22" y2="24" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="18" x2="16" y2="22" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="18" x2="28" y2="16" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="24" x2="18" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="24" x2="27" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="32" cy="15" rx="5" ry="7" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"/></svg>
-      </div>
+      <div class="profile-av" id="prf-av">?</div>
       <div style="font-family:'DM Serif Display',serif;font-size:22px;color:white;margin-bottom:4px;" id="prf-name">—</div>
       <div style="font-size:13px;color:rgba(255,255,255,0.55);" id="prf-email">—</div>
       <div class="profile-stats-row">
@@ -3820,7 +3782,7 @@
 
   <!-- PARTNER SUGGESTION SCREEN v2 -->
   <!-- PARTNER OVERLAY — fixed, no navigate() needed -->
-  <div id="partner-overlay" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:var(--cream);overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div id="partner-overlay" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:#f4f6f8;overflow-y:auto;-webkit-overflow-scrolling:touch;" data-force-light="1">
 
     <!-- Header -->
     <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:48px 20px 18px;display:flex;align-items:center;gap:14px;position:-webkit-sticky;position:sticky;top:0;z-index:1;">
@@ -3835,7 +3797,7 @@
     <div style="padding:16px 16px 60px;max-width:480px;margin:0 auto;">
 
       <!-- Brand -->
-      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">① Il tuo brand</div>
         <select id="pf-brand-select" class="select-field" onchange="pfOnBrandChange(this.value)">
           <option value="">— Seleziona brand —</option>
@@ -3850,7 +3812,7 @@
       </div>
 
       <!-- Modello -->
-      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">② Il tuo modello</div>
         <select id="pf-model-select" class="select-field" onchange="pfOnModelChange(this.value)" disabled>
           <option value="">— Prima scegli il brand —</option>
@@ -3858,7 +3820,7 @@
       </div>
 
       <!-- Lato -->
-      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">③ Lato del partner</div>
         <div style="display:flex;gap:8px;">
           <button type="button" id="pf-side-both"  onclick="pfSetSide('both')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🔄 Entrambi</button>
@@ -4121,7 +4083,7 @@ function addRacketToDOM(d) {
   card.dataset.name  = d.model.toLowerCase();
 
   card.innerHTML =
-    '<img src="' + (d.img || '') + '" class="db-img" onerror="dbImgError(this,\''+(d.brand||'')+'\')">' 
+    '<img src="' + (d.img || '') + '" class="db-img" onerror="this.style.opacity=0.2">'
     + '<div class="db-info">'
     + '<div class="db-brand">' + d.brand
     + ' <span style="background:#dcfce7;color:#15803d;font-size:9px;padding:1px 5px;border-radius:4px;">NUOVO</span></div>'
@@ -4420,9 +4382,6 @@ function switchTab(tab) {
 
 // Racket database for scoring (key subset — shape/level/side/style tags)
 var BUY_LINKS = {
-  'adidas-drive-3-1-2025':{amazon:'https://www.amazon.it/s?k=adidas+drive+3.1+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-drive-3-1-2025',price:60,best:'both',decathlon:''},
-  'head-flash-2024':{amazon:'https://www.amazon.it/s?k=head+flash+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-flash-2024',price:80,best:'both',decathlon:''},
-
   'adidas-metalbone-3-3':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+3.3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-3-3-2024-110141-p',price:353,best:'padelnuestro',decathlon:''},
   'adidas-metalbone-3-3-ctrl':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+3.3+CTRL+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-ctrl-3-3-2024-110144-p',price:325,best:'padelnuestro',decathlon:''},
   'adidas-metalbone-hrd-':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+HRD++padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-hrd-2024',price:372,best:'padelnuestro',decathlon:''},
@@ -4524,83 +4483,83 @@ var BUY_LINKS = {
   'kuikma-pr-990-precision-hard':{amazon:'https://www.amazon.it/s?k=kuikma+PR+990+precision+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:150,best:'amazon'},
   'kuikma-pr-990-precision-soft':{amazon:'https://www.amazon.it/s?k=kuikma+PR+990+precision+soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:150,best:'amazon'},
   'kuikma-pr-power-light':{amazon:'https://www.amazon.it/s?k=kuikma+PR+power+light+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:80,best:'amazon'},
-  'kuikma-pr-open-blu':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Open+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Open%20padel',price:70,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-120-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+120+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20120%20Light%20padel',price:30,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-fun':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Fun+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Fun%20padel',price:25,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-react':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20React%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-react-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20React%20Soft%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-hybrid-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20Hybrid%20Pro%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-hybrid-pro-coki':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+Coki+Nieto+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20Hybrid%20Pro%20Coki%20Nieto%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Control%20Pro%20padel',price:100,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Control%20Carbon%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Control%20Metal%20padel',price:90,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-power-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Power+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Power%20Metal%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-hybrid-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Hybrid%20Metal%20padel',price:95,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-hybrid-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Hybrid%20Carbon%20padel',price:140,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-evolution':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Evolution+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Evolution%20padel',price:85,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-comfort-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Comfort+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Comfort%20Soft%20padel',price:45,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-power-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Power+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20Power%20Pro%20padel',price:150,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-900-power-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+900+Power+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20900%20Power%20Light%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-rental':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Rental+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kuikma%20PR%20Rental%20padel',price:20,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'dunlop-infinity-pro-g1-hl-black':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'dunlop-infinity-pro-g1-hl-metal':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Metal%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Titan%202.0%20padel',price:150,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-pro-gold-2024':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Pro+Gold+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Titan%20Pro%20Gold%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-killer-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Killer+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Titan%20Killer%202.0%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'dunlop-nemesis-carbon':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Nemesis%20Carbon%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'dunlop-nemesis-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Nemesis%20Carbon%20Control%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'dunlop-inferno-elite-lt':{amazon:'https://www.amazon.it/s?k=Dunlop+Inferno+Elite+LT+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Inferno%20Elite%20LT%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'dunlop-gravity':{amazon:'https://www.amazon.it/s?k=Dunlop+Gravity+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Dunlop%20Gravity%20padel',price:180,best:'padelnuestro',decathlon:''},
-  'wilson-bela-v3':{amazon:'https://www.amazon.it/s?k=Wilson+Bela+V3+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Wilson%20Bela%20V3%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'wilson-defy-v1':{amazon:'https://www.amazon.it/s?k=Wilson+Defy+V1+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Wilson%20Defy%20V1%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'nox-at10-genius-attack-18k':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+Attack+18K+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20AT10%20Genius%20Attack%2018K%20padel',price:320,best:'padelnuestro',decathlon:''},
-  'nox-at10-genius-12k-2025':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+12K+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20AT10%20Genius%2012K%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'nox-at10-pro-cup-hard-26':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Pro+Cup+Hard+26+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20AT10%20Pro%20Cup%20Hard%2026%20padel',price:230,best:'padelnuestro',decathlon:''},
-  'nox-x-hero':{amazon:'https://www.amazon.it/s?k=Nox+X-Hero+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20X-Hero%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'nox-next-gen-hybrid-3k':{amazon:'https://www.amazon.it/s?k=Nox+Next+Gen+Hybrid+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20Next%20Gen%20Hybrid%203K%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'nox-nextgen-pro-attack-3k':{amazon:'https://www.amazon.it/s?k=Nox+NextGen+Pro+Attack+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20NextGen%20Pro%20Attack%203K%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'nox-quantum-12k':{amazon:'https://www.amazon.it/s?k=Nox+Quantum+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20Quantum%2012K%20padel',price:250,best:'padelnuestro',decathlon:''},
-  'nox-equation-soft-2026':{amazon:'https://www.amazon.it/s?k=Nox+Equation+Soft+Advanced+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20Equation%20Soft%20Advanced%202026%20padel',price:210,best:'padelnuestro',decathlon:''},
-  'nox-future-hybrid-12k':{amazon:'https://www.amazon.it/s?k=Nox+Future+Hybrid+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Nox%20Future%20Hybrid%2012K%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'babolat-technical-vertuo-2-5':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Vertuo+2.5+Lebrón+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Technical%20Vertuo%202.5%20Lebrón%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'babolat-counter-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Counter%20Veron%202.6%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'babolat-air-v-inner':{amazon:'https://www.amazon.it/s?k=Babolat+Air+V-Inner+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Air%20V-Inner%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'babolat-stima-vita':{amazon:'https://www.amazon.it/s?k=Babolat+Stima+Vita+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Stima%20Vita%20padel',price:90,best:'padelnuestro',decathlon:''},
-  'babolat-counter-origin':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Origin+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Counter%20Origin%20padel',price:160,best:'padelnuestro',decathlon:''},
-  'babolat-technical-viper-soft-3':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Viper+Soft+3.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Technical%20Viper%20Soft%203.0%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'babolat-air-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Air+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Babolat%20Air%20Veron%202.6%20padel',price:210,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-team-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Team+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Metalbone%20Team%203.4%20padel',price:180,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-2026-galan':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+2026+Galán+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Metalbone%202026%20Galán%20padel',price:370,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-carbon-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Carbon+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Metalbone%20Carbon%202026%20padel',price:350,best:'padelnuestro',decathlon:''},
-  'adidas-cross-it-light-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Cross+IT+Light+2026+Ortega+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Cross%20IT%20Light%202026%20Ortega%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'adidas-arrow-hit-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Adidas+Arrow+Hit+Carbon+CTRL+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Arrow%20Hit%20Carbon%20CTRL%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-multiweight-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Multiweight+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Adipower%20Multiweight%20CTRL%203.4%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-carbon-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Carbon+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Adidas%20Adipower%20Carbon%20CTRL%203.4%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'bullpadel-play-power-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Play+Power+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Play%20Power%2025%20padel',price:80,best:'padelnuestro',decathlon:''},
-  'bullpadel-xplo-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Xplo%2025%20padel',price:320,best:'padelnuestro',decathlon:''},
-  'bullpadel-xplo-comfort-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+Comfort+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Xplo%20Comfort%2025%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-05-comfort':{amazon:'https://www.amazon.it/s?k=Bullpadel+Vertex+05+Comfort+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Vertex%2005%20Comfort%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'bullpadel-elite-w-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Elite+W+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Elite%20W%2025%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'bullpadel-indiga-ctr':{amazon:'https://www.amazon.it/s?k=Bullpadel+Indiga+CTR+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Bullpadel%20Indiga%20CTR%20padel',price:310,best:'padelnuestro',decathlon:''},
-  'head-extreme-motion-josemaria':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Motion+Josemaría+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Head%20Extreme%20Motion%20Josemaría%20padel',price:250,best:'padelnuestro',decathlon:''},
-  'head-coello-pro-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Pro+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Head%20Coello%20Pro%202025%20padel',price:340,best:'padelnuestro',decathlon:''},
-  'head-coello-vibe-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Vibe+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Head%20Coello%20Vibe%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'head-delta-tour-25':{amazon:'https://www.amazon.it/s?k=Head+Delta+Tour+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Head%20Delta%20Tour%2025%20padel',price:290,best:'padelnuestro',decathlon:''},
-  'head-extreme-pro-coello-2024':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Pro+Coello+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Head%20Extreme%20Pro%20Coello%202024%20padel',price:290,best:'padelnuestro',decathlon:''},
-  'siux-black-carbon-revolution-2':{amazon:'https://www.amazon.it/s?k=Siux+Black+Carbon+Revolution+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Siux%20Black%20Carbon%20Revolution%202%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'siux-fenix-pro-5-black':{amazon:'https://www.amazon.it/s?k=Siux+Fenix+Pro+5+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Siux%20Fenix%20Pro%205%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'drop-shot-canyon-pro-attack':{amazon:'https://www.amazon.it/s?k=Drop Shot+Canyon+Pro+Attack+1.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Drop Shot%20Canyon%20Pro%20Attack%201.0%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'drop-shot-axion-attack-2024':{amazon:'https://www.amazon.it/s?k=Drop Shot+Axion+Attack+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Drop Shot%20Axion%20Attack%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'drop-shot-explorer-pro-6':{amazon:'https://www.amazon.it/s?k=Drop Shot+Explorer+Pro+6.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Drop Shot%20Explorer%20Pro%206.0%20padel',price:160,best:'padelnuestro',decathlon:''},
-  'munich-x-soul':{amazon:'https://www.amazon.it/s?k=Munich+X-Soul+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Munich%20X-Soul%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'lok-maxx-hype':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=LOK%20Maxx%20Hype%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'lok-maxx-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=LOK%20Maxx%20Hype%20Gen%202%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'lok-be-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Be+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=LOK%20Be%20Hype%20Gen%202%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'lok-carb-on-flow':{amazon:'https://www.amazon.it/s?k=LOK+Carb-On+Flow+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=LOK%20Carb-On%20Flow%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'kombat-etna':{amazon:'https://www.amazon.it/s?k=Kombat+Etna+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Kombat%20Etna%20padel',price:150,best:'padelnuestro',decathlon:''},
-  'starvie-kenta-eternal-ultra':{amazon:'https://www.amazon.it/s?k=Starvie+Kenta+Eternal+Ultra+Speed+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=Starvie%20Kenta%20Eternal%20Ultra%20Speed%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'virtufit-control':{amazon:'https://www.amazon.it/s?k=VirtuFit+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=VirtuFit%20Control%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'virtufit-ibrida':{amazon:'https://www.amazon.it/s?k=VirtuFit+Ibrida+padel&tag=stinkipadel-21',padelnuestro:'https://www.www.padelnuestro.com/it/search?q=VirtuFit%20Ibrida%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-open-blu':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Open+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Open%20padel',price:70,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-120-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+120+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20120%20Light%20padel',price:30,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-fun':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Fun+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Fun%20padel',price:25,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-react':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20React%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-react-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20React%20Soft%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-hybrid-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Hybrid%20Pro%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-hybrid-pro-coki':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+Coki+Nieto+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Hybrid%20Pro%20Coki%20Nieto%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-control-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Pro%20padel',price:100,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-control-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Carbon%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-control-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Metal%20padel',price:90,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-power-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Power+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Power%20Metal%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-hybrid-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Hybrid%20Metal%20padel',price:95,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-hybrid-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Hybrid%20Carbon%20padel',price:140,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-evolution':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Evolution+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Evolution%20padel',price:85,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-comfort-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Comfort+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Comfort%20Soft%20padel',price:45,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-power-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Power+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Power%20Pro%20padel',price:150,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-900-power-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+900+Power+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20900%20Power%20Light%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'kuikma-pr-rental':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Rental+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Rental%20padel',price:20,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'dunlop-infinity-pro-g1-hl-black':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'dunlop-infinity-pro-g1-hl-metal':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Metal%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'dunlop-titan-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%202.0%20padel',price:150,best:'padelnuestro',decathlon:''},
+  'dunlop-titan-pro-gold-2024':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Pro+Gold+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%20Pro%20Gold%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
+  'dunlop-titan-killer-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Killer+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%20Killer%202.0%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'dunlop-nemesis-carbon':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Nemesis%20Carbon%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'dunlop-nemesis-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Nemesis%20Carbon%20Control%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'dunlop-inferno-elite-lt':{amazon:'https://www.amazon.it/s?k=Dunlop+Inferno+Elite+LT+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Inferno%20Elite%20LT%20padel',price:300,best:'padelnuestro',decathlon:''},
+  'dunlop-gravity':{amazon:'https://www.amazon.it/s?k=Dunlop+Gravity+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Gravity%20padel',price:180,best:'padelnuestro',decathlon:''},
+  'wilson-bela-v3':{amazon:'https://www.amazon.it/s?k=Wilson+Bela+V3+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Wilson%20Bela%20V3%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'wilson-defy-v1':{amazon:'https://www.amazon.it/s?k=Wilson+Defy+V1+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Wilson%20Defy%20V1%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'nox-at10-genius-attack-18k':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+Attack+18K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Genius%20Attack%2018K%20padel',price:320,best:'padelnuestro',decathlon:''},
+  'nox-at10-genius-12k-2025':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+12K+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Genius%2012K%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'nox-at10-pro-cup-hard-26':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Pro+Cup+Hard+26+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Pro%20Cup%20Hard%2026%20padel',price:230,best:'padelnuestro',decathlon:''},
+  'nox-x-hero':{amazon:'https://www.amazon.it/s?k=Nox+X-Hero+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20X-Hero%20padel',price:270,best:'padelnuestro',decathlon:''},
+  'nox-next-gen-hybrid-3k':{amazon:'https://www.amazon.it/s?k=Nox+Next+Gen+Hybrid+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Next%20Gen%20Hybrid%203K%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'nox-nextgen-pro-attack-3k':{amazon:'https://www.amazon.it/s?k=Nox+NextGen+Pro+Attack+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20NextGen%20Pro%20Attack%203K%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'nox-quantum-12k':{amazon:'https://www.amazon.it/s?k=Nox+Quantum+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Quantum%2012K%20padel',price:250,best:'padelnuestro',decathlon:''},
+  'nox-equation-soft-2026':{amazon:'https://www.amazon.it/s?k=Nox+Equation+Soft+Advanced+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Equation%20Soft%20Advanced%202026%20padel',price:210,best:'padelnuestro',decathlon:''},
+  'nox-future-hybrid-12k':{amazon:'https://www.amazon.it/s?k=Nox+Future+Hybrid+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Future%20Hybrid%2012K%20padel',price:240,best:'padelnuestro',decathlon:''},
+  'babolat-technical-vertuo-2-5':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Vertuo+2.5+Lebrón+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Technical%20Vertuo%202.5%20Lebrón%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'babolat-counter-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Counter%20Veron%202.6%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'babolat-air-v-inner':{amazon:'https://www.amazon.it/s?k=Babolat+Air+V-Inner+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Air%20V-Inner%20padel',price:240,best:'padelnuestro',decathlon:''},
+  'babolat-stima-vita':{amazon:'https://www.amazon.it/s?k=Babolat+Stima+Vita+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Stima%20Vita%20padel',price:90,best:'padelnuestro',decathlon:''},
+  'babolat-counter-origin':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Origin+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Counter%20Origin%20padel',price:160,best:'padelnuestro',decathlon:''},
+  'babolat-technical-viper-soft-3':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Viper+Soft+3.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Technical%20Viper%20Soft%203.0%20padel',price:270,best:'padelnuestro',decathlon:''},
+  'babolat-air-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Air+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Air%20Veron%202.6%20padel',price:210,best:'padelnuestro',decathlon:''},
+  'adidas-metalbone-team-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Team+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%20Team%203.4%20padel',price:180,best:'padelnuestro',decathlon:''},
+  'adidas-metalbone-2026-galan':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+2026+Galán+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%202026%20Galán%20padel',price:370,best:'padelnuestro',decathlon:''},
+  'adidas-metalbone-carbon-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Carbon+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%20Carbon%202026%20padel',price:350,best:'padelnuestro',decathlon:''},
+  'adidas-cross-it-light-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Cross+IT+Light+2026+Ortega+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Cross%20IT%20Light%202026%20Ortega%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'adidas-arrow-hit-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Adidas+Arrow+Hit+Carbon+CTRL+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Arrow%20Hit%20Carbon%20CTRL%20padel',price:220,best:'padelnuestro',decathlon:''},
+  'adidas-adipower-multiweight-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Multiweight+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Adipower%20Multiweight%20CTRL%203.4%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'adidas-adipower-carbon-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Carbon+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Adipower%20Carbon%20CTRL%203.4%20padel',price:300,best:'padelnuestro',decathlon:''},
+  'bullpadel-play-power-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Play+Power+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Play%20Power%2025%20padel',price:80,best:'padelnuestro',decathlon:''},
+  'bullpadel-xplo-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Xplo%2025%20padel',price:320,best:'padelnuestro',decathlon:''},
+  'bullpadel-xplo-comfort-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+Comfort+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Xplo%20Comfort%2025%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'bullpadel-vertex-05-comfort':{amazon:'https://www.amazon.it/s?k=Bullpadel+Vertex+05+Comfort+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Vertex%2005%20Comfort%20padel',price:300,best:'padelnuestro',decathlon:''},
+  'bullpadel-elite-w-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Elite+W+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Elite%20W%2025%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'bullpadel-indiga-ctr':{amazon:'https://www.amazon.it/s?k=Bullpadel+Indiga+CTR+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Indiga%20CTR%20padel',price:310,best:'padelnuestro',decathlon:''},
+  'head-extreme-motion-josemaria':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Motion+Josemaría+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Extreme%20Motion%20Josemaría%20padel',price:250,best:'padelnuestro',decathlon:''},
+  'head-coello-pro-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Pro+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Coello%20Pro%202025%20padel',price:340,best:'padelnuestro',decathlon:''},
+  'head-coello-vibe-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Vibe+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Coello%20Vibe%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'head-delta-tour-25':{amazon:'https://www.amazon.it/s?k=Head+Delta+Tour+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Delta%20Tour%2025%20padel',price:290,best:'padelnuestro',decathlon:''},
+  'head-extreme-pro-coello-2024':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Pro+Coello+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Extreme%20Pro%20Coello%202024%20padel',price:290,best:'padelnuestro',decathlon:''},
+  'siux-black-carbon-revolution-2':{amazon:'https://www.amazon.it/s?k=Siux+Black+Carbon+Revolution+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Siux%20Black%20Carbon%20Revolution%202%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'siux-fenix-pro-5-black':{amazon:'https://www.amazon.it/s?k=Siux+Fenix+Pro+5+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Siux%20Fenix%20Pro%205%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'drop-shot-canyon-pro-attack':{amazon:'https://www.amazon.it/s?k=Drop Shot+Canyon+Pro+Attack+1.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Canyon%20Pro%20Attack%201.0%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'drop-shot-axion-attack-2024':{amazon:'https://www.amazon.it/s?k=Drop Shot+Axion+Attack+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Axion%20Attack%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
+  'drop-shot-explorer-pro-6':{amazon:'https://www.amazon.it/s?k=Drop Shot+Explorer+Pro+6.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Explorer%20Pro%206.0%20padel',price:160,best:'padelnuestro',decathlon:''},
+  'munich-x-soul':{amazon:'https://www.amazon.it/s?k=Munich+X-Soul+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Munich%20X-Soul%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'lok-maxx-hype':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20padel',price:260,best:'padelnuestro',decathlon:''},
+  'lok-maxx-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20Gen%202%20padel',price:270,best:'padelnuestro',decathlon:''},
+  'lok-be-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Be+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Be%20Hype%20Gen%202%20padel',price:200,best:'padelnuestro',decathlon:''},
+  'lok-carb-on-flow':{amazon:'https://www.amazon.it/s?k=LOK+Carb-On+Flow+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Carb-On%20Flow%20padel',price:240,best:'padelnuestro',decathlon:''},
+  'kombat-etna':{amazon:'https://www.amazon.it/s?k=Kombat+Etna+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kombat%20Etna%20padel',price:150,best:'padelnuestro',decathlon:''},
+  'starvie-kenta-eternal-ultra':{amazon:'https://www.amazon.it/s?k=Starvie+Kenta+Eternal+Ultra+Speed+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Starvie%20Kenta%20Eternal%20Ultra%20Speed%20padel',price:280,best:'padelnuestro',decathlon:''},
+  'virtufit-control':{amazon:'https://www.amazon.it/s?k=VirtuFit+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=VirtuFit%20Control%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
+  'virtufit-ibrida':{amazon:'https://www.amazon.it/s?k=VirtuFit+Ibrida+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=VirtuFit%20Ibrida%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
   'bullpadel-impulse-pwr2026-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+impulse+pwr2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-impulse-pwr2026-2026',price:66,best:'both',decathlon:''},
   'bullpadel-impulse-ctrl2026-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+impulse+ctrl2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-impulse-ctrl2026-2026',price:59,best:'both',decathlon:''},
   'joma-valkiria-flex-blue-white-2026':{amazon:'https://www.amazon.it/s?k=joma+valkiria+flex+blue+white&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-valkiria-flex-blue-white-2026',price:90,best:'both',decathlon:''},
@@ -4862,9 +4821,6 @@ var BUY_LINKS = {
 };
 
 var RACKET_SCORES = {
-  'adidas-drive-3-1-2025':{brand:'Adidas',name:'Drive 3.1 2025',year:'2025',shape:'round',weight:365,balance:'Neutro',price:60,overall:6.0,power:5.0,control:7.8,sweetspot:8.5,maneuverability:8.2,comfort:8.5,spin:6.0,surface:'Fibra di vetro',core:'EVA Soft',hardness:'Soft',level:'beginner',side:'both',style:'defensive',gender:'all',img:'https://cdn.racketpedia.com/media/padel-rackets-data-sheets/139/300x300/adidas-metalbone-carbon-ctrl-3-4-2025-68e2ef1e-39db-496d-a22d-bcc7c035f4f2.webp'},
-  'head-flash-2024':{brand:'Head',name:'Flash 2024',year:'2024',shape:'round',weight:360,balance:'Neutro',price:80,overall:6.2,power:6.2,control:7.5,sweetspot:8.2,maneuverability:8.0,comfort:8.2,spin:6.0,surface:'Fibra vetro',core:'EVA',hardness:'Medium',level:'beginner',side:'both',style:'balanced',gender:'all',img:'https://cdn.racketpedia.com/media/padel-rackets-data-sheets/157/500x500/babolat-air-veron-2025-aa9f6f80-8285-400b-a1c5-fedfa64c6460.jpg'},
-
   'adidas-metalbone-3-3':{brand:'Adidas',name:'Metalbone 3.3',year:'2024',shape:'diamond',weight:359,balance:'Testa pesante',price:353,overall:8.3,power:8.6,control:8.0,sweetspot:8.0,maneuverability:8.0,comfort:7.0,spin:5.0,surface:'Aluminized Carbon 16K',core:'Medium-Soft EVA',hardness:'Medium',level:'advanced',side:'right',style:'aggressive',img:'https://www.padelnuestro.com/media/catalog/product/1/1/110141_pala_adidas_metalbone_3_3_adrk1aa0u0016f_1500x1500_vista1_4b50.jpg',gender:'all'},
   'adidas-metalbone-3-3-ctrl':{brand:'Adidas',name:'Metalbone 3.3 CTRL',year:'2024',shape:'round',weight:365,balance:'Testa leggera',price:325,overall:8.5,power:7.5,control:9.0,sweetspot:9.5,maneuverability:9.0,comfort:8.0,spin:5.0,surface:'Aluminized Carbon 16K',core:'Soft EVA',hardness:'Soft',level:'advanced',side:'left',style:'defensive',img:'https://www.padelnuestro.com/media/catalog/product/1/1/110144_pala_adidas_metalbone_ctrl_3_3_adrk1ca0u0012f_1500x1500_vista1_48af.jpg',gender:'all'},
   'adidas-metalbone-hrd-':{brand:'Adidas',name:'Metalbone HRD+',year:'2024',shape:'diamond',weight:358,balance:'Testa pesante',price:372,overall:8.7,power:9.5,control:8.0,sweetspot:7.0,maneuverability:7.5,comfort:6.5,spin:8.0,surface:'Aluminized Carbon 16K',core:'Hard EVA',hardness:'Hard',level:'advanced',side:'right',style:'aggressive',img:'https://www.padelnuestro.com/media/catalog/product/1/1/110143-pala-adidas-metalbone-carbon-control-2024-adrk-ca4u0034f-1500x1500-vista1.jpg',gender:'all'},
@@ -6153,18 +6109,7 @@ function renderResults() {
 
 
 function saveTestToProfile(matches) {
-  // Salva anche senza login (guest)
-  if (!currentUser) {
-    try {
-      var guestTests = JSON.parse(localStorage.getItem('rai_guest_tests') || '[]');
-      if (matches.length > 0) {
-        guestTests.unshift({ date: Date.now(), topRacket: { id: matches[0].r[0], name: matches[0].r[2]+' '+matches[0].r[1], pct: matches[0].pct } });
-        if (guestTests.length > 10) guestTests = guestTests.slice(0,10);
-        localStorage.setItem('rai_guest_tests', JSON.stringify(guestTests));
-      }
-    } catch(e) {}
-    return;
-  }
+  if (!currentUser) return;
   var users = getUsers();
   var ud = users[currentUser.email];
   if (!ud) return;
@@ -6269,7 +6214,7 @@ function showPurchaseShare() {
   var name = r.brand + ' ' + r.name + (r.year ? ' ' + r.year : '');
   var msg = '🎾 Ho appena comprato la ' + name + '! 🏆\n'
     + 'L\'ho trovata grazie a RacketAI — il tool che ti consiglia la racchetta di padel perfetta in base al tuo stile di gioco. 🤖\n'
-    + 'Prova anche tu → stinkipadel.github.io';
+    + 'Prova anche tu → stinkipadel.com/racketai';
   // Show share modal
   var panel = document.getElementById('purchase-share-panel');
   if (panel) {
@@ -6284,11 +6229,11 @@ function sharePurchase(platform) {
   var r = selectedPurchaseRacket;
   if (!r) return;
   var name = r.brand + ' ' + r.name + (r.year ? ' ' + r.year : '');
-  var msg = '🎾 Ho appena comprato la ' + name + '! 🏆\nL\'ho trovata grazie a RacketAI — il tool che ti consiglia la racchetta di padel perfetta in base al tuo stile di gioco. 🤖\nProva anche tu → stinkipadel.github.io';
+  var msg = '🎾 Ho appena comprato la ' + name + '! 🏆\nL\'ho trovata grazie a RacketAI — il tool che ti consiglia la racchetta di padel perfetta in base al tuo stile di gioco. 🤖\nProva anche tu → stinkipadel.com/racketai';
   var enc = encodeURIComponent(msg);
   var urls = {
     whatsapp: 'https://wa.me/?text=' + enc,
-    telegram: 'https://t.me/share/url?url=stinkipadel.github.io&text=' + enc,
+    telegram: 'https://t.me/share/url?url=stinkipadel.com/racketai&text=' + enc,
     copy: null
   };
   if (platform === 'copy') {
@@ -6343,25 +6288,16 @@ function submitFeedback(purchaseIdx) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function renderProfile() {
   try { showCoffeCardIfNeeded(); } catch(e) {}
-  // Aggiorna contatore test dal localStorage (funziona senza login)
-  try {
-    var tc = document.getElementById('prf-tests');
-    if (tc) tc.textContent = getTestCount();
-  } catch(e) {}
   if (!currentUser) return;
   var users = getUsers();
   var ud = users[currentUser.email] || {};
 
   // ── Avatar + stats ──
   var av = document.getElementById('prf-av');
-  if (av) {
-    // SVG omino che gioca a padel
-    av.innerHTML = '<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="8" r="4" fill="white"/><line x1="22" y1="12" x2="22" y2="24" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="18" x2="16" y2="22" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="18" x2="28" y2="16" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="24" x2="18" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="24" x2="27" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="32" cy="15" rx="5" ry="7" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"/><line x1="28" y1="17" x2="36" y2="13" stroke="rgba(255,255,255,0.5)" stroke-width="1"/></svg>';
-    av.style.fontSize = '';
-  }
+  if (av) av.textContent = currentUser.name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
   var pn = document.getElementById('prf-name');   if (pn) pn.textContent = currentUser.name;
   var pe = document.getElementById('prf-email');  if (pe) pe.textContent = currentUser.email;
-  var pt = document.getElementById('prf-tests');  if (pt) pt.textContent = Math.max(getTestCount(), (ud.tests || []).length);
+  var pt = document.getElementById('prf-tests');  if (pt) pt.textContent = (ud.tests || []).length;
   checkRetestBanner(ud);
   var pp = document.getElementById('prf-purchases'); if (pp) pp.textContent = (ud.purchases || []).length;
   var ppr= document.getElementById('prf-props');  if (ppr) ppr.textContent = (ud.proposals || []).length;
@@ -6370,13 +6306,6 @@ function renderProfile() {
   var tl = document.getElementById('prf-tests-list');
   if (tl) {
     var tests = ud.tests || [];
-    // Fallback: usa guest tests
-    if (tests.length === 0) {
-      try {
-        var gt = JSON.parse(localStorage.getItem('rai_guest_tests') || '[]');
-        if (gt.length > 0) tests = gt;
-      } catch(e2) {}
-    }
     if (tests.length === 0) {
       tl.innerHTML = '<div style="font-size:13px;color:var(--gray);padding:8px 0;">Nessun test ancora — fai il tuo primo test!</div>';
     } else {
@@ -6645,7 +6574,7 @@ function updateCompareTray() {
       slot.innerHTML =
         '<button type="button" class="compare-slot-remove" onclick="toggleCompare(\'' + r.id + '\',\'\',\'\',\'\')">&#10005;</button>'
         + '<div style="text-align:center;">'
-        + '<img src="' + (r.img||'') + '" onerror="dbImgError(this,\''+( r.brand||'')+'\')" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.1);padding:2px;">'
+        + '<img src="' + r.img + '" onerror="this.style.opacity=0.2" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.1);padding:2px;">'
         + '<div class="compare-slot-name">' + r.brand + '<br>' + r.name.split(' ').slice(0,2).join(' ') + '</div>'
         + '</div>';
     } else {
@@ -6771,7 +6700,7 @@ function renderCompare() {
   function racketHeader(r, idx, isWinner) {
     return '<div class="compare-racket-header">'
       + (isWinner ? '<div class="compare-winner-badge">🏆 Vincitore</div>' : '')
-      + '<img class="compare-racket-img" src="' + (r.img||'') + '" onerror="dbImgError(this,\''+( r.brand||'')+'\')">'
+      + '<img class="compare-racket-img" src="' + r.img + '" onerror="this.style.opacity=0.2">'
       + '<div class="compare-racket-brand">' + (r.brand||'') + '</div>'
       + '<div class="compare-racket-name">' + (r.name||'') + ' ' + (r.year||'') + '</div>'
       + '<div class="compare-racket-price">~€' + (r.price||'—') + '</div>'
@@ -7024,7 +6953,7 @@ function sharePartnerRacket(racketId) {
     + (r.level ? '📊 Livello: ' + ({advanced:'Avanzato',intermediate:'Intermedio',beginner:'Principiante'}[r.level]||r.level) : '') + '\n'
     + (r.style ? '⚡ Stile: ' + ({aggressive:'Attaccante',defensive:'Difensore',balanced:'Polivalente'}[r.style]||r.style) : '') + '\n\n'
     + '🔗 Compra qui: ' + pnUrl + '\n\n'
-    + '🤖 Consigliata da RacketAI → stinkipadel.github.io';
+    + '🤖 Consigliata da RacketAI → stinkipadel.com/racketai';
   var enc = encodeURIComponent(msg);
   // Try Web Share API first
   if (navigator.share) {
@@ -7061,10 +6990,6 @@ function renderSuccess() {
 function openDetailFromCard(btn) {
   var card = btn.closest ? btn.closest('.racket-card') : btn.parentElement.parentElement;
   if (!card) { navigate('screen-results'); return; }
-  // Usa data-racket-id direttamente se disponibile
-  var rid = card.getAttribute('data-racket-id');
-  if (rid && RACKET_SCORES[rid]) { openDetail(rid); return; }
-  // Fallback: cerca per brand+name
   var brand = (card.getAttribute('data-brand') || '').toLowerCase();
   var name  = (card.getAttribute('data-name')  || '').toLowerCase();
   var bestId = null, bestScore = 0;
@@ -7121,14 +7046,11 @@ function openBuyModal(racketId) {
 
   // ── Popola Amazon ──
   if (g('buy-link-amazon'))   { g('buy-link-amazon').href = amzHref; g('buy-link-amazon').onclick = function(){ _track('click_amazon'); _trackList('buy_click', currentDetailId||'?'); }; }
-  if (g('buy-price-amazon'))  { g('buy-price-amazon').textContent = amzPrice ? '~€' + amzPrice : 'Cerca'; }
-  // Nascondi Amazon se non ha prezzo e link è solo ricerca generica
-  var amzRow = g('buy-row-amazon');
-  if (amzRow) amzRow.style.opacity = (links && links.amazon && links.price) ? '1' : '0.6';
+  if (g('buy-price-amazon'))  { g('buy-price-amazon').textContent = amzPrice ? '~€' + amzPrice : '—'; }
 
   // ── Popola PN ──
-  if (g('buy-link-pn'))  { g('buy-link-pn').href = pnHref; if(pnEl) pnEl.onclick = function(){ _track('click_pn'); _trackList('buy_click', currentDetailId||'?'); }; }
-  if (g('buy-price-pn')) { g('buy-price-pn').textContent = pnPrice ? '~€' + pnPrice : 'Cerca'; }
+  if (g('buy-link-pn'))  { g('buy-link-pn').href = pnHref; }
+  if (g('buy-price-pn')) { g('buy-price-pn').textContent = pnPrice ? '~€' + pnPrice : '—'; }
 
   // ── Badge miglior prezzo ──
   var bestPriceIsAmz = amzPrice > 0 && pnPrice > 0 && amzPrice <= pnPrice;
@@ -7163,10 +7085,6 @@ function buyFromCard(btn) {
   var card = btn.closest ? btn.closest('.racket-card') : null;
   if (!card) { card = btn.parentElement; while(card && !card.classList.contains('racket-card')) card = card.parentElement; }
   if (!card) return;
-  // Usa data-racket-id direttamente se disponibile
-  var rid = card.getAttribute('data-racket-id');
-  if (rid && RACKET_SCORES[rid]) { openBuyModal(rid); return; }
-  // Fallback: cerca per brand+name
   var brand = (card.getAttribute('data-brand') || '').toLowerCase();
   var name  = (card.getAttribute('data-name')  || '').toLowerCase();
   var bestId = null, bestScore = 0;
@@ -7292,7 +7210,7 @@ function renderSimilarSection(racketId) {
     var imgSrc = s.img || '';
     var sid = item.id.replace(/[^a-z0-9-]/g,'');
     html += '<div onclick="openDetail(\'' + sid + '\')" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--gray-light);border-radius:14px;cursor:pointer;">'
-      + '<img src="' + (imgSrc||'') + '" onerror="dbImgError(this,\'' + (s.brand||'').replace(/'/g,'') + '\')" style="width:52px;height:52px;object-fit:contain;border-radius:10px;background:var(--white);padding:4px;flex-shrink:0;">'
+      + '<img src="' + imgSrc + '" onerror="this.style.opacity=0.2" style="width:52px;height:52px;object-fit:contain;border-radius:10px;background:white;padding:4px;flex-shrink:0;">'
       + '<div style="flex:1;min-width:0;">'
       + '<div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;">' + (s.brand||'') + '</div>'
       + '<div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (s.name||'') + ' ' + (s.year||'') + '</div>'
@@ -7725,7 +7643,7 @@ function sharePartnerResults() {
     var price = priceEl ? priceEl.textContent.trim() : '';
     msg += ranks[i] + ' ' + brand + ' ' + name + (price ? ' · ' + price : '') + '\n';
   });
-  msg += '\n🔍 Scopri anche tu la tua racchetta → stinkipadel.github.io';
+  msg += '\n🔍 Scopri anche tu la tua racchetta → stinkipadel.com/racketai';
   if (navigator.share) {
     navigator.share({ title: 'Racchette per il tuo partner', text: msg }).catch(function(){});
   } else {
@@ -7950,8 +7868,11 @@ function hasCompletedTest() {
 }
 
 function showProTeaserIfNeeded() {
+  var count = getTestCount();
   var teaser = document.getElementById('pro-teaser');
-  if (teaser) teaser.style.display = 'block';
+  if (teaser && count >= 2) {
+    teaser.style.display = 'block';
+  }
 }
 
 function showCoffeCardIfNeeded() {
@@ -8135,14 +8056,6 @@ function showAdminPanel() {
   } catch(e) { console.error(e); }
 }
 
-
-function selectGenderPill(btn, groupId) {
-  var grp = document.getElementById(groupId);
-  if (!grp) return;
-  Array.prototype.slice.call(grp.querySelectorAll('.gender-pill')).forEach(function(b){ b.classList.remove('gender-pill-active'); });
-  btn.classList.add('gender-pill-active');
-  quizAnswers['gender'] = btn.getAttribute('data-v');
-}
 // ── Safari iOS: remove 300ms click delay ──
 if (document.addEventListener) {
   document.addEventListener('touchstart', function(){}, {passive:true});
