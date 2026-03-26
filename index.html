@@ -2162,8 +2162,8 @@
         <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:4px;">☕ Supporta RacketAI</div>
         <div style="font-size:11px;color:#374151;margin-bottom:10px;line-height:1.4;">Se ti è utile, offrimi un caffè — aiuti a mantenerlo gratuito!</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" style="background:#15803d;color:white;padding:9px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;display:block;text-align:center;">☕ Caffè</a>
-          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" style="background:#0d1b2a;color:white;padding:9px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;display:block;text-align:center;">💙 Ko-fi</a>
+          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_bmac')" style="background:#15803d;color:white;padding:9px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;display:block;text-align:center;">☕ Caffè</a>
+          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_kofi')" style="background:#0d1b2a;color:white;padding:9px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;display:block;text-align:center;">💙 Ko-fi</a>
         </div>
       </div>
 
@@ -3144,8 +3144,8 @@
         <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:6px;">☕ Ti è stato utile? Offrimi un caffè!</div>
         <div style="font-size:11px;color:#374151;margin-bottom:10px;line-height:1.4;">Mantenere RacketAI gratuito richiede tempo. Ogni contributo fa la differenza!</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" style="background:#15803d;color:white;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;">☕ Caffè</a>
-          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" style="background:#0d1b2a;color:white;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;">💙 Ko-fi</a>
+          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_bmac')" style="background:#15803d;color:white;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;">☕ Caffè</a>
+          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_kofi')" style="background:#0d1b2a;color:white;border:none;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;">💙 Ko-fi</a>
         </div>
       </div>
 
@@ -3484,8 +3484,8 @@
         <div class="coffee-title">☕ Supporta RacketAI</div>
         <div class="coffee-sub">Se RacketAI ti ha aiutato a scegliere la racchetta giusta, offrimi un caffè! Mantiene il progetto vivo ☕</div>
         <div class="coffee-btns">
-          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" class="coffee-btn-green">☕ Buy me a coffee</a>
-          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" class="coffee-btn-navy">💙 Ko-fi</a>
+          <a href="https://buymeacoffee.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_bmac')" class="coffee-btn-green">☕ Buy me a coffee</a>
+          <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener" onclick="_track('click_kofi')" class="coffee-btn-navy">💙 Ko-fi</a>
         </div>
       </div>
       <!-- ── MENU ── -->
@@ -3677,7 +3677,7 @@
       </div>
     </div>
     <div style="display:flex;gap:8px;">
-      <button type="button" id="btn-do-compare" disabled onclick="navigate('screen-compare')" style="flex:1;padding:12px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;opacity:0.4;">⚡ Confronta ora</button>
+      <button type="button" id="btn-do-compare" disabled onclick="_track('start_compare');navigateWithHistory('screen-compare')" style="flex:1;padding:12px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;opacity:0.4;">⚡ Confronta ora</button>
       <button type="button" onclick="clearCompare()" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:none;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Svuota</button>
     </div>
   </div>
@@ -6807,7 +6807,10 @@ function saveUsers(u) {
 }
 
 
+var currentDetailId = null;
 function openDetail(racketId) {
+  currentDetailId = racketId;
+  try { _track('open_detail'); _trackList('detail', (RACKET_SCORES[racketId]||{}).brand+' '+(RACKET_SCORES[racketId]||{}).name||racketId); } catch(e) {}
   var r = RACKET_SCORES[racketId];
   if (!r) { showToast('Racchetta non trovata'); return; }
 
@@ -7042,7 +7045,7 @@ function openBuyModal(racketId) {
   var shopHref = 'https://www.google.it/search?tbm=shop&q=' + encodeURIComponent(name + ' padel racchetta');
 
   // ── Popola Amazon ──
-  if (g('buy-link-amazon'))   { g('buy-link-amazon').href = amzHref; }
+  if (g('buy-link-amazon'))   { g('buy-link-amazon').href = amzHref; g('buy-link-amazon').onclick = function(){ _track('click_amazon'); _trackList('buy_click', currentDetailId||'?'); }; }
   if (g('buy-price-amazon'))  { g('buy-price-amazon').textContent = amzPrice ? '~€' + amzPrice : '—'; }
 
   // ── Popola PN ──
@@ -7669,6 +7672,11 @@ function closeDetailModal() {
 
 // ── Brand logo map — GLOBAL scope (used in onerror) ──
 var DB_BRAND_LOGOS = {
+  'joma':        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Joma_%28brand%29_logo.svg/160px-Joma_%28brand%29_logo.svg.png',
+  'vibor-a':     'https://www.vibor-a.com/themes/vibora/assets/img/logo-vibora.png',
+  'lok':         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Lok_padel_logo.svg/160px-Lok_padel_logo.svg.png',
+  'platinum':    'https://platinumsports.es/img/logo.png',
+  'kombat':      'https://kombatsport.com/img/logo.png',
   'adidas':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/160px-Adidas_Logo.svg.png',
   'babolat':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Babolat.svg/160px-Babolat.svg.png',
   'head':        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Head_Sport_logo.svg/160px-Head_Sport_logo.svg.png',
@@ -7692,17 +7700,21 @@ var DB_BRAND_COLORS = {
   'oxdog':'#f5a000','varlion':'#002855','drop shot':'#e30613','royal padel':'#1a3a6b',
   'munich':'#e30613','kuikma':'#0082c3','kombat':'#ff6600','lok':'#444','osaka':'#ff6b35',
   'stiga':'#d40000','virtufit':'#2ecc71',
+  'joma':'#e30000','vibor-a':'#1a1a2e','lok':'#2d3748','platinum':'#c0a030',
+  'oxdog':'#f5a000','starvie':'#1a1a2e','wilson':'#d40000',
 };
 
 function dbImgError(img, brand) {
+  // Cascade: brand logo → lettera iniziale
   var key = (brand||'').toLowerCase();
   var logoUrl = DB_BRAND_LOGOS[key];
-  if (logoUrl) {
+  if (logoUrl && img.src !== logoUrl) {
     img.src = logoUrl;
     img.style.objectFit = 'contain';
-    img.style.padding = '12px';
-    img.style.opacity = '0.85';
-    img.onerror = function() { dbImgShowInitial(img, brand); };
+    img.style.padding = '10px';
+    img.style.background = '#f8fafc';
+    img.style.borderRadius = '8px';
+    img.onerror = function() { img.onerror = null; dbImgShowInitial(img, brand); };
   } else {
     dbImgShowInitial(img, brand);
   }
@@ -7782,9 +7794,35 @@ function renderDB() {
       + ' data-price="'   + priceNum        + '"'
       + ' onclick="openDetail(\'' + id + '\')">'
 
-      // Image — brand logo / SVG initial fallback if racket photo fails
-      + '<img src="' + imgSrc + '" class="db-img" loading="lazy"'
-      + ' onerror="dbImgError(this,\'' + (r.brand||'').replace(/'/g,"\\'") + '\')" >'
+      // Image — prova prima racketpedia se è un placeholder, poi fallback
+      var finalSrc = imgSrc;
+      if (!imgSrc || imgSrc.indexOf('placeholder') >= 0 || imgSrc === '') {
+        // Nessuna immagine reale — vai direttamente al logo brand tramite onerror
+        finalSrc = '';
+      }
+      if (!finalSrc) {
+        // Nessuna immagine — mostra logo/iniziale direttamente senza errore HTTP
+        var _bkey = (r.brand||'').toLowerCase();
+        var _blogo = DB_BRAND_LOGOS[_bkey];
+        if (_blogo) {
+          html += '<img src="' + _blogo + '" class="db-img" loading="lazy"'
+            + ' style="object-fit:contain;padding:10px;background:#f8fafc;border-radius:8px;"'
+            + ' onerror="dbImgShowInitial(this,\'' + (r.brand||'').replace(/'/g,'') + '\')" >';
+        } else {
+          // Lettera iniziale SVG inline
+          var _bcolor = DB_BRAND_COLORS[_bkey] || '#6b7280';
+          var _bini = (r.brand||'?').charAt(0).toUpperCase();
+          var _svg = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">'
+            + '<rect width="80" height="80" rx="12" fill="' + _bcolor + '"/>'
+            + '<text x="40" y="52" font-size="32" font-weight="700" fill="white" text-anchor="middle" font-family="DM Sans,sans-serif">' + _bini + '</text>'
+            + '</svg>';
+          html += '<img src="data:image/svg+xml;base64,' + btoa(_svg) + '" class="db-img" style="padding:8px;">';
+        }
+      } else {
+        html += '<img src="' + finalSrc + '" class="db-img" loading="lazy"'
+          + ' onerror="dbImgError(this,\'' + (r.brand||'').replace(/'/g,"\\'") + '\')" >';
+      }
+      html += ''
 
       // Info
       + '<div class="db-info">'
@@ -7918,6 +7956,105 @@ window.addEventListener('popstate', function(e) {
 window.addEventListener('load', function() {
   try { history.replaceState({ screen: 'screen-home' }, '', ''); } catch(e) {}
 });
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ADMIN TRACKING — statistiche locali
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function _track(key, val) {
+  try {
+    var d = JSON.parse(localStorage.getItem('rai_stats') || '{}');
+    if (!d[key]) d[key] = 0;
+    d[key] += (val || 1);
+    localStorage.setItem('rai_stats', JSON.stringify(d));
+  } catch(e) {}
+}
+function _trackList(key, val) {
+  try {
+    var d = JSON.parse(localStorage.getItem('rai_stats_list') || '{}');
+    if (!d[key]) d[key] = {};
+    if (!d[key][val]) d[key][val] = 0;
+    d[key][val]++;
+    localStorage.setItem('rai_stats_list', JSON.stringify(d));
+  } catch(e) {}
+}
+
+// ── Pannello admin (codice: "admin2026") ──
+var _adminBuffer = '';
+document.addEventListener('keydown', function(e) {
+  _adminBuffer += e.key.toLowerCase();
+  if (_adminBuffer.length > 10) _adminBuffer = _adminBuffer.slice(-10);
+  if (_adminBuffer.endsWith('admin2026')) showAdminPanel();
+});
+
+function closeAdmin(){var p=document.getElementById('rai-admin-panel');if(p)p.remove();}
+function _adminResetStats(){if(window.confirm('Azzera tutte le statistiche?')){localStorage.removeItem('rai_stats');localStorage.removeItem('rai_stats_list');closeAdmin();showToast('✅ Statistiche azzerate');}}
+function _adminCard(label, value) {
+  return '<div style="background:#f8fafc;border-radius:10px;padding:12px;text-align:center;">'
+    + '<div style="font-size:22px;font-weight:800;color:#1e3a5f;">'+value+'</div>'
+    + '<div style="font-size:11px;color:#64748b;margin-top:2px;">'+label+'</div>'
+    + '</div>';
+}
+function _adminTopList(obj, n) {
+  if (!obj) return '<em style="color:#aaa">nessuno</em>';
+  var arr = Object.entries(obj).sort(function(a,b){return b[1]-a[1];}).slice(0,n);
+  return arr.map(function(x){
+    return '<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'
+      + '<span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>';
+  }).join('');
+}
+function showAdminPanel() {
+  try {
+    closeAdmin();
+    var stats = JSON.parse(localStorage.getItem('rai_stats') || '{}');
+    var list  = JSON.parse(localStorage.getItem('rai_stats_list') || '{}');
+    var tests = parseInt(localStorage.getItem('rai_test_count') || '0');
+    var proTs = localStorage.getItem('rai_pro_interest');
+    var proTxt = proTs ? ('✅ Sì ('+new Date(parseInt(proTs)).toLocaleDateString('it-IT')+')') : '❌ No';
+    var purchases = [];
+    try { var u=JSON.parse(localStorage.getItem('rai_users')||'{}'); Object.values(u).forEach(function(ud){ if(ud.purchases) purchases=purchases.concat(ud.purchases); }); } catch(e){}
+
+    var overlay = document.createElement('div');
+    overlay.id = 'rai-admin-panel';
+    overlay.setAttribute('style','position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;');
+    overlay.onclick = function(e){ if(e.target===overlay) closeAdmin(); };
+
+    var box = document.createElement('div');
+    box.setAttribute('style','background:white;border-radius:16px;padding:24px;max-width:420px;width:90vw;max-height:85vh;overflow-y:auto;font-family:DM Sans,sans-serif;color:#1a202c;');
+    box.innerHTML = [
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">',
+        '<div style="font-size:18px;font-weight:800;">📊 RacketAI Admin</div>',
+        '<button id="admin-close-btn" style="background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;">✕</button>',
+      '</div>',
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">',
+        _adminCard('🧪 Test completati', tests),
+        _adminCard('🛒 Acquisti', purchases.length),
+        _adminCard('🔗 Click Amazon', stats.click_amazon||0),
+        _adminCard('🎾 Click PadelNuestro', stats.click_pn||0),
+        _adminCard('☕ Click BuyMeCoffee', stats.click_bmac||0),
+        _adminCard('💙 Click Ko-fi', stats.click_kofi||0),
+        _adminCard('🔍 Dettagli aperti', stats.open_detail||0),
+        _adminCard('⚡ Confronti avviati', stats.start_compare||0),
+      '</div>',
+      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🚀 Interesse Pro</div>',
+      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:14px;">'+proTxt+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🎾 Racchette più viste</div>',
+      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+_adminTopList(list.detail,5)+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🛒 Acquisti registrati</div>',
+      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+(purchases.length?purchases.slice(-5).reverse().map(function(p){return '<div style="padding:3px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'+p.name+' — '+new Date(p.date||0).toLocaleDateString('it-IT')+'</div>';}).join(''):'<em style="color:#aaa">nessuno ancora</em>')+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🔗 Link più cliccati</div>',
+      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:18px;">'+_adminTopList(list.buy_click,5)+'</div>',
+      '<button id="admin-reset-btn" style="width:100%;padding:10px;background:#fee2e2;color:#b91c1c;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">🗑️ Azzera statistiche</button>',
+      '<div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:10px;">Dati su questo dispositivo · Digita admin2026 per aprire</div>'
+    ].join('');
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    document.getElementById('admin-close-btn').onclick = closeAdmin;
+    document.getElementById('admin-reset-btn').onclick = _adminResetStats;
+    showToast('🔐 Pannello admin aperto');
+  } catch(e) { console.error(e); }
+}
 
 // ── Safari iOS: remove 300ms click delay ──
 if (document.addEventListener) {
