@@ -44,31 +44,31 @@
   .phone-shell {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    width: 100vw;
     max-width: 480px;
     height: 100%;
     height: 100vh;
     height: -webkit-fill-available;
     background: var(--cream);
     overflow: hidden;
+    -webkit-backface-visibility: hidden;
   }
   @media (min-width: 768px) {
-    body { background: #0d1b2a; }
+    body { background: var(--cream); }
     .phone-shell {
-      position: fixed;
-      top: 0;
       left: 50%;
-      right: auto;
-      width: 480px;
-      max-width: 480px;
       transform: translateX(-50%);
       -webkit-transform: translateX(-50%);
-      box-shadow: 0 0 80px rgba(0,0,0,0.5);
+      width: 480px;
     }
   }
+  @media (max-width: 420px) {
+    .phone-shell { width: 100%; }
+  }
+
 
 
 :root {
