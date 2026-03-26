@@ -44,10 +44,11 @@
   .phone-shell {
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    width: 100vw;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
     max-width: 480px;
     height: 100%;
     height: 100vh;
@@ -55,6 +56,7 @@
     background: var(--cream);
     overflow: hidden;
   }
+  body { background: var(--cream); }
   @media (max-width: 420px) {
     .phone-shell { width: 100%; }
   }
@@ -2436,9 +2438,8 @@
           <button type="button" class="gender-pill" data-q="gender" data-v="female" onclick="selectGenderPill(this,'gender-quick-options')">👩 Donna</button>
           <button type="button" class="gender-pill gender-pill-active" data-q="gender" data-v="any" onclick="selectGenderPill(this,'gender-quick-options')">🤷 Non specificato</button>
         </div>
+        <button type="button" class="cta-btn cta-btn-orange" style="margin-top:12px;" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
       </div>
-      <div style="display:none"><!-- spacer -->
-      <button type="button" class="cta-btn cta-btn-orange" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
     </div>
   </div>
 
@@ -2827,9 +2828,8 @@
           <button type="button" class="gender-pill" data-q="gender" data-v="female" onclick="selectGenderPill(this,'gender-full-options')">👩 Donna</button>
           <button type="button" class="gender-pill gender-pill-active" data-q="gender" data-v="any" onclick="selectGenderPill(this,'gender-full-options')">🤷 Non specificato</button>
         </div>
+        <button type="button" class="cta-btn cta-btn-orange" style="margin-top:12px;" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
       </div>
-      <div style="display:none"><!-- spacer -->
-      <button type="button" class="cta-btn cta-btn-orange" onclick="navigate('screen-loading-results')">Vedi i Risultati 🎯</button>
     </div>
   </div>
 
