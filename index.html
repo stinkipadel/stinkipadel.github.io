@@ -3808,19 +3808,19 @@
   <!-- BUY MODAL -->
   <div id="buy-modal" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:3000;display:none;align-items:flex-end;justify-content:center;">
     <div onclick="closeBuyModal()" style="position:absolute;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.5);"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:390px;background:white;border-radius:24px 24px 0 0;padding:20px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,0.2);">
+    <div style="position:relative;z-index:1;width:100%;max-width:390px;background:var(--white);border-radius:24px 24px 0 0;padding:20px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,0.2);">
       <div style="width:36px;height:4px;background:var(--gray-light);border-radius:999px;margin:0 auto 16px;"></div>
       <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:2px;line-height:1.3;" id="buy-modal-racket">—</div>
-      <div style="font-size:12px;color:#8a929e;margin-bottom:18px;" id="buy-modal-sub">Prezzo indicativo</div>
+      <div style="font-size:12px;color:var(--gray);margin-bottom:18px;" id="buy-modal-sub">Prezzo medio</div>
 
       <!-- Amazon -->
       <a id="buy-link-amazon" href="javascript:void(0)" target="_blank" rel="noopener sponsored"
          style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:2px solid #e2e8f0;margin-bottom:8px;text-decoration:none;transition:border-color 0.18s;"
-         onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='#e2e8f0'">
+         onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor=''">
         <div style="font-size:24px;flex-shrink:0;">📦</div>
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;color:var(--text);">Amazon Italia</div>
-          <div style="font-size:11px;color:#8a929e;margin-top:1px;">Prime · Resi facili</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px;">Prime · Resi facili</div>
         </div>
         <div>
           <div style="font-size:17px;font-weight:800;color:var(--orange);text-align:right;" id="buy-price-amazon">—</div>
@@ -3831,11 +3831,11 @@
       <!-- Padel Nuestro -->
       <a id="buy-link-pn" href="javascript:void(0)" target="_blank" rel="noopener sponsored"
          style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:2px solid #e2e8f0;margin-bottom:8px;text-decoration:none;transition:border-color 0.18s;"
-         onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='#e2e8f0'">
+         onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor=''">
         <div style="font-size:24px;flex-shrink:0;">🎾</div>
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;color:var(--text);">Padel Nuestro IT</div>
-          <div style="font-size:11px;color:#8a929e;margin-top:1px;">Shop specializzato · Spedizione EU</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px;">Shop specializzato · Spedizione EU</div>
         </div>
         <div>
           <div style="font-size:17px;font-weight:800;color:var(--orange);text-align:right;" id="buy-price-pn">—</div>
@@ -3846,11 +3846,11 @@
       <!-- Decathlon (shown only if available) -->
       <a id="buy-row-decathlon" href="javascript:void(0)" target="_blank" rel="noopener"
          style="display:none;flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:2px solid #e2e8f0;margin-bottom:8px;text-decoration:none;transition:border-color 0.18s;"
-         onmouseover="this.style.borderColor='#0082c3'" onmouseout="this.style.borderColor='#e2e8f0'">
+         onmouseover="this.style.borderColor='#0082c3'" onmouseout="this.style.borderColor=''">
         <div style="font-size:24px;flex-shrink:0;">🏬</div>
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;color:var(--text);" id="buy-link-dec-name">Decathlon</div>
-          <div style="font-size:11px;color:#8a929e;margin-top:1px;">Ritiro in negozio disponibile</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px;">Ritiro in negozio disponibile</div>
         </div>
         <div style="font-size:17px;font-weight:800;color:#0082c3;text-align:right;" id="buy-price-dec">—</div>
       </a>
@@ -3858,7 +3858,7 @@
       <!-- Google Shopping -->
       <a id="buy-link-shopping" href="javascript:void(0)" target="_blank" rel="noopener"
          style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:1.5px solid var(--gray-light);text-decoration:none;transition:border-color 0.18s;background:var(--cream);"
-         onmouseover="this.style.borderColor='#4285f4'" onmouseout="this.style.borderColor='#e2e8f0'">
+         onmouseover="this.style.borderColor='#4285f4'" onmouseout="this.style.borderColor=''">
         <div style="font-size:20px;flex-shrink:0;">🔍</div>
         <div style="flex:1;font-size:12px;color:var(--gray);">Confronta tutti i prezzi su Google Shopping</div>
         <div style="font-size:11px;font-weight:700;color:#4285f4;flex-shrink:0;white-space:nowrap;">Cerca →</div>
@@ -5803,7 +5803,8 @@ var RACKET_DB = [
   ['siux-diablo-pro-4-2025','Diablo Pro 4','Siux','2025','advanced','right','diamond','aggressive','all','mid','','','~€139',''],
 ];
 
-function scoreRacket(r, ans) {
+function scoreRacket(r, rawAns) {
+  var ans = normalizeAnswers(rawAns);
   // r = [id, name, brand, year, level, side, shape, style, physical_ok, price_tier, img_id, img_file, price_eur, player]
   var score = 0; var total = 0;
 
@@ -5905,10 +5906,39 @@ function scoreRacket(r, ans) {
 
   return Math.round((score / total) * 100);
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Normalizza le risposte del quiz veloce → chiavi fq-*
+// Il quiz veloce usa: level, style, side, physical, sensation, budget, gender
+// Il quiz completo usa: fq-level, fq-style, fq-side, fq-physical, ecc.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function normalizeAnswers(ans) {
+  var n = {};
+  // Copia tutto
+  Object.keys(ans).forEach(function(k){ n[k] = ans[k]; });
+  // Mappa chiavi semplici → fq-chiavi (solo se fq-chiave non già presente)
+  var map = {
+    'level'     : 'fq-level',
+    'style'     : 'fq-style',
+    'side'      : 'fq-side',
+    'physical'  : 'fq-physical',
+    'sensation' : 'fq-sensation',
+    'budget'    : 'fq-budget',
+    'year_pref' : 'fq-year',
+    'shape'     : 'fq-shape',
+    'balance'   : 'fq-balance',
+  };
+  Object.keys(map).forEach(function(simple) {
+    var fq = map[simple];
+    if (ans[simple] && !ans[fq]) n[fq] = ans[simple];
+    if (ans[fq] && !ans[simple]) n[simple] = ans[fq];
+  });
+  return n;
+}
+
 function computeMatches() {
-  var ans = quizAnswers;
+  var ans = normalizeAnswers(quizAnswers);
   var bud = ans['fq-budget'] || ans.budget;
-  try { console.log('[RacketAI] Budget:', bud, '| Answers:', JSON.stringify(ans)); } catch(e) {}
 
   // Budget ceiling in euros (null = no limit)
   var budgetCeiling = null;
@@ -5991,7 +6021,7 @@ function cdnImg(id, file) {
 
 function computeAllMatches() {
   // Like computeMatches but with NO budget ceiling
-  var ans = quizAnswers;
+  var ans = normalizeAnswers(quizAnswers);
   var scored = RACKET_DB.map(function(r) {
     var realPrice = 9999;
     var bl = BUY_LINKS[r[0]];
@@ -7267,24 +7297,35 @@ function buyFromCard(btn) {
   var card = btn.closest ? btn.closest('.racket-card') : null;
   if (!card) { card = btn.parentElement; while(card && !card.classList.contains('racket-card')) card = card.parentElement; }
   if (!card) return;
-  // Usa data-racket-id direttamente se disponibile
+
+  // 1. Usa data-racket-id direttamente (metodo principale - sempre corretto)
   var rid = card.getAttribute('data-racket-id');
   if (rid && RACKET_SCORES[rid]) { openBuyModal(rid); return; }
-  // Fallback fuzzy match
-  var brand = (card.getAttribute('data-brand') || '').toLowerCase();
-  var name  = (card.getAttribute('data-name')  || '').toLowerCase();
-  var bestId = null, bestScore = 0;
-  Object.keys(RACKET_SCORES).forEach(function(id) {
-    var r = RACKET_SCORES[id];
-    var rb = (r.brand || '').toLowerCase();
-    var rn = (r.name  || '').toLowerCase();
-    var s = 0;
-    if (rb === brand || brand.indexOf(rb) >= 0 || rb.indexOf(brand) >= 0) s += 2;
-    name.split(' ').forEach(function(w) { if (w.length > 2 && rn.indexOf(w) >= 0) s++; });
-    if (s > bestScore) { bestScore = s; bestId = id; }
-  });
-  if (bestId) openBuyModal(bestId);
-  else showToast('Link non trovato — cerca su Amazon');
+
+  // 2. Leggi nome dalla card UI per fuzzy match preciso
+  var nameEl = card.querySelector('.racket-name');
+  var brandEl = card.querySelector('.racket-img-brand');
+  var nameText = nameEl ? nameEl.textContent.toLowerCase().trim() : '';
+  var brandText = brandEl ? brandEl.textContent.toLowerCase().trim() : '';
+
+  // 3. Fuzzy match SOLO se abbiamo testo non vuoto
+  if (nameText || brandText) {
+    var bestId = null, bestScore = 0;
+    Object.keys(RACKET_SCORES).forEach(function(id) {
+      var r = RACKET_SCORES[id];
+      var rb = (r.brand || '').toLowerCase();
+      var rn = (r.name  || '').toLowerCase();
+      var s = 0;
+      if (brandText && (rb === brandText || brandText === rb)) s += 3;
+      nameText.split(' ').forEach(function(w) { if (w.length > 2 && rn.indexOf(w) >= 0) s += 2; });
+      if (s > bestScore) { bestScore = s; bestId = id; }
+    });
+    if (bestId && bestScore >= 3) { openBuyModal(bestId); return; }
+  }
+
+  // 4. Nessun match — apri Amazon con ricerca
+  var query = (nameEl ? nameEl.textContent : '') + ' padel racchetta';
+  window.open('https://www.amazon.it/s?k=' + encodeURIComponent(query) + '&tag=stinkipadel-21', '_blank');
 }
 
 function buyTopMatch() {
