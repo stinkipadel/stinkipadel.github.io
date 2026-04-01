@@ -287,7 +287,7 @@
     font-size: 18px; color: var(--text);
     transition: background 0.2s;
   }
-  .back-btn:hover { background: #d0d8e4; }
+  .back-btn:hover { background: var(--gray-light); }
 
   .progress-label {
     font-size: 13px;
@@ -355,7 +355,7 @@
   [data-theme=dark] .question-text,
   [data-theme=dark] .question-group-label { color: #f1f5f9; }
   [data-theme=dark] .question-sub,
-  [data-theme=dark] .question-group-sub   { color: #94a3b8; }
+  [data-theme=dark] .question-group-sub   { color: var(--gray); }
 
   /* CHOICE OPTIONS */
   .options-grid {
@@ -376,7 +376,7 @@
     gap: 12px;
     width: 100%;
   }
-  .option-btn:hover { border-color: var(--orange); background: #fff3eb; }
+  .option-btn:hover { border-color: var(--orange); background: rgba(244,101,10,0.08); }
   .option-btn.selected {
     border-color: var(--orange);
     background: var(--orange);
@@ -387,7 +387,7 @@
   .option-btn.selected .option-desc  { color: rgba(255,255,255,0.85) !important; }
   .option-btn.selected .option-icon  { filter: brightness(10); }
   [data-theme=dark] .option-btn:not(.selected) { background: var(--white); border-color: var(--gray-light); }
-  [data-theme=dark] .option-btn:hover:not(.selected) { background: #2a3a4e; border-color: var(--orange); }
+  [data-theme=dark] .option-btn:hover:not(.selected) { background: var(--navy-mid); border-color: var(--orange); }
   .option-check {
     width: 24px; height: 24px;
     border-radius: 50%;
@@ -537,6 +537,7 @@
     background: var(--white);
     border-radius: 20px;
     overflow: hidden;
+    position: relative;
     box-shadow: var(--shadow);
     border: 1px solid rgba(0,0,0,0.05);
     transition: transform 0.2s, box-shadow 0.2s;
@@ -560,6 +561,24 @@
     background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
+  }
+  /* Card fuori budget: badge overlay sull'intera card */
+  .racket-card[data-oob="1"] {
+    position: relative;
+  }
+  .oob-overlay {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(100,116,139,0.92);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    z-index: 10;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
   }
   .racket-img-placeholder {
     font-size: 80px;
@@ -628,9 +647,9 @@
     padding: 4px 10px;
     border-radius: 999px;
   }
-  .tag-blue { background: #eff6ff; color: var(--blue); }
-  .tag-orange { background: #fff7ed; color: var(--orange); }
-  .tag-green { background: #f0fdf4; color: #16a34a; }
+  .tag-blue { background: rgba(30,95,168,0.08); color: var(--blue); }
+  .tag-orange { background: rgba(244,101,10,0.1); color: var(--orange); }
+  .tag-green { background: rgba(34,197,94,0.12); color: var(--green); }
 
   .pros-cons {
     display: grid;
@@ -638,9 +657,11 @@
     gap: 12px;
     margin-bottom: 14px;
     padding: 12px;
-    background: #f8fafc;
+    background: var(--cream);
     border-radius: 12px;
+    border: 1px solid var(--gray-light);
   }
+  [data-theme=dark] .pros-cons { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
   .pro-con-title {
     font-size: 11px;
     font-weight: 700;
@@ -660,7 +681,7 @@
   }
 
   .match-reason {
-    background: linear-gradient(135deg, #eff6ff, #fff7ed);
+    background: rgba(30,95,168,0.07);
     border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 14px;
@@ -669,7 +690,9 @@
     line-height: 1.5;
     border-left: 3px solid var(--blue);
   }
-  .match-reason strong { color: var(--navy); }
+  .match-reason strong { color: var(--blue); }
+  [data-theme=dark] .match-reason { background: rgba(30,95,168,0.15); border-left-color: var(--blue-light); }
+  [data-theme=dark] .match-reason strong { color: var(--blue-light); }
 
   .racket-actions {
     display: grid;
@@ -695,7 +718,7 @@
     background: var(--gray-light);
     color: var(--text);
   }
-  .action-btn-secondary:hover { background: #d0d8e4; }
+  .action-btn-secondary:hover { background: var(--gray-light); }
 
   .purchase-btn-wrap {
     padding: 0 16px 32px;
@@ -729,7 +752,7 @@
     background: var(--white);
   }
   .radio-item:hover { border-color: var(--blue-light); }
-  .radio-item.selected { border-color: var(--blue); background: #eff6ff; }
+  .radio-item.selected { border-color: var(--blue); background: rgba(30,95,168,0.08); }
   .radio-circle {
     width: 22px; height: 22px;
     border-radius: 50%;
@@ -851,7 +874,7 @@
     font-family: 'DM Sans', sans-serif;
     color: var(--text);
   }
-  .google-btn:hover { border-color: #bbb; background: #fafafa; }
+  .google-btn:hover { border-color: #bbb; background: var(--cream); }
 
   /* SUCCESS PAGE */
   .success-page {
@@ -956,7 +979,7 @@
     animation: bounce 1.2s infinite;
   }
   .dot:nth-child(2) { animation-delay: 0.2s; background: var(--blue-light); }
-  .dot:nth-child(3) { animation-delay: 0.4s; background: white; }
+  .dot:nth-child(3) { animation-delay: 0.4s; background: var(--white); }
   @keyframes bounce {
     0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
     40% { transform: scale(1); opacity: 1; }
@@ -1016,8 +1039,8 @@
   }
   @keyframes sheetUp { from{transform:translateY(50px);opacity:0} to{transform:translateY(0);opacity:1} }
   .sheet-handle { width:40px;height:4px;background:var(--gray-light);border-radius:999px;margin:0 auto 18px; }
-  .auth-error { background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:13px;color:#dc2626;margin-bottom:14px;display:none; }
-  .auth-ok    { background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;font-size:13px;color:#16a34a;margin-bottom:14px;display:none; }
+  .auth-error { background:rgba(239,68,68,0.08);border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:13px;color:#dc2626;margin-bottom:14px;display:none; }
+  .auth-ok    { background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:14px;display:none; }
   .select-field { width:100%;padding:14px 16px;border:2px solid var(--gray-light);border-radius:var(--radius-sm);font-size:15px;font-family:"DM Sans",sans-serif;color:var(--text);background:var(--white);outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a929e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center; }
   .select-field:focus { border-color:var(--blue); }
   .input-hint { font-size:11px;color:var(--gray);margin-top:4px; }
@@ -1038,10 +1061,10 @@
   .ai-box-title { font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px; }
   .ai-box-text  { font-size:12px;color:var(--text);line-height:1.6; }
   .status-badge { display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:8px; }
-  .badge-ok   { background:#dcfce7;color:#15803d; }
-  .badge-no   { background:#fee2e2;color:#991b1b; }
-  .badge-wait { background:#fef9c3;color:#854d0e; }
-  .logout-btn { width:100%;padding:14px;border-radius:var(--radius-sm);border:2px solid #fee2e2;background:#fef2f2;color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif; }
+  .badge-ok   { background:rgba(34,197,94,0.12);color:var(--green); }
+  .badge-no   { background:rgba(239,68,68,0.12);color:#991b1b; }
+  .badge-wait { background:rgba(234,179,8,0.15);color:#854d0e; }
+  .logout-btn { width:100%;padding:14px;border-radius:var(--radius-sm);border:2px solid #fee2e2;background:rgba(239,68,68,0.08);color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif; }
 
 
   /* ── STINKI BRANDING ── */
@@ -1136,7 +1159,7 @@
   .saved-test-title { font-size:13px;font-weight:700;color:var(--text); }
   .saved-test-date  { font-size:11px;color:var(--gray); }
   .saved-test-top   { display:flex;align-items:center;gap:10px; }
-  .saved-test-img   { width:48px;height:48px;object-fit:contain;border-radius:8px;background:#f0f4f8;padding:4px; }
+  .saved-test-img   { width:48px;height:48px;object-fit:contain;border-radius:8px;background:var(--cream);padding:4px; }
   .saved-test-racket-name { font-size:14px;font-weight:700;color:var(--text); }
   .saved-test-pct   { font-size:13px;color:var(--orange);font-weight:700; }
 
@@ -1177,13 +1200,13 @@
   }
   .purchase-radio-card:hover { border-color:var(--blue-light); }
   .purchase-radio-card.selected { border-color:var(--orange);background:#fff7ed; }
-  .purchase-radio-card img { width:52px;height:52px;object-fit:contain;border-radius:8px;background:#f0f4f8;padding:3px;flex-shrink:0; }
+  .purchase-radio-card img { width:52px;height:52px;object-fit:contain;border-radius:8px;background:var(--cream);padding:3px;flex-shrink:0; }
   .purchase-radio-dot {
     width:20px;height:20px;border-radius:50%;border:2px solid var(--gray-light);
     display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;
   }
   .purchase-radio-card.selected .purchase-radio-dot { border-color:var(--orange);background:var(--orange); }
-  .purchase-radio-dot::after { content:''; display:none;width:8px;height:8px;border-radius:50%;background:white; }
+  .purchase-radio-dot::after { content:''; display:none;width:8px;height:8px;border-radius:50%;background:var(--white); }
   .purchase-radio-card.selected .purchase-radio-dot::after { display:block; }
 
 
@@ -1203,7 +1226,7 @@
   .collection-card:hover { border-color:var(--blue-light); }
   .collection-card img  {
     width:52px; height:52px; object-fit:contain;
-    border-radius:10px; background:#f0f4f8; padding:3px; flex-shrink:0;
+    border-radius:10px; background:var(--cream); padding:3px; flex-shrink:0;
   }
   .collection-card-info { flex:1; min-width:0; }
   .collection-card-brand{ font-size:10px; font-weight:700; color:var(--gray);
@@ -1216,7 +1239,7 @@
     background:var(--gray-light); border:none; font-size:14px;
     cursor:pointer; flex-shrink:0; transition:background 0.15s;
   }
-  .collection-remove-btn:hover { background:#fee2e2; }
+  .collection-remove-btn:hover { background:rgba(239,68,68,0.12); }
 
   /* Toast notification */
   #toast {
@@ -1236,7 +1259,7 @@
     display:flex; align-items:center; justify-content:center;
     transition:all 0.18s; position:relative;
   }
-  .db-compare-btn:hover { background:#e0f2fe; }
+  .db-compare-btn:hover { background:rgba(14,165,233,0.12); }
   .db-compare-btn.in-compare { background:#dbeafe; color:var(--blue); }
 
   /* ── COMPARE TRAY (sticky bottom bar) ── */
@@ -1423,7 +1446,7 @@
   }
   .policy-badge.essential  { background:#dcfce7; color:#15803d; }
   .policy-badge.analytics  { background:#dbeafe; color:#1d4ed8; }
-  .policy-badge.functional { background:#fef9c3; color:#854d0e; }
+  .policy-badge.functional { background:rgba(234,179,8,0.12); color:#854d0e; }
 
 
   /* ── BUY MODAL ── */
@@ -1446,7 +1469,7 @@
   }
   .buy-modal-title {
     font-family:'DM Serif Display',serif; font-size:18px;
-    color:var(--navy); margin-bottom:4px; line-height:1.3;
+    color:var(--text); margin-bottom:4px; line-height:1.3;
   }
   .buy-modal-sub { font-size:13px; color:var(--gray); margin-bottom:18px; }
   .buy-option {
@@ -1602,10 +1625,10 @@
     border-radius: 999px;
     white-space: nowrap;
   }
-  .db-tag.green   { background: #dcfce7; color: #15803d; }
-  .db-tag.blue2   { background: #dbeafe; color: #1d4ed8; }
-  .db-tag.purple  { background: #ede9fe; color: #6d28d9; }
-  .db-tag.blue    { background: #e0f2fe; color: #0369a1; }
+  .db-tag.green   { background: rgba(34,197,94,0.12); color: var(--green); }
+  .db-tag.blue2   { background: rgba(30,95,168,0.12); color: var(--blue); }
+  .db-tag.purple  { background: rgba(109,40,217,0.12); color: #8b5cf6; }
+  .db-tag.blue    { background: rgba(3,105,161,0.12); color: var(--blue); }
   .db-tag.gray    { background: var(--gray-light); color: var(--gray); }
   .db-tag.orange  { background: #fff3ef; color: var(--orange); font-weight: 800; }
   .db-score {
@@ -1635,7 +1658,7 @@
     transition: all 0.15s;
   }
   .db-compare-btn:hover { border-color: var(--blue); }
-  .db-compare-btn.in-compare { background: #dbeafe; border-color: var(--blue); }
+  .db-compare-btn.in-compare { background: rgba(30,95,168,0.12); border-color: var(--blue); }
 
   /* ── DESKTOP: 2-col sidebar + grid ── */
   
@@ -1786,11 +1809,11 @@
     background:var(--gray-light); border:none;
     font-size:18px; cursor:pointer; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
-    color: #94a3b8;
+    color: var(--gray);
     transition: all 0.18s;
   }
   .db-save-btn:hover { background:#ffe4e6; color:#e11d48; }
-  .db-save-btn.saved { background:#fee2e2; color:#e11d48; }
+  .db-save-btn.saved { background:rgba(239,68,68,0.12); color:#e11d48; }
   .db-save-btn.saved:hover { background:#fecdd3; }
     /* Full-width desktop layout */
     [data-theme=dark]
@@ -1811,7 +1834,7 @@
     max-height: 100vh !important;
     min-height: 0 !important;
     overflow: hidden !important;
-    background: #f4f6f8;
+    background: var(--cream);
   }
   #db-header-bar {
     flex-shrink: 0;
@@ -1823,7 +1846,7 @@
     flex: 1 1 0;
     overflow-y: auto;
     min-height: 0;
-    background: #f4f6f8;
+    background: var(--cream);
     -webkit-overflow-scrolling: touch;
   }
   [data-theme=dark] #db-cards-area { background: var(--cream); }
@@ -1898,13 +1921,13 @@
   [data-theme=dark] .pf-racket-item { background: var(--white); }
   .pf-racket-item:hover { border-color:var(--orange); background:#fff9f5; }
   .pf-racket-item.pf-selected { border-color:var(--orange); background:#fff3eb; }
-  .pf-racket-item img { width:50px; height:50px; object-fit:contain; border-radius:8px; background:#f4f6f8; padding:4px; flex-shrink:0; }
+  .pf-racket-item img { width:50px; height:50px; object-fit:contain; border-radius:8px; background:var(--cream); padding:4px; flex-shrink:0; }
   .pf-racket-brand { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gray); }
   .pf-racket-name { font-size:13px; font-weight:700; color:var(--text); }
   .pf-racket-meta { font-size:11px; color:var(--gray); margin-top:1px; }
   .pf-radio { width:20px; height:20px; border-radius:50%; border:2px solid var(--gray-light); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; margin-left:auto; }
   .pf-racket-item.pf-selected .pf-radio { border-color:var(--orange); background:var(--orange); }
-  .pf-radio::after { content:''; display:none; width:8px; height:8px; border-radius:50%; background:white; }
+  .pf-radio::after { content:''; display:none; width:8px; height:8px; border-radius:50%; background:var(--white); }
   .pf-racket-item.pf-selected .pf-radio::after { display:block; }
 
   /* Side buttons */
@@ -1930,13 +1953,13 @@
   .pf-result-name { font-size:15px; font-weight:700; color:var(--text); margin-bottom:8px; line-height:1.2; }
   .pf-result-badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
   .pf-badge { font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; }
-  .pf-badge-level-adv  { background:#ede9fe; color:#6d28d9; }
+  .pf-badge-level-adv  { background:rgba(109,40,217,0.12); color:#8b5cf6; }
   .pf-badge-level-int  { background:#dbeafe; color:#1d4ed8; }
   .pf-badge-level-beg  { background:#dcfce7; color:#15803d; }
   .pf-badge-style-agg  { background:#fff3eb; color:var(--orange); }
-  .pf-badge-style-def  { background:#e0f2fe; color:#0369a1; }
-  .pf-badge-style-bal  { background:#f0fdf4; color:#15803d; }
-  .pf-badge-comp       { background:#f0fdf4; color:#15803d; }
+  .pf-badge-style-def  { background:rgba(14,165,233,0.12); color:#0369a1; }
+  .pf-badge-style-bal  { background:rgba(34,197,94,0.12); color:var(--green); }
+  .pf-badge-comp       { background:rgba(34,197,94,0.12); color:var(--green); }
   .pf-result-price-row { display:flex; align-items:center; gap:8px; margin-top:4px; }
   .pf-result-price { font-size:17px; font-weight:800; color:var(--orange); }
   .pf-result-buy { flex:1; padding:10px; background:var(--orange); color:white; border:none; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:opacity 0.15s; }
@@ -1980,7 +2003,7 @@
     text-align: center;
     border: 1px solid rgba(34,197,94,0.2);
   }
-  .coffee-title { font-size: 14px; font-weight: 700; color: #15803d; margin-bottom: 8px; }
+  .coffee-title { font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
   .coffee-sub { font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 14px; }
   .coffee-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .coffee-btn-green {
@@ -2090,6 +2113,30 @@
     word-break: break-word;
   }
 
+  /* ── Dark mode overrides aggiuntivi ── */
+  [data-theme=dark] .tag { background: rgba(255,255,255,0.08); }
+  [data-theme=dark] .tag-blue { background: rgba(30,95,168,0.2); color: #60a5fa; }
+  [data-theme=dark] .tag-orange { background: rgba(244,101,10,0.2); color: #fb923c; }
+  [data-theme=dark] .tag-green { background: rgba(34,197,94,0.15); color: #4ade80; }
+  [data-theme=dark] .racket-card { background: var(--white); }
+  [data-theme=dark] .match-reason { background: rgba(30,95,168,0.08); }
+  [data-theme=dark] #buy-modal-sheet { background: var(--white); }
+  [data-theme=dark] .buy-option { border-color: var(--gray-light); background: rgba(255,255,255,0.03); }
+  [data-theme=dark] .buy-option:hover { border-color: var(--orange); background: rgba(244,101,10,0.06); }
+  [data-theme=dark] .buy-modal-title { color: var(--text); }
+  [data-theme=dark] .buy-modal-sub { color: var(--gray); }
+  [data-theme=dark] .db-card { background: var(--white); border-color: var(--gray-light); }
+  [data-theme=dark] .db-brand { color: var(--gray); }
+  [data-theme=dark] .db-name { color: var(--text); }
+  [data-theme=dark] .google-btn { border-color: var(--gray-light); }
+  [data-theme=dark] .policy-badge { background: rgba(255,255,255,0.06); }
+  [data-theme=dark] .purchase-radio-card { background: var(--white); border-color: var(--gray-light); }
+  [data-theme=dark] .auth-error { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.3); }
+  [data-theme=dark] .filter-btn { background: rgba(255,255,255,0.06); border-color: var(--gray-light); color: var(--gray); }
+  [data-theme=dark] .filter-btn.active-filter { background: var(--orange); border-color: var(--orange); color: white; }
+  [data-theme=dark] .pf-section { background: var(--white); }
+  [data-theme=dark] .partner-step-card { background: var(--white); }
+
 </style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2103,15 +2150,7 @@
   <div class="screen active" id="screen-loading">
     <div class="loading-wrap">
       <div style="text-align:center;margin-bottom:4px;">
-        <div style="width:90px;height:90px;border-radius:22px;background:linear-gradient(145deg,#1e3a5f,#0d1b2a);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60">
-            <ellipse cx="30" cy="26" rx="14" ry="17" fill="none" stroke="#f4650a" stroke-width="3.5"/>
-            <line x1="30" y1="43" x2="30" y2="57" stroke="white" stroke-width="4" stroke-linecap="round"/>
-            <line x1="17" y1="26" x2="43" y2="26" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
-            <line x1="30" y1="9" x2="30" y2="43" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
-          </svg>
-        </div>
-        <div class="loading-logo">Racket<span>AI</span></div>
+        <img src="data:image/png;base64,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" style="width:110px;height:110px;object-fit:contain;margin:0 auto 8px;display:block;" alt="RacketAI">
       </div>
       <div class="loading-dots">
         <div class="dot"></div>
@@ -2860,13 +2899,22 @@
         <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">🤖 Analisi AI · Claude</div>
         <div style="font-size:11px;color:var(--gray);" id="ai-summary-text">Risultati personalizzati in base al tuo profilo</div>
       </div>
-      <div style="margin:16px 16px 0;display:flex;align-items:center;gap:8px;background:#f0f6ff;border-radius:10px;padding:10px 14px;">
+      <div style="margin:16px 16px 0;display:flex;align-items:center;gap:8px;background:rgba(30,95,168,0.08);border-radius:10px;padding:10px 14px;">
         <span style="font-size:18px">🔬</span>
         <div>
           <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;">Dati da Racketpedia Lab + PadelCompass</div>
           <div style="font-size:11px;color:var(--gray);">Specifiche tecniche verificate da due database indipendenti</div>
         </div>
       </div>
+      <!-- DISCLAIMER -->
+      <div style="margin:12px 16px 0;background:rgba(244,101,10,0.08);border:1px solid rgba(244,101,10,0.2);border-radius:10px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+        <span style="font-size:14px;flex-shrink:0;">⚠️</span>
+        <div style="font-size:11px;color:var(--gray);line-height:1.5;">
+          <strong style="color:var(--text);">Strumento di orientamento</strong> — Le racchette consigliate si basano sulle tue risposte. 
+          Prezzi e disponibilità possono variare. I link contengono tag affiliati che supportano il progetto senza costi aggiuntivi per te.
+        </div>
+      </div>
+
       <!-- FILTER TABS -->
       <div style="margin:12px 16px 0;display:flex;gap:6px;flex-wrap:wrap;" id="filter-bar">
         <button type="button" onclick="filterRackets('all')" id="filter-all" class="filter-btn active-filter">Tutti</button>
@@ -2881,15 +2929,15 @@
         <div class="level-divider" data-label="🌱 Principianti" style="display:none;padding:8px 0 4px;font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;"></div>
 
         <!-- Adidas Drive 3.1 2025 -->
-        <div class="racket-card" data-level="beginner" data-style="defensive" data-budget="budget">
+        <div class="racket-card" data-racket-id="adidas-match-light-2026" data-level="beginner" data-style="defensive" data-budget="budget">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f5e8,#c8e8c8);">
             <div class="racket-match-badge" style="background:#22c55e;">🌱 Budget</div>
-            <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/139/500x500/adidas-metalbone-carbon-ctrl-3-4-2025-68e2ef1e-39db-496d-a22d-bcc7c035f4f2.webp"
+            <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/246/300x300/adidas-match-light-2026.webp
                  alt="Adidas Drive" style="height:190px;object-fit:contain;padding:10px;max-width:100%" onerror="this.style.opacity=0.08">
             <div class="racket-img-brand">Adidas</div>
           </div>
           <div class="racket-body">
-            <div class="racket-name-row"><div><div class="racket-name">Drive 3.1 2025</div><div class="racket-brand-small">Adidas · 2025 · Principiante</div></div><div class="racket-price">~€60</div></div>
+            <div class="racket-name-row"><div><div class="racket-name">Match Light 2026</div><div class="racket-brand-small">Adidas · 2026 · Principiante</div></div><div class="racket-price">~€59</div></div>
             <div class="racket-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span><span class="star empty">★</span><span class="star-label">Entry level</span></div>
             <div class="affinity-row"><div class="affinity-bar-bg"><div class="affinity-bar-fill" style="width:0%"></div></div><div class="affinity-pct">—%</div></div>
             <div class="score-bars">
@@ -2906,15 +2954,15 @@
         </div>
 
         <!-- Head Flash 2024 – Beginner Balanced -->
-        <div class="racket-card" data-level="beginner" data-style="balanced" data-budget="budget">
+        <div class="racket-card" data-racket-id="head-radical-elite" data-level="beginner" data-style="balanced" data-budget="budget">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fff8e1,#ffecb3);">
             <div class="racket-match-badge" style="background:#22c55e;">🌱 Entry</div>
-            <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/157/500x500/babolat-air-veron-2025-aa9f6f80-8285-400b-a1c5-fedfa64c6460.jpg"
+            <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/164/300x300/head-radical-elite-2024.webp
                  alt="Head Flash 2024" style="height:190px;object-fit:contain;padding:10px;max-width:100%" onerror="this.style.opacity=0.08">
             <div class="racket-img-brand">Head</div>
           </div>
           <div class="racket-body">
-            <div class="racket-name-row"><div><div class="racket-name">Flash 2024</div><div class="racket-brand-small">Head · 2024 · Principiante</div></div><div class="racket-price">~€80</div></div>
+            <div class="racket-name-row"><div><div class="racket-name">Radical Elite 2024</div><div class="racket-brand-small">Head · 2024 · Principiante</div></div><div class="racket-price">~€186</div></div>
             <div class="racket-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span><span class="star empty">★</span><span class="star-label">Buon inizio</span></div>
             <div class="affinity-row"><div class="affinity-bar-bg"><div class="affinity-bar-fill" style="width:0%"></div></div><div class="affinity-pct">—%</div></div>
             <div class="score-bars">
@@ -2933,7 +2981,7 @@
         <!-- ══ INTERMEDI ══ -->
 
         <!-- Bullpadel Vertex 04 2024 – Mid Aggressive -->
-        <div class="racket-card" data-level="intermediate" data-style="aggressive" data-budget="mid">
+        <div class="racket-card" data-racket-id="bullpadel-vertex-04-2024" data-level="intermediate" data-style="aggressive" data-budget="mid">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Intermedio</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/121/500x500/bullpadel-vertex-04-w-2025-85338bbc-f62f-475b-b97c-137ade8625b4.jpg"
@@ -2959,7 +3007,7 @@
         </div>
 
         <!-- Babolat Counter Viper 2023 – Mid Balanced -->
-        <div class="racket-card" data-level="intermediate" data-style="balanced" data-budget="mid">
+        <div class="racket-card" data-racket-id="babolat-counter-viper-2023" data-level="intermediate" data-style="balanced" data-budget="mid">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Intermedio</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/23/500x500/babolat-counter-viper-2023-28626486-b39e-470d-9db8-8a43d081af50.jpeg"
@@ -2985,7 +3033,7 @@
         </div>
 
         <!-- Adidas Metalbone Carbon CTRL 3.4 2025 – Mid-Premium Defensive -->
-        <div class="racket-card" data-level="intermediate" data-style="defensive" data-budget="premium">
+        <div class="racket-card" data-racket-id="adidas-metalbone-carbon-ctrl-3-4-2025" data-level="intermediate" data-style="defensive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7);">
             <div class="racket-match-badge" style="background:var(--blue);">🎯 Controllo</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/139/300x300/adidas-metalbone-carbon-ctrl-3-4-2025-68e2ef1e-39db-496d-a22d-bcc7c035f4f2.webp"
@@ -3013,7 +3061,7 @@
         <!-- ══ AVANZATI ══ -->
 
         <!-- Babolat Air Viper 2025 -->
-        <div class="racket-card" data-level="advanced" data-style="balanced" data-budget="premium">
+        <div class="racket-card" data-racket-id="babolat-air-viper-2025" data-level="advanced" data-style="balanced" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f0f8,#d0ddf0);">
             <div class="racket-match-badge">🥇 #1 Racketpedia</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/152/500x500/babolat-air-viper-2025-ac658f31-d035-4db0-b2fe-bca9df6d7a1b.jpg"
@@ -3039,7 +3087,7 @@
         </div>
 
         <!-- Adidas Metalbone HRD 3.4 2025 -->
-        <div class="racket-card" data-level="advanced" data-style="aggressive" data-budget="premium">
+        <div class="racket-card" data-racket-id="adidas-metalbone-hrd-3-4-2025" data-level="advanced" data-style="aggressive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f5f0e8,#ede0cc);">
             <div class="racket-match-badge">⚡ Più popolare</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/136/500x500/adidas-metalbone-hrd-3-4-2025-a62199f5-8edb-4f24-9f12-56064f249e2c.webp"
@@ -3065,7 +3113,7 @@
         </div>
 
         <!-- Siux Trilogy Pro 4 2024 -->
-        <div class="racket-card" data-level="advanced" data-style="defensive" data-budget="premium">
+        <div class="racket-card" data-racket-id="siux-trilogy-pro-4-2024" data-level="advanced" data-style="defensive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#e8f5f0,#cce8dc);">
             <div class="racket-match-badge">🛡️ Top controllo</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/114/500x500/siux-trilogy-pro-4-2024-72c6f9aa-5741-4230-8ab0-f83b201e6ff0.webp"
@@ -3091,7 +3139,7 @@
         </div>
 
         <!-- Siux Electra Pro 2026 -->
-        <div class="racket-card" data-level="advanced" data-style="balanced" data-budget="premium">
+        <div class="racket-card" data-racket-id="siux-electra-pro-2026" data-level="advanced" data-style="balanced" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#f0e8f5,#e0ccee);">
             <div class="racket-match-badge" style="background:var(--navy);">🆕 2026</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/200/500x500/siux-electra-pro-2026-38fbe900-c1db-40a1-8ac3-921f8980a1ba.webp"
@@ -3117,7 +3165,7 @@
         </div>
 
         <!-- Bullpadel Vertex 05 2026 – Advanced Aggressive -->
-        <div class="racket-card" data-level="advanced" data-style="aggressive" data-budget="premium">
+        <div class="racket-card" data-racket-id="bullpadel-vertex-05-2026" data-level="advanced" data-style="aggressive" data-budget="premium">
           <div class="racket-img-wrap" style="background:linear-gradient(135deg,#fbe9e7,#ffccbc);">
             <div class="racket-match-badge" style="background:var(--orange);">🔥 Top 2026</div>
             <img src="https://cdn.racketpedia.com/media/padel-rackets-data-sheets/177/500x500/bullpadel-vertex-05-2026-6330856b-f1b2-4ec2-9440-fdb2c60cd45f.jpg"
@@ -3227,7 +3275,7 @@
   </div>
 
   <!-- DATABASE SCREEN -->
-  <div class="screen" id="screen-database" style="display:none;flex-direction:column;height:100vh;max-height:100vh;overflow:hidden;background:#f4f6f8;">
+  <div class="screen" id="screen-database" style="display:none;flex-direction:column;height:100vh;max-height:100vh;overflow:hidden;background:var(--cream);">
   <!-- MOBILE LAYOUT: single column, sticky header bar -->
   <div id="db-header-bar" style="flex-shrink:0;z-index:20;background:var(--white);border-bottom:1px solid var(--gray-light);">
     <!-- Row 1: title + back -->
@@ -3344,7 +3392,7 @@
   </div>
 
   <!-- CARDS AREA: normal block flow, full height -->
-  <div id="db-cards-area" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:#f4f6f8;-webkit-overflow-scrolling:touch;">
+  <div id="db-cards-area" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:var(--cream);-webkit-overflow-scrolling:touch;">
     <div id="db-list" style="display:grid;grid-template-columns:1fr;">
       <div id="db-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--gray);">
         <div style="font-size:48px;margin-bottom:12px;">🔍</div>
@@ -3374,10 +3422,10 @@
   </div>
   <!-- DETAIL MODAL (overlay) -->
   <div id="detail-modal" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:3000;background:rgba(0,0,0,0.45);overflow-y:auto;-webkit-overflow-scrolling:touch;">
-    <div id="detail-modal-inner" style="background:#ffffff;margin:0 auto;max-width:680px;min-height:100vh;position:relative;padding-bottom:60px;">
-      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #e8ecf0;position:-webkit-sticky;position:sticky;top:0;background:#ffffff;z-index:10;">
-        <button type="button" onclick="closeDetailModal()" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e8ecf0;background:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1a202c;">‹</button>
-        <div id="detail-modal-title" class="page-title" style="margin:0;font-size:17px;flex:1;color:#1a202c;"></div>
+    <div id="detail-modal-inner" style="background:var(--white);margin:0 auto;max-width:680px;min-height:100vh;position:relative;padding-bottom:60px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #e8ecf0;position:-webkit-sticky;position:sticky;top:0;background:var(--white);z-index:10;">
+        <button type="button" onclick="closeDetailModal()" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e8ecf0;background:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);">‹</button>
+        <div id="detail-modal-title" class="page-title" style="margin:0;font-size:17px;flex:1;color:var(--text);"></div>
       </div>
       <div id="detail-body"></div>
     </div>
@@ -3673,7 +3721,7 @@
           <button type="button" class="cta-btn cta-btn-primary" onclick="navigate('screen-home');showCookieBanner()">
             ⚙️ Modifica preferenze cookie
           </button>
-          <button type="button" class="cta-btn" style="background:#fee2e2;color:#dc2626;border:none;"
+          <button type="button" class="cta-btn" style="background:rgba(239,68,68,0.12);color:#dc2626;border:none;"
             onclick="clearAllData()">
             🗑️ Cancella tutti i miei dati
           </button>
@@ -3739,8 +3787,8 @@
   <div id="buy-modal" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:3000;display:none;align-items:flex-end;justify-content:center;">
     <div onclick="closeBuyModal()" style="position:absolute;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.5);"></div>
     <div style="position:relative;z-index:1;width:100%;max-width:390px;background:white;border-radius:24px 24px 0 0;padding:20px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,0.2);">
-      <div style="width:36px;height:4px;background:#e2e8f0;border-radius:999px;margin:0 auto 16px;"></div>
-      <div style="font-family:'DM Serif Display',serif;font-size:18px;color:#1a202c;margin-bottom:2px;line-height:1.3;" id="buy-modal-racket">—</div>
+      <div style="width:36px;height:4px;background:var(--gray-light);border-radius:999px;margin:0 auto 16px;"></div>
+      <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:2px;line-height:1.3;" id="buy-modal-racket">—</div>
       <div style="font-size:12px;color:#8a929e;margin-bottom:18px;" id="buy-modal-sub">Prezzo indicativo</div>
 
       <!-- Amazon -->
@@ -3749,12 +3797,12 @@
          onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="font-size:24px;flex-shrink:0;">📦</div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:700;color:#1a202c;">Amazon Italia</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Amazon Italia</div>
           <div style="font-size:11px;color:#8a929e;margin-top:1px;">Prime · Resi facili</div>
         </div>
         <div>
           <div style="font-size:17px;font-weight:800;color:var(--orange);text-align:right;" id="buy-price-amazon">—</div>
-          <span id="buy-badge-amazon" style="display:none;font-size:9px;font-weight:800;color:#16a34a;text-align:right;display:block;">✓ Miglior prezzo</span>
+          <span id="buy-badge-amazon" style="display:none;font-size:9px;font-weight:800;color:var(--green);text-align:right;display:block;">✓ Miglior prezzo</span>
         </div>
       </a>
 
@@ -3764,12 +3812,12 @@
          onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="font-size:24px;flex-shrink:0;">🎾</div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:700;color:#1a202c;">Padel Nuestro IT</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Padel Nuestro IT</div>
           <div style="font-size:11px;color:#8a929e;margin-top:1px;">Shop specializzato · Spedizione EU</div>
         </div>
         <div>
           <div style="font-size:17px;font-weight:800;color:var(--orange);text-align:right;" id="buy-price-pn">—</div>
-          <span id="buy-badge-pn" style="display:none;font-size:9px;font-weight:800;color:#16a34a;text-align:right;display:block;">✓ Miglior prezzo</span>
+          <span id="buy-badge-pn" style="display:none;font-size:9px;font-weight:800;color:var(--green);text-align:right;display:block;">✓ Miglior prezzo</span>
         </div>
       </a>
 
@@ -3779,7 +3827,7 @@
          onmouseover="this.style.borderColor='#0082c3'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="font-size:24px;flex-shrink:0;">🏬</div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:700;color:#1a202c;" id="buy-link-dec-name">Decathlon</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);" id="buy-link-dec-name">Decathlon</div>
           <div style="font-size:11px;color:#8a929e;margin-top:1px;">Ritiro in negozio disponibile</div>
         </div>
         <div style="font-size:17px;font-weight:800;color:#0082c3;text-align:right;" id="buy-price-dec">—</div>
@@ -3787,10 +3835,10 @@
 
       <!-- Google Shopping -->
       <a id="buy-link-shopping" href="javascript:void(0)" target="_blank" rel="noopener"
-         style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:1.5px solid #e2e8f0;text-decoration:none;transition:border-color 0.18s;background:#f8f9fa;"
+         style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:1.5px solid var(--gray-light);text-decoration:none;transition:border-color 0.18s;background:var(--cream);"
          onmouseover="this.style.borderColor='#4285f4'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="font-size:20px;flex-shrink:0;">🔍</div>
-        <div style="flex:1;font-size:12px;color:#6b7280;">Confronta tutti i prezzi su Google Shopping</div>
+        <div style="flex:1;font-size:12px;color:var(--gray);">Confronta tutti i prezzi su Google Shopping</div>
         <div style="font-size:11px;font-weight:700;color:#4285f4;flex-shrink:0;white-space:nowrap;">Cerca →</div>
       </a>
     </div>
@@ -3798,23 +3846,23 @@
 
   <!-- PURCHASE SHARE PANEL -->
   <div id="purchase-share-panel" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:4000;background:rgba(0,0,0,0.6);align-items:flex-end;justify-content:center;">
-    <div style="background:white;width:100%;max-width:420px;border-radius:24px 24px 0 0;padding:24px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,0.2);">
-      <div style="width:36px;height:4px;background:#e2e8f0;border-radius:999px;margin:0 auto 16px;"></div>
-      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#1a202c;margin-bottom:4px;">🎉 Acquisto registrato!</div>
-      <div style="font-size:13px;color:#6b7280;margin-bottom:20px;">Condividi la tua scelta con i tuoi compagni di padel!</div>
-      <div style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;color:#374151;line-height:1.6;white-space:pre-wrap;" id="share-msg-preview"></div>
+    <div style="background:var(--white);width:100%;max-width:420px;border-radius:24px 24px 0 0;padding:24px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,0.2);">
+      <div style="width:36px;height:4px;background:var(--gray-light);border-radius:999px;margin:0 auto 16px;"></div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:4px;">🎉 Acquisto registrato!</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:20px;">Condividi la tua scelta con i tuoi compagni di padel!</div>
+      <div style="background:var(--cream);border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;color:#374151;line-height:1.6;white-space:pre-wrap;" id="share-msg-preview"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
         <button type="button" onclick="sharePurchase('whatsapp')" style="padding:12px 8px;border-radius:12px;background:#25d366;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">📱 WhatsApp</button>
         <button type="button" onclick="sharePurchase('telegram')" style="padding:12px 8px;border-radius:12px;background:#0088cc;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">✈️ Telegram</button>
         <button type="button" onclick="sharePurchase('copy')" style="padding:12px 8px;border-radius:12px;background:#6366f1;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">📋 Copia</button>
       </div>
-      <button type="button" onclick="closePurchaseShare()" style="width:100%;padding:14px;border-radius:12px;background:#f1f5f9;border:none;font-size:14px;font-weight:600;color:#6b7280;cursor:pointer;font-family:'DM Sans',sans-serif;">Salta →</button>
+      <button type="button" onclick="closePurchaseShare()" style="width:100%;padding:14px;border-radius:12px;background:#f1f5f9;border:none;font-size:14px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'DM Sans',sans-serif;">Salta →</button>
     </div>
   </div>
 
   <!-- PARTNER SUGGESTION SCREEN v2 -->
   <!-- PARTNER OVERLAY — fixed, no navigate() needed -->
-  <div id="partner-overlay" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:#f4f6f8;overflow-y:auto;-webkit-overflow-scrolling:touch;" data-force-light="1">
+  <div id="partner-overlay" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:var(--cream);overflow-y:auto;-webkit-overflow-scrolling:touch;" data-force-light="1">
 
     <!-- Header -->
     <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:48px 20px 18px;display:flex;align-items:center;gap:14px;position:-webkit-sticky;position:sticky;top:0;z-index:1;">
@@ -3829,7 +3877,7 @@
     <div style="padding:16px 16px 60px;max-width:480px;margin:0 auto;">
 
       <!-- Brand -->
-      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">① Il tuo brand</div>
         <select id="pf-brand-select" class="select-field" onchange="pfOnBrandChange(this.value)">
           <option value="">— Seleziona brand —</option>
@@ -3844,7 +3892,7 @@
       </div>
 
       <!-- Modello -->
-      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">② Il tuo modello</div>
         <select id="pf-model-select" class="select-field" onchange="pfOnModelChange(this.value)" disabled>
           <option value="">— Prima scegli il brand —</option>
@@ -3852,7 +3900,7 @@
       </div>
 
       <!-- Lato -->
-      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">③ Lato del partner</div>
         <div style="display:flex;gap:8px;">
           <button type="button" id="pf-side-both"  onclick="pfSetSide('both')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🔄 Entrambi</button>
@@ -3862,7 +3910,7 @@
       </div>
 
       <!-- Budget -->
-      <div style="background:white;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">④ Budget del partner</div>
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:13px;color:var(--gray);white-space:nowrap;">Max €</span>
@@ -3882,7 +3930,7 @@
       <!-- Risultati -->
       <div id="pf-results" style="display:none;">
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;">Top abbinamenti</div>
-        <div id="pf-logic-pill" style="background:#fff7f2;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#92400e;line-height:1.5;"></div>
+        <div id="pf-logic-pill" style="background:rgba(244,101,10,0.08);border:1px solid rgba(244,101,10,0.2);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--text);line-height:1.5;"></div>
         <div id="pf-results-list"></div>
       </div>
 
@@ -4118,7 +4166,7 @@ function addRacketToDOM(d) {
     '<img src="' + (d.img || '') + '" class="db-img" onerror="this.style.opacity=0.2">'
     + '<div class="db-info">'
     + '<div class="db-brand">' + d.brand
-    + ' <span style="background:#dcfce7;color:#15803d;font-size:9px;padding:1px 5px;border-radius:4px;">NUOVO</span></div>'
+    + ' <span style="background:rgba(34,197,94,0.12);color:var(--green);font-size:9px;padding:1px 5px;border-radius:4px;">NUOVO</span></div>'
     + '<div class="db-name">' + d.model + (d.year ? ' ' + d.year : '') + '</div>'
     + '<div class="db-chips-row">'
     + '<span class="db-tag ' + cls + '">' + lbl + '</span>'
@@ -5857,11 +5905,32 @@ function computeMatches() {
     }
 
     // Hard exclude if outside budget range
+    // Se non ha prezzo definito ed esiste un ceiling, escludiamo per sicurezza
+    if (budgetCeiling !== null && realPrice >= 9999) {
+      return null; // prezzo sconosciuto con budget limitato → escludi
+    }
     if (budgetCeiling !== null && realPrice > budgetCeiling) {
       return null; // sopra il massimo
     }
     if (budgetFloor > 0 && realPrice < budgetFloor) {
       return null; // sotto il minimo della fascia
+    }
+
+    // Hard exclude if balance selected and doesn't match
+    var balAns = ans['fq-balance'] || '';
+    if (balAns && balAns !== 'any') {
+      var scBal = RACKET_SCORES[r[0]];
+      var rBalance = scBal ? (scBal.balance || '').toLowerCase() : '';
+      // Map quiz → DB values
+      // head_heavy → testa pesante/high/head-heavy
+      // head_light → testa leggera/low/head-light
+      // neutral → neutro/neutral/medium
+      var balOk = false;
+      if (balAns === 'head_heavy') balOk = rBalance.indexOf('pes') >= 0; // 'Testa pesante'
+      else if (balAns === 'head_light') balOk = rBalance.indexOf('leg') >= 0; // 'Testa leggera'
+      else if (balAns === 'neutral') balOk = rBalance === 'neutro' || rBalance === '—' || rBalance === '';
+      // Se balance non definito nel DB (—), non escludere
+      if (rBalance && rBalance !== '—' && !balOk) return null;
     }
 
     // Hard exclude if year_pref = new (solo 2025-2026)
@@ -6089,7 +6158,7 @@ function renderResults() {
       prices.forEach(function(p){
         var best = p.k===bestKey;
         priceRow += '<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;'
-          + (best?'background:#dcfce7;color:#15803d;':'background:var(--gray-light);color:var(--gray);')
+          + (best?'background:rgba(34,197,94,0.12);color:var(--green);':'background:var(--gray-light);color:var(--gray);')
           + '">' + (best?'✓ ':'') + p.l + ' €' + p.v + '</span>';
       });
       priceRow += '</div>';
@@ -6099,18 +6168,19 @@ function renderResults() {
       + ' data-racket-id="' + r[0] + '"'
       + ' data-level="' + lvl + '"'
       + ' data-oob="' + (isOOB?'1':'0') + '"'
-      + (isOOB ? ' style="opacity:0.7;"' : rank===0 ? ' style="border:2px solid var(--orange);"' : '')
+      + (isOOB ? ' style="opacity:0.5;filter:grayscale(35%);"' : rank===0 ? ' style="border:2px solid var(--orange);"' : '')
       + '>'
-      + '<div class="racket-img-wrap" style="background:' + (isOOB?'#f8f8f8':'#f0f5ff') + ';">'
+      + '<div class="racket-img-wrap" style="background:' + (isOOB?'var(--gray-light)':'rgba(30,95,168,0.06)') + ';">'
+      + (isOOB ? '<div class="oob-overlay">💸 Fuori budget</div>' : '')
       + '<div class="racket-match-badge" style="background:' + badgeBg + ';">' + badgeTxt + '</div>'
-      + (imgSrc ? '<img src="' + imgSrc + '" onerror="this.style.display=\'none\'" style="height:180px;object-fit:contain;padding:10px;max-width:100%;">' : '<div style="height:180px;display:flex;align-items:center;justify-content:center;font-size:56px;">🏓</div>')
+      + (imgSrc ? '<img src="' + imgSrc + '" onerror="this.style.display=\'none\'" style="height:180px;object-fit:contain;padding:10px;max-width:100%;' + (isOOB?'opacity:0.35;':'') + '">' : '<div style="height:180px;display:flex;align-items:center;justify-content:center;font-size:56px;">🏓</div>')
       + '<div class="racket-img-brand">' + (r[2]||sc.brand||'') + '</div>'
       + '</div>'
       + '<div class="racket-body">'
       + '<div class="racket-name">' + (r[1]||sc.name||'') + '</div>'
       + '<div style="font-size:11px;color:var(--gray);margin-bottom:6px;">' + (r[3]||sc.year||'') + '</div>'
       + '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">'
-      + '<span style="background:#f0f4ff;color:#1e5fa8;font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700;">' + (lvl==='advanced'?'🏆 Avanzato':lvl==='intermediate'?'🎯 Intermedio':'🌱 Principiante') + '</span>'
+      + '<span style="background:rgba(30,95,168,0.1);color:var(--blue);font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700;">' + (lvl==='advanced'?'🏆 Avanzato':lvl==='intermediate'?'🎯 Intermedio':'🌱 Principiante') + '</span>'
       + '</div>'
       + priceRow
       + (!isOOB ? '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;">'
@@ -6884,17 +6954,17 @@ function openDetail(racketId) {
     + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;">' + r.brand + '</div>'
     + '<div style="font-family:\'DM Serif Display\',serif;font-size:24px;color:var(--text);margin-bottom:4px;">' + r.name + ' <span style="font-size:14px;color:var(--gray);">' + r.year + '</span></div>'
     + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 18px;">'
-    + '<span style="background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + levelLabel + '</span>'
-    + '<span style="background:#fef9c3;color:#854d0e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + shapeLabel + '</span>'
-    + '<span style="background:#f0fdf4;color:#15803d;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + styleLabel + '</span>'
-    + '<span style="background:#fff7ed;color:#c2410c;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;">~€' + r.price + '</span>'
+    + '<span style="background:rgba(30,95,168,0.12);color:var(--blue);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + levelLabel + '</span>'
+    + '<span style="background:rgba(234,179,8,0.15);color:#854d0e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + shapeLabel + '</span>'
+    + '<span style="background:rgba(34,197,94,0.12);color:var(--green);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">' + styleLabel + '</span>'
+    + '<span style="background:rgba(244,101,10,0.12);color:var(--orange);font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;">~€' + r.price + '</span>'
     + '</div>'
 
     + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Performance</div>'
-    + '<div style="background:#ffffff;border-radius:14px;padding:12px 8px;margin-bottom:14px;border:1px solid #e8ecf0;">'
+    + '<div style="background:var(--white);border-radius:14px;padding:12px 8px;margin-bottom:14px;border:1px solid #e8ecf0;">'
     + buildRadarSVG(r)
     + '</div>'
-    + '<div style="background:#ffffff;border-radius:14px;padding:16px;margin-bottom:18px;border:1px solid #e8ecf0;">'
+    + '<div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:18px;border:1px solid #e8ecf0;">'
     + '<div style="text-align:center;margin-bottom:14px;">'
     + '<div style="font-size:36px;font-weight:800;color:var(--orange);">' + r.overall + '</div>'
     + '<div style="font-size:11px;color:var(--gray);">Score complessivo / 10</div>'
@@ -6908,7 +6978,7 @@ function openDetail(racketId) {
     + '</div>'
 
     + '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Specifiche tecniche</div>'
-    + '<div style="background:#e8ecf0;border-radius:14px;overflow:hidden;margin-bottom:18px;">'
+    + '<div style="background:var(--gray-light);border-radius:14px;overflow:hidden;margin-bottom:18px;">'
     + [
         ['Peso',      r.weight ? r.weight + 'g' : '—'],
         ['Bilanciamento', r.balance || '—'],
@@ -6918,9 +6988,9 @@ function openDetail(racketId) {
         ['Livello',   levelLabel],
         ['Lato',      sideLabel],
       ].map(function(row, i) {
-        return '<div style="display:flex;padding:10px 14px;' + (i%2===0 ? 'background:#f8f9fa;' : 'background:#ffffff;') + '">'
-          + '<div style="flex:1;font-size:12px;color:#6b7280;">' + row[0] + '</div>'
-          + '<div style="font-size:12px;font-weight:600;color:#1a202c;">' + row[1] + '</div>'
+        return '<div style="display:flex;padding:10px 14px;' + (i%2===0 ? 'background:var(--cream);' : 'background:var(--white);') + '">'
+          + '<div style="flex:1;font-size:12px;color:var(--gray);">' + row[0] + '</div>'
+          + '<div style="font-size:12px;font-weight:600;color:var(--text);">' + row[1] + '</div>'
           + '</div>';
       }).join('')
     + '</div>'
@@ -6937,28 +7007,28 @@ function openDetail(racketId) {
         var pnHref2 = (bl2.padelnuestro && bl2.padelnuestro.indexOf('padelnuestro.com/it/') >= 0) ? bl2.padelnuestro : 'https://www.padelnuestro.com/it/' + pnSlug;
         var shopHref2 = 'https://www.google.it/search?tbm=shop&q=' + encodeURIComponent(r.brand+' '+r.name+' padel racchetta');
         var decHref2 = bl2.decathlon || null;
-        var html2 = '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Acquista</div>';
+        var html2 = '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">Acquista</div>';
         // Amazon
-        html2 += '<a href="'+amzHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:#fff;">'
+        html2 += '<a href="'+amzHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:var(--white);">'
           + '<div style="font-size:22px;flex-shrink:0;">📦</div>'
-          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Amazon Italia</div><div style="font-size:11px;color:#64748b;">Consegna rapida Prime · Resi facili</div></div>'
-          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+amzP2+'</div>'+(bestIsAmz?'<div style="font-size:9px;font-weight:700;color:#16a34a;">✓ Miglior prezzo</div>':'')+'</div></a>';
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Amazon Italia</div><div style="font-size:11px;color:var(--gray);">Consegna rapida Prime · Resi facili</div></div>'
+          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+amzP2+'</div>'+(bestIsAmz?'<div style="font-size:9px;font-weight:700;color:var(--green);">✓ Miglior prezzo</div>':'')+'</div></a>';
         // Padel Nuestro
-        html2 += '<a href="'+pnHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(!bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:#fff;">'
+        html2 += '<a href="'+pnHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid '+(!bestIsAmz?'var(--orange)':'#e2e8f0')+';margin-bottom:8px;text-decoration:none;background:var(--white);">'
           + '<div style="font-size:22px;flex-shrink:0;">🎾</div>'
-          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Padel Nuestro IT</div><div style="font-size:11px;color:#64748b;">Shop specializzato · Spedizione EU</div></div>'
-          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+pnP2+'</div>'+(!bestIsAmz?'<div style="font-size:9px;font-weight:700;color:#16a34a;">✓ Miglior prezzo</div>':'')+'</div></a>';
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Padel Nuestro IT</div><div style="font-size:11px;color:var(--gray);">Shop specializzato · Spedizione EU</div></div>'
+          + '<div style="text-align:right;"><div style="font-size:15px;font-weight:800;color:var(--orange);">~€'+pnP2+'</div>'+(!bestIsAmz?'<div style="font-size:9px;font-weight:700;color:var(--green);">✓ Miglior prezzo</div>':'')+'</div></a>';
         // Decathlon (se disponibile)
         if (decHref2) {
-          html2 += '<a href="'+decHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid #e2e8f0;margin-bottom:8px;text-decoration:none;background:#fff;">'
+          html2 += '<a href="'+decHref2+'" target="_blank" rel="noopener sponsored" style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:2px solid var(--gray-light);margin-bottom:8px;text-decoration:none;background:var(--white);">'
             + '<div style="font-size:22px;flex-shrink:0;">🏬</div>'
-            + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Decathlon</div><div style="font-size:11px;color:#64748b;">Kuikma · Reso in negozio</div></div></a>';
+            + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Decathlon</div><div style="font-size:11px;color:var(--gray);">Kuikma · Reso in negozio</div></div></a>';
         }
         // Google Shopping
-        html2 += '<a href="'+shopHref2+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:2px solid #e2e8f0;margin-bottom:18px;text-decoration:none;background:#fff;">'
+        html2 += '<a href="'+shopHref2+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:2px solid var(--gray-light);margin-bottom:18px;text-decoration:none;background:var(--white);">'
           + '<div style="font-size:22px;flex-shrink:0;">🔍</div>'
-          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0d1b2a;">Confronta prezzi</div><div style="font-size:11px;color:#64748b;">Google Shopping · Tutti gli store</div></div>'
-          + '<div style="font-size:12px;font-weight:700;color:#4285f4;">Cerca →</div></a>';
+          + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Confronta prezzi</div><div style="font-size:11px;color:var(--gray);">Google Shopping · Tutti gli store</div></div>'
+          + '<div style="font-size:12px;font-weight:700;color:var(--blue);">Cerca →</div></a>';
         return html2;
       })()
     + '<div style="display:flex;gap:8px;margin-bottom:40px;">'
@@ -7036,6 +7106,10 @@ function renderSuccess() {
 function openDetailFromCard(btn) {
   var card = btn.closest ? btn.closest('.racket-card') : btn.parentElement.parentElement;
   if (!card) { navigate('screen-results'); return; }
+  // Usa data-racket-id direttamente se disponibile
+  var rid = card.getAttribute('data-racket-id');
+  if (rid && RACKET_SCORES[rid]) { openDetail(rid); return; }
+  // Fallback fuzzy match per card senza id
   var brand = (card.getAttribute('data-brand') || '').toLowerCase();
   var name  = (card.getAttribute('data-name')  || '').toLowerCase();
   var bestId = null, bestScore = 0;
@@ -7256,7 +7330,7 @@ function renderSimilarSection(racketId) {
     var imgSrc = s.img || '';
     var sid = item.id.replace(/[^a-z0-9-]/g,'');
     html += '<div onclick="openDetail(\'' + sid + '\')" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--gray-light);border-radius:14px;cursor:pointer;">'
-      + '<img src="' + imgSrc + '" onerror="this.style.opacity=0.2" style="width:52px;height:52px;object-fit:contain;border-radius:10px;background:white;padding:4px;flex-shrink:0;">'
+      + '<img src="' + imgSrc + '" onerror="this.style.opacity=0.2" style="width:52px;height:52px;object-fit:contain;border-radius:10px;background:var(--white);padding:4px;flex-shrink:0;">'
       + '<div style="flex:1;min-width:0;">'
       + '<div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;">' + (s.brand||'') + '</div>'
       + '<div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (s.name||'') + ' ' + (s.year||'') + '</div>'
@@ -7758,7 +7832,7 @@ function dbImgError(img, brand) {
     img.src = logoUrl;
     img.style.objectFit = 'contain';
     img.style.padding = '10px';
-    img.style.background = '#f8fafc';
+    img.style.background = 'var(--cream)';
     img.style.borderRadius = '8px';
     img.onerror = function() { img.onerror = null; dbImgShowInitial(img, brand); };
   } else {
@@ -7824,7 +7898,7 @@ function renderDB() {
       prices.forEach(function(p){
         var isBest = p.key === bestKey;
         priceHtml += '<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;'
-          + (isBest ? 'background:#dcfce7;color:#15803d;' : 'background:var(--gray-light);color:var(--gray);') + '">'
+          + (isBest ? 'background:rgba(34,197,94,0.12);color:var(--green);' : 'background:var(--gray-light);color:var(--gray);') + '">'
           + (isBest ? '✓ ' : '') + p.label + ' €' + p.val + '</span>';
       });
       priceHtml += '</div>';
@@ -7852,7 +7926,7 @@ function renderDB() {
         var _blogo = DB_BRAND_LOGOS[_bkey];
         if (_blogo) {
           html += '<img src="' + _blogo + '" class="db-img" loading="lazy"'
-            + ' style="object-fit:contain;padding:10px;background:#f8fafc;border-radius:8px;"'
+            + ' style="object-fit:contain;padding:10px;background:var(--cream);border-radius:8px;"'
             + ' onerror="dbImgShowInitial(this,\'' + (r.brand||'').replace(/'/g,'') + '\')" >';
         } else {
           // Lettera iniziale SVG inline
@@ -8036,13 +8110,13 @@ document.addEventListener('keydown', function(e) {
 function closeAdmin(){var p=document.getElementById('rai-admin-panel');if(p)p.remove();}
 function _adminResetStats(){if(window.confirm('Azzera tutte le statistiche?')){localStorage.removeItem('rai_stats');localStorage.removeItem('rai_stats_list');closeAdmin();showToast('✅ Statistiche azzerate');}}
 function _adminCard(label, value) {
-  return '<div style="background:#f8fafc;border-radius:10px;padding:12px;text-align:center;">'
+  return '<div style="background:var(--cream);border-radius:10px;padding:12px;text-align:center;">'
     + '<div style="font-size:22px;font-weight:800;color:#1e3a5f;">'+value+'</div>'
-    + '<div style="font-size:11px;color:#64748b;margin-top:2px;">'+label+'</div>'
+    + '<div style="font-size:11px;color:var(--gray);margin-top:2px;">'+label+'</div>'
     + '</div>';
 }
 function _adminTopList(obj, n) {
-  if (!obj) return '<em style="color:#aaa">nessuno</em>';
+  if (!obj) return '<em style="color:var(--gray)">nessuno</em>';
   var arr = Object.entries(obj).sort(function(a,b){return b[1]-a[1];}).slice(0,n);
   return arr.map(function(x){
     return '<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'
@@ -8066,7 +8140,7 @@ function showAdminPanel() {
     overlay.onclick = function(e){ if(e.target===overlay) closeAdmin(); };
 
     var box = document.createElement('div');
-    box.setAttribute('style','background:white;border-radius:16px;padding:24px;max-width:420px;width:90vw;max-height:85vh;overflow-y:auto;font-family:DM Sans,sans-serif;color:#1a202c;');
+    box.setAttribute('style','background:white;border-radius:16px;padding:24px;max-width:420px;width:90vw;max-height:85vh;overflow-y:auto;font-family:DM Sans,sans-serif;color:var(--text);');
     box.innerHTML = [
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">',
         '<div style="font-size:18px;font-weight:800;">📊 RacketAI Admin</div>',
@@ -8082,16 +8156,16 @@ function showAdminPanel() {
         _adminCard('🔍 Dettagli aperti', stats.open_detail||0),
         _adminCard('⚡ Confronti avviati', stats.start_compare||0),
       '</div>',
-      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🚀 Interesse Pro</div>',
-      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:14px;">'+proTxt+'</div>',
-      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🎾 Racchette più viste</div>',
-      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+_adminTopList(list.detail,5)+'</div>',
-      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🛒 Acquisti registrati</div>',
-      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+(purchases.length?purchases.slice(-5).reverse().map(function(p){return '<div style="padding:3px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'+p.name+' — '+new Date(p.date||0).toLocaleDateString('it-IT')+'</div>';}).join(''):'<em style="color:#aaa">nessuno ancora</em>')+'</div>',
-      '<div style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🔗 Link più cliccati</div>',
-      '<div style="background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:18px;">'+_adminTopList(list.buy_click,5)+'</div>',
-      '<button id="admin-reset-btn" style="width:100%;padding:10px;background:#fee2e2;color:#b91c1c;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">🗑️ Azzera statistiche</button>',
-      '<div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:10px;">Dati su questo dispositivo · Digita admin2026 per aprire</div>'
+      '<div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🚀 Interesse Pro</div>',
+      '<div style="background:var(--cream);border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:14px;">'+proTxt+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🎾 Racchette più viste</div>',
+      '<div style="background:var(--cream);border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+_adminTopList(list.detail,5)+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🛒 Acquisti registrati</div>',
+      '<div style="background:var(--cream);border-radius:10px;padding:10px 12px;margin-bottom:14px;">'+(purchases.length?purchases.slice(-5).reverse().map(function(p){return '<div style="padding:3px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'+p.name+' — '+new Date(p.date||0).toLocaleDateString('it-IT')+'</div>';}).join(''):'<em style="color:var(--gray)">nessuno ancora</em>')+'</div>',
+      '<div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">🔗 Link più cliccati</div>',
+      '<div style="background:var(--cream);border-radius:10px;padding:10px 12px;margin-bottom:18px;">'+_adminTopList(list.buy_click,5)+'</div>',
+      '<button id="admin-reset-btn" style="width:100%;padding:10px;background:rgba(239,68,68,0.12);color:var(--red);border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">🗑️ Azzera statistiche</button>',
+      '<div style="font-size:10px;color:var(--gray);text-align:center;margin-top:10px;">Dati su questo dispositivo · Digita admin2026 per aprire</div>'
     ].join('');
 
     overlay.appendChild(box);
@@ -8128,6 +8202,33 @@ setTimeout(function() {
 setTimeout(function() { try { if (window.requestAnimationFrame) { requestAnimationFrame(function(){ try { renderDB(); } catch(e) {} }); } else { renderDB(); } } catch(e) {} }, 800);
 
 
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Aggiorna card statiche con dati reali dal DB
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function updateStaticCards() {
+  var cards = document.querySelectorAll('#rackets-list .racket-card[data-racket-id]');
+  cards.forEach(function(card) {
+    var rid = card.getAttribute('data-racket-id');
+    var sc = RACKET_SCORES[rid];
+    if (!sc) return;
+    // Aggiorna nome
+    var nameEl = card.querySelector('.racket-name');
+    if (nameEl) nameEl.textContent = sc.name + (sc.year ? ' ' + sc.year : '');
+    // Aggiorna brand/anno
+    var brandEl = card.querySelector('.racket-brand-small');
+    var lvlMap = {beginner:'Principiante', intermediate:'Intermedio', advanced:'Avanzato'};
+    if (brandEl) brandEl.textContent = (sc.brand||'') + ' · ' + (sc.year||'') + ' · ' + (lvlMap[sc.level]||sc.level||'');
+    // Aggiorna prezzo
+    var priceEl = card.querySelector('.racket-price');
+    var bl = BUY_LINKS[rid];
+    if (priceEl && bl && bl.price) priceEl.textContent = '~€' + bl.price;
+    // Aggiorna immagine
+    var imgEl = card.querySelector('img');
+    if (imgEl && sc.img) { imgEl.src = sc.img; imgEl.alt = sc.brand + ' ' + sc.name; }
+  });
+}
+setTimeout(updateStaticCards, 100);
 
 </script>
 </body>
