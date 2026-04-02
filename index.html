@@ -5810,7 +5810,8 @@ var RACKET_DB = [
 ];
 
 function scoreRacket(r, rawAns) {
-  var ans = normalizeAnswers(rawAns);
+  if (!r || !r[0]) return 50; // safety: racchetta malformata → score neutro
+  var ans = normalizeAnswers(rawAns || {});
   // r = [id, name, brand, year, level, side, shape, style, physical_ok, price_tier, img_id, img_file, price_eur, player]
   var score = 0; var total = 0;
 
@@ -5974,6 +5975,7 @@ function computeMatches() {
   if (bud === 'top')    { budgetCeiling = null; budgetFloor = 0;   } // senza limiti
 
   var scored = RACKET_DB.map(function(r) {
+    if (!r || !r[0]) return null; // entry malformata → skip
     // Get real price from BUY_LINKS or fallback to ~€ string in r[12]
     var realPrice = 9999;
     var bl = BUY_LINKS[r[0]];
@@ -6049,12 +6051,14 @@ function computeAllMatches() {
   // Like computeMatches but with NO budget ceiling
   var ans = normalizeAnswers(Object.keys(quizAnswers).length ? quizAnswers : _savedAnswers);
   var scored = RACKET_DB.map(function(r) {
+    if (!r || !r[0]) return null; // entry malformata → skip
     var realPrice = 9999;
     var bl = BUY_LINKS[r[0]];
     if (bl && bl.price) realPrice = bl.price;
     else { var pm = (r[12]||'').match(/\d+/); if(pm) realPrice = parseInt(pm[0]); }
     return { r:r, pct:scoreRacket(r, ans), price:realPrice };
   });
+  scored = scored.filter(function(x){ return x !== null; });
   scored.sort(function(a,b){ return b.pct - a.pct; });
   return scored;
 }
@@ -6170,11 +6174,18 @@ function runAIAnalysis() {
 }
 
 function renderResults() {
-  var matches    = computeMatches();
-  var allMatches = computeAllMatches();
+  // Ripristina le risposte salvate se quizAnswers è stato svuotato
+  if (_savedAnswers && Object.keys(_savedAnswers).length > 0) {
+    if (Object.keys(quizAnswers).length === 0) {
+      quizAnswers = JSON.parse(JSON.stringify(_savedAnswers));
+    }
+  }
+  var matches, allMatches;
+  try { matches = computeMatches() || []; } catch(e) { console.error('computeMatches crash:', e); matches = []; }
+  try { allMatches = computeAllMatches() || []; } catch(e) { console.error('computeAllMatches crash:', e); allMatches = []; }
 
-  saveTestToProfile(matches);
-  renderShareCard(matches);
+  try { saveTestToProfile(matches); } catch(e) { console.error('saveTestToProfile crash:', e); }
+  try { renderShareCard(matches); } catch(e) { console.error('renderShareCard crash:', e); }
   try { incrementTestCount(); } catch(e) {}
   // Mostra donazione dopo 1° test e Pro teaser dopo 2+
   setTimeout(function() {
@@ -6217,6 +6228,7 @@ function renderResults() {
   // Separa matches in base al prezzo reale (indipendente dai filtri)
   var inBudgetCards = [], outBudgetCards = [];
   allMatches.forEach(function(m) {
+    if (!m || !m.r || !m.r[0]) return;
     var bl2 = BUY_LINKS[m.r[0]] || {};
     var rp2 = bl2.price || m.price || 9999;
     if (_ceil2 === null || rp2 <= _ceil2) {
@@ -6228,6 +6240,7 @@ function renderResults() {
   // Genere selezionato per ordinamento
   var _gender2 = _ans2.gender || _ans2['fq-gender'] || 'any';
   function sortByGenderThenScore(a, b) {
+    if (!a || !a.r || !b || !b.r) return 0;
     var rgA = (RACKET_SCORES[a.r[0]] || {}).gender || 'all';
     var rgB = (RACKET_SCORES[b.r[0]] || {}).gender || 'all';
     if (_gender2 === 'female') {
@@ -6263,7 +6276,9 @@ function renderResults() {
     outBudgetCards.forEach(function(m){ allCards.push({m:m, isOOB:true}); });
   }
 
+  var _budgetRank = 0; // counter per medaglie (solo card in-budget)
   allCards.forEach(function(item, i) {
+    try {
     // Separatore visivo
     if (item.separator) {
       cardsHtml += '<div class="oob-separator">'
@@ -6274,12 +6289,13 @@ function renderResults() {
       return;
     }
     var m = item.m;
+    if (!m || !m.r) return; // safety check
     var isOOB = item.isOOB;
     var r     = m.r;
     var sc    = RACKET_SCORES[r[0]] || {};
     var pct   = m.pct;
-    var rankIdx = allCards.slice(0, i+1).filter(function(x){ return !x.separator && !x.isOOB; }).length - 1;
-    var rank  = !isOOB && rankIdx < 3 ? rankIdx : -1;
+    var rank = (!isOOB && _budgetRank < 3) ? _budgetRank : -1;
+    if (!isOOB) _budgetRank++;
     var imgSrc = sc.img || (r[10] ? ('https://cdn.racketpedia.com/media/padel-rackets-data-sheets/' + r[10] + '/300x300/' + r[11]) : '');
     var price  = m.price || sc.price || '';
     var lvl    = r[4] || sc.level || '';
@@ -6342,6 +6358,7 @@ function renderResults() {
       + '<button type="button" class="action-btn action-btn-secondary" onclick="openDetail(\'' + r[0] + '\')">📖 Dettagli</button>'
       + '</div>'
       + '</div></div>';
+    } catch(e2) { console.error('Card crash idx=' + i + ':', e2, item); }
   });
 
   // ── Set DOM ──────────────────────────────────────
@@ -6365,7 +6382,7 @@ function renderResults() {
   var bud = quizAnswers['fq-budget'] || quizAnswers.budget;
   var budLabel = {budget:'< €100', mid:'€100–180', top:'Senza limiti'}[bud] || '';
   var sub = document.querySelector('#screen-results .results-sub');
-  if (sub) sub.textContent = matches.length + ' nel budget' + (budLabel ? ' (' + budLabel + ')' : '') + ' · ' + outBudget.length + ' fuori budget';
+  if (sub) sub.textContent = matches.length + ' nel budget' + (budLabel ? ' (' + budLabel + ')' : '') + ' · ' + outBudgetCards.length + ' fuori budget';
 
   // ── Filter bar reset ──────────────────────────────
   var filterBtns = Array.prototype.slice.call(document.querySelectorAll('#filter-bar .filter-btn'));
@@ -6381,6 +6398,7 @@ function saveTestToProfile(matches) {
   var ud = users[currentUser.email];
   if (!ud) return;
   if (!ud.tests) ud.tests = [];
+  if (!matches || !matches.length) return; // no matches → non salvare
   var top = matches[0];
   ud.tests.unshift({
     date: Date.now(),
@@ -7444,7 +7462,7 @@ var _shareRacketName = '';
 var _shareRacketPct  = '';
 function renderShareCard(matches) {
   var card = document.getElementById('share-card');
-  if (!card || !matches || !matches.length) return;
+  if (!card || !matches || !matches.length || !matches[0] || !matches[0].r) return;
   _shareRacketName = matches[0].r[2] + ' ' + matches[0].r[1];
   _shareRacketPct  = matches[0].pct + '%';
   var el = document.getElementById('share-racket-name'); if (!el) return;
@@ -7592,6 +7610,7 @@ function onPriceSlider(val) {
 function computeAllMatches() {
   var ans = quizAnswers;
   var scored = RACKET_DB.map(function(r) {
+    if (!r || !r[0]) return null; // entry malformata → skip
     var realPrice = 9999;
     var bl = BUY_LINKS[r[0]];
     if (bl && bl.price) realPrice = bl.price;
