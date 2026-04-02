@@ -4399,7 +4399,7 @@ function navigate(id) {
   currentScreen = id;
 
   if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 600); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 1500); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 3500); }
-  if (id === 'screen-loading-results') { setTimeout(function() { try { runAIAnalysis(); } catch(e) { navigate('screen-results'); } }, 300); }
+  if (id === 'screen-loading-results') { try { _savedAnswers = JSON.parse(JSON.stringify(quizAnswers)); } catch(e) { _savedAnswers = quizAnswers; } setTimeout(function() { try { runAIAnalysis(); } catch(e) { navigate('screen-results'); } }, 300); }
   if (id === 'screen-results') {
     setTimeout(function() {
       try { renderResults(); } catch(e) { console.error('renderResults error:', e); }
@@ -5963,7 +5963,7 @@ function normalizeAnswers(ans) {
 }
 
 function computeMatches() {
-  var ans = normalizeAnswers(quizAnswers);
+  var ans = normalizeAnswers(Object.keys(quizAnswers).length ? quizAnswers : _savedAnswers);
   var bud = ans['fq-budget'] || ans.budget;
 
   // Budget ceiling in euros (null = no limit)
@@ -6047,7 +6047,7 @@ function cdnImg(id, file) {
 
 function computeAllMatches() {
   // Like computeMatches but with NO budget ceiling
-  var ans = normalizeAnswers(quizAnswers);
+  var ans = normalizeAnswers(Object.keys(quizAnswers).length ? quizAnswers : _savedAnswers);
   var scored = RACKET_DB.map(function(r) {
     var realPrice = 9999;
     var bl = BUY_LINKS[r[0]];
@@ -6346,6 +6346,7 @@ function renderResults() {
 
   // ── Set DOM ──────────────────────────────────────
   var rl = document.getElementById('rackets-list') || document.querySelector('[id="rackets-list"]');
+  if (!rl) { try { showToast('ERR: rackets-list non trovato!'); } catch(e) {} return; }
   if (rl) {
     rl.innerHTML = ''; // reset prima
     rl.innerHTML = cardsHtml;
@@ -6765,7 +6766,8 @@ function showToast(msg) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // COMPARE SYSTEM
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-var compareList = []; // max 2 items: [{id, brand, name, img}]
+var compareList = [];
+var _savedAnswers = {}; // salva risposte prima di andare ai risultati // max 2 items: [{id, brand, name, img}]
 
 function toggleCompare(id, brand, name, imgUrl) {
   // Accetta sia stringa che element.dataset.id
