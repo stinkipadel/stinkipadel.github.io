@@ -956,7 +956,7 @@
     font-weight:700;
     cursor:pointer;
     transition:all 0.18s;
-    font-family:'DM Sans',sans-serif;
+    font-family:DM Sans,sans-serif;
   }
   .filter-btn.active-filter {
     border-color:var(--blue);
@@ -1095,7 +1095,7 @@
     display:flex;align-items:center;justify-content:center;font-size:15px;
   }
   .stinki-logo-text {
-    font-family:'Bebas Neue',cursive;font-size:18px;
+    font-family:Bebas Neue,cursive;font-size:18px;
     color:var(--navy);letter-spacing:1px;
   }
   .stinki-logo-text span { color:var(--orange); }
@@ -1128,7 +1128,7 @@
     display:inline-flex;align-items:center;gap:8px;
     background:var(--orange);color:white;border:none;
     padding:12px 20px;border-radius:12px;font-size:14px;font-weight:700;
-    cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.2s;
+    cursor:pointer;font-family:DM Sans,sans-serif;transition:opacity 0.2s;
   }
   .top-match-buy:hover { opacity:0.88; }
   .top-match-img {
@@ -1193,7 +1193,7 @@
   .feedback-star:hover  { transform:scale(1.15); }
   .feedback-textarea {
     width:100%;padding:10px 12px;border:1.5px solid var(--gray-light);
-    border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;
+    border-radius:10px;font-size:13px;font-family:DM Sans,sans-serif;
     color:var(--text);resize:none;outline:none;background:var(--white);
   }
   .feedback-textarea:focus { border-color:var(--blue); }
@@ -1306,14 +1306,14 @@
     flex:1; padding:12px; border-radius:12px;
     background:var(--orange); color:white; border:none;
     font-size:14px; font-weight:700; cursor:pointer;
-    font-family:'DM Sans',sans-serif; transition:opacity 0.2s;
+    font-family:DM Sans,sans-serif; transition:opacity 0.2s;
   }
   #btn-do-compare:disabled { opacity:0.4; cursor:not-allowed; }
   #btn-clear-compare {
     padding:12px 16px; border-radius:12px;
     background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7);
     border:none; font-size:13px; cursor:pointer;
-    font-family:'DM Sans',sans-serif;
+    font-family:DM Sans,sans-serif;
   }
 
   /* ── COMPARE SCREEN ── */
@@ -1406,13 +1406,13 @@
     flex:1; padding:12px; border-radius:12px;
     background:var(--orange); color:white; border:none;
     font-size:14px; font-weight:700; cursor:pointer;
-    font-family:'DM Sans',sans-serif;
+    font-family:DM Sans,sans-serif;
   }
   .cookie-btn-reject {
     padding:12px 16px; border-radius:12px;
     background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.6);
     border:1px solid rgba(255,255,255,0.12);
-    font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif;
+    font-size:13px; cursor:pointer; font-family:DM Sans,sans-serif;
   }
   .cookie-toggles { margin-bottom:14px; }
   .cookie-toggle-row {
@@ -1944,7 +1944,7 @@
 
   /* Side buttons */
   .pf-side-row { display:flex; gap:8px; }
-  .pf-side-btn { flex:1; padding:12px 8px; border-radius:12px; border:1.5px solid var(--gray-light); background:var(--white); font-size:13px; font-weight:600; color:var(--gray); cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; text-align:center; }
+  .pf-side-btn { flex:1; padding:12px 8px; border-radius:12px; border:1.5px solid var(--gray-light); background:var(--white); font-size:13px; font-weight:600; color:var(--gray); cursor:pointer; font-family:DM Sans,sans-serif; transition:all 0.15s; text-align:center; }
   [data-theme=dark] .pf-side-btn { background: var(--white); }
   .pf-side-btn:hover { border-color:var(--orange); }
   .pf-side-btn.pf-active { background:var(--orange); border-color:var(--orange); color:white; }
@@ -1974,7 +1974,7 @@
   .pf-badge-comp       { background:rgba(34,197,94,0.12); color:var(--green); }
   .pf-result-price-row { display:flex; align-items:center; gap:8px; margin-top:4px; }
   .pf-result-price { font-size:17px; font-weight:800; color:var(--orange); }
-  .pf-result-buy { flex:1; padding:10px; background:var(--orange); color:white; border:none; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:opacity 0.15s; }
+  .pf-result-buy { flex:1; padding:10px; background:var(--orange); color:white; border:none; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; font-family:DM Sans,sans-serif; transition:opacity 0.15s; }
   .pf-result-buy:hover { opacity:0.88; }
 
   /* Locked step overlay */
@@ -2150,14 +2150,40 @@
   [data-theme=dark] .pf-section { background: var(--white); }
   [data-theme=dark] .partner-step-card { background: var(--white); }
 
+  @keyframes paffoBounce {
+    from { transform: translateY(0) rotate(-5deg) scale(1); }
+    to   { transform: translateY(-20px) rotate(5deg) scale(1.2); }
+  }
+  @keyframes paffoFall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
 </style>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
+<style>
+  #app-version {
+    position: fixed;
+    top: 6px;
+    right: 8px;
+    background: rgba(244,101,10,0.85);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    z-index: 99999;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
 <div class="phone-shell">
+  <div id="app-version">v3.5</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -2787,10 +2813,7 @@
             <span class="option-check">✓</span><span class="option-icon">💰</span>
             <span class="option-text"><span class="option-title">Il prezzo decide</span><span class="option-desc">Prendo il miglior rapporto qualità/prezzo</span></span>
           </button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'fq-year-options',null)" data-q="year_pref" data-v="new">
-            <span class="option-check">✓</span><span class="option-icon">🆕</span>
-            <span class="option-text"><span class="option-title">Solo nuovi (2025–2026)</span><span class="option-desc">Ultimi modelli, tecnologie più recenti</span></span>
-          </button>
+
           <button type="button" class="option-btn" onclick="selectOption(this,'fq-year-options',null)" data-q="year_pref" data-v="none">
             <span class="option-check">✓</span><span class="option-icon">🤷</span>
             <span class="option-text"><span class="option-title">Non ho preferenze</span><span class="option-desc">Mostrami tutte le opzioni disponibili</span></span>
@@ -2850,10 +2873,7 @@
             <span class="option-check">✓</span><span class="option-icon">⭐</span>
             <span class="option-text"><span class="option-title">Il massimo in tutto</span><span class="option-desc">Prestazioni assolute, voglio il top</span></span>
           </button>
-          <button type="button" class="option-btn" onclick="selectOption(this,'fq-year-options',null)" data-q="year_pref" data-v="new">
-            <span class="option-check">✓</span><span class="option-icon">🆕</span>
-            <span class="option-text"><span class="option-title">Solo nuovi (2025–2026)</span><span class="option-desc">Ultimi modelli, tecnologie più recenti</span></span>
-          </button>
+
           <button type="button" class="option-btn" onclick="selectOption(this,'fq-goal-options',null)" data-q="goal" data-v="unknown">
             <span class="option-check">✓</span><span class="option-icon">🤷</span>
             <span class="option-text"><span class="option-title">Non so ancora</span><span class="option-desc">L'algoritmo deciderà in base alle altre risposte</span></span>
@@ -2887,7 +2907,7 @@
   <div class="screen" id="screen-loading-results">
     <div class="loading-wrap" style="background: linear-gradient(145deg, var(--navy) 0%, #1a2d42 100%);">
       <div style="font-size:60px;animation:popIn 0.5s ease">🔍</div>
-      <div style="font-family:'Bebas Neue',cursive;font-size:28px;color:white;letter-spacing:1px;">Analisi in corso...</div>
+      <div style="font-family:Bebas Neue,cursive;font-size:28px;color:white;letter-spacing:1px;">Analisi in corso...</div>
       <div class="loading-dots">
         <div class="dot"></div>
         <div class="dot"></div>
@@ -3303,11 +3323,11 @@
     <!-- Row 2: tabs -->
     <div style="display:flex;margin:0 16px 8px;border:1.5px solid var(--gray-light);border-radius:10px;overflow:hidden;">
       <button type="button" id="db-tab-all" onclick="switchDBTab('all')"
-        style="flex:1;padding:7px 4px;border:none;background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+        style="flex:1;padding:7px 4px;border:none;background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">
         📋 Tutte
       </button>
       <button type="button" id="db-tab-collection" onclick="switchDBTab('collection')"
-        style="flex:1;padding:7px 4px;border:none;background:var(--white);color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border-left:1.5px solid var(--gray-light);">
+        style="flex:1;padding:7px 4px;border:none;background:var(--white);color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;border-left:1.5px solid var(--gray-light);">
         ♥ Collezione
       </button>
     </div>
@@ -3318,7 +3338,7 @@
         <input type="text" id="db-search" placeholder="Cerca marca o modello..." oninput="filterDB()" autocomplete="off">
       </div>
       <button type="button" id="db-filter-btn" onclick="dbOpenFilters()"
-        style="flex-shrink:0;padding:9px 14px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;font-size:12px;font-weight:700;color:var(--gray);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;white-space:nowrap;">
+        style="flex-shrink:0;padding:9px 14px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;font-size:12px;font-weight:700;color:var(--gray);cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:5px;white-space:nowrap;">
         ⚙️ Filtri <span id="db-filter-badge" style="display:none;background:var(--orange);color:white;border-radius:999px;padding:1px 6px;font-size:10px;"></span>
       </button>
     </div>
@@ -3400,7 +3420,7 @@
     </div>
 
     <button type="button" onclick="dbCloseFilters()"
-      style="width:100%;padding:14px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+      style="width:100%;padding:14px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">
       Applica filtri
     </button>
   </div>
@@ -3776,13 +3796,13 @@
       <div style="position:relative;">
         <input type="text" id="compare-search-input" placeholder="🔍 Cerca racchetta da aggiungere..." 
                oninput="compareSearch(this.value)"
-               style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;">
+               style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-size:13px;font-family:DM Sans,sans-serif;outline:none;box-sizing:border-box;">
         <div id="compare-search-results" style="display:none;position:absolute;bottom:100%;left:0;right:0;background:#1a2d42;border-radius:10px;border:1px solid rgba(255,255,255,0.15);max-height:200px;overflow-y:auto;margin-bottom:4px;z-index:10;"></div>
       </div>
     </div>
     <div style="display:flex;gap:8px;">
-      <button type="button" id="btn-do-compare" disabled onclick="_track('start_compare');navigateWithHistory('screen-compare')" style="flex:1;padding:12px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;opacity:0.4;">⚡ Confronta ora</button>
-      <button type="button" onclick="clearCompare()" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:none;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Svuota</button>
+      <button type="button" id="btn-do-compare" disabled onclick="_track('start_compare');navigateWithHistory('screen-compare')" style="flex:1;padding:12px;border-radius:12px;background:var(--orange);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;opacity:0.4;">⚡ Confronta ora</button>
+      <button type="button" onclick="clearCompare()" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:none;font-size:13px;cursor:pointer;font-family:DM Sans,sans-serif;">Svuota</button>
     </div>
   </div>
 
@@ -3876,11 +3896,11 @@
       <div style="font-size:13px;color:var(--gray);margin-bottom:20px;">Condividi la tua scelta con i tuoi compagni di padel!</div>
       <div style="background:var(--cream);border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;color:#374151;line-height:1.6;white-space:pre-wrap;" id="share-msg-preview"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
-        <button type="button" onclick="sharePurchase('whatsapp')" style="padding:12px 8px;border-radius:12px;background:#25d366;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">📱 WhatsApp</button>
-        <button type="button" onclick="sharePurchase('telegram')" style="padding:12px 8px;border-radius:12px;background:#0088cc;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">✈️ Telegram</button>
-        <button type="button" onclick="sharePurchase('copy')" style="padding:12px 8px;border-radius:12px;background:#6366f1;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">📋 Copia</button>
+        <button type="button" onclick="sharePurchase('whatsapp')" style="padding:12px 8px;border-radius:12px;background:#25d366;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">📱 WhatsApp</button>
+        <button type="button" onclick="sharePurchase('telegram')" style="padding:12px 8px;border-radius:12px;background:#0088cc;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">✈️ Telegram</button>
+        <button type="button" onclick="sharePurchase('copy')" style="padding:12px 8px;border-radius:12px;background:#6366f1;color:white;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">📋 Copia</button>
       </div>
-      <button type="button" onclick="closePurchaseShare()" style="width:100%;padding:14px;border-radius:12px;background:var(--gray-light);border:none;font-size:14px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'DM Sans',sans-serif;">Salta →</button>
+      <button type="button" onclick="closePurchaseShare()" style="width:100%;padding:14px;border-radius:12px;background:var(--gray-light);border:none;font-size:14px;font-weight:600;color:var(--gray);cursor:pointer;font-family:DM Sans,sans-serif;">Salta →</button>
     </div>
   </div>
 
@@ -3927,9 +3947,9 @@
       <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">③ Lato del partner</div>
         <div style="display:flex;gap:8px;">
-          <button type="button" id="pf-side-both"  onclick="pfSetSide('both')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🔄 Entrambi</button>
-          <button type="button" id="pf-side-left"  onclick="pfSetSide('left')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">👈 Sinistro</button>
-          <button type="button" id="pf-side-right" onclick="pfSetSide('right')" style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">👉 Destro</button>
+          <button type="button" id="pf-side-both"  onclick="pfSetSide('both')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;">🔄 Entrambi</button>
+          <button type="button" id="pf-side-left"  onclick="pfSetSide('left')"  style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;">👈 Sinistro</button>
+          <button type="button" id="pf-side-right" onclick="pfSetSide('right')" style="flex:1;padding:11px 6px;border-radius:10px;border:1.5px solid var(--gray-light);background:white;color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;">👉 Destro</button>
         </div>
       </div>
 
@@ -3939,15 +3959,15 @@
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:13px;color:var(--gray);white-space:nowrap;">Max €</span>
           <input type="number" id="pf-budget" placeholder="es. 250" min="0" max="9999"
-            style="flex:1;padding:11px 14px;border:2px solid var(--orange);border-radius:10px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;color:#f4650a;outline:none;background:#ffffff;"
+            style="flex:1;padding:11px 14px;border:2px solid var(--orange);border-radius:10px;font-size:15px;font-weight:700;font-family:DM Sans,sans-serif;color:#f4650a;outline:none;background:#ffffff;"
             onfocus="this.style.borderColor='#f4650a';this.style.background='#fff3eb';this.style.color='#c2410c';" onblur="this.style.borderColor='var(--orange)';this.style.background='#ffffff';this.style.color='#f4650a';">
-          <button type="button" onclick="document.getElementById('pf-budget').value=''" style="padding:11px 12px;border-radius:10px;border:1.5px solid var(--orange);background:#fff3eb;color:var(--orange);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Nessun limite</button>
+          <button type="button" onclick="document.getElementById('pf-budget').value=''" style="padding:11px 12px;border-radius:10px;border:1.5px solid var(--orange);background:#fff3eb;color:var(--orange);font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap;">Nessun limite</button>
         </div>
       </div>
 
       <!-- CTA -->
       <button type="button" id="pf-cta" onclick="pfCompute()" disabled
-        style="width:100%;padding:16px;border-radius:14px;background:var(--gray-light);color:var(--gray);border:none;font-size:15px;font-weight:700;cursor:not-allowed;font-family:'DM Sans',sans-serif;margin-bottom:20px;transition:background 0.2s,color 0.2s;">
+        style="width:100%;padding:16px;border-radius:14px;background:var(--gray-light);color:var(--gray);border:none;font-size:15px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;margin-bottom:20px;transition:background 0.2s,color 0.2s;">
         🤝 Trova la racchetta per il partner
       </button>
 
@@ -6332,7 +6352,7 @@ function renderResults() {
       + '>'
       + '<div class="racket-img-wrap" style="background:' + (isOOB?'var(--gray-light)':isWoman?'linear-gradient(135deg,#fce4ec,#f8bbd0)':'rgba(30,95,168,0.06)') + ';">'
       + '<div class="racket-match-badge" style="background:' + badgeBg + ';">' + badgeTxt + '</div>'
-      + (imgSrc ? '<img src="' + imgSrc + '" onerror="this.style.display=\'none\'" style="height:180px;object-fit:contain;padding:10px;max-width:100%;' + (isOOB?'opacity:0.35;':'') + '">' : '<div style="height:180px;display:flex;align-items:center;justify-content:center;font-size:56px;">🏓</div>')
+      + (imgSrc ? '<img src="' + imgSrc + '" onerror="this.onerror=null;this.style.display=\'none\';this.parentNode.querySelector(\'.img-fallback\').style.display=\'flex\'" style="height:180px;object-fit:contain;padding:10px;max-width:100%;' + (isOOB?'opacity:0.35;':'') + '"><div class="img-fallback" style="display:none;height:180px;align-items:center;justify-content:center;font-size:56px;">🏓</div>' : '<div class="img-fallback" style="display:flex;height:180px;align-items:center;justify-content:center;font-size:56px;">🏓</div>')
       + (isWoman ? '<div style="position:absolute;top:8px;right:8px;background:#e91e8c;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:0.5px;">♀ Donna</div>' : '')
       + '<div class="racket-img-brand">' + (r[2]||sc.brand||'') + '</div>'
       + '</div>'
@@ -6642,7 +6662,7 @@ function renderProfile() {
             + '<div class="feedback-stars">' + starsHtml + '</div>'
             + '<input type="hidden" id="rating-val-' + idx + '" value="0">'
             + '<textarea class="feedback-textarea" id="feedback-text-' + idx + '" rows="2" placeholder="Commento opzionale..."></textarea>'
-            + '<button type="button" onclick="submitFeedback(' + idx + ')" style="margin-top:8px;padding:9px 16px;background:var(--orange);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Invia feedback</button>'
+            + '<button type="button" onclick="submitFeedback(' + idx + ')" style="margin-top:8px;padding:9px 16px;background:var(--orange);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">Invia feedback</button>'
             + '</div>';
         }
         return '<div class="purchased-card">'
@@ -7219,8 +7239,8 @@ function openDetail(racketId) {
         return html2;
       })()
     + '<div style="display:flex;gap:8px;margin-bottom:40px;">'
-    + '<button type="button" onclick="toggleCollection(document.getElementById(\'detail-save-btn\'),\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + ' ' + r.year + '\',\'' + r.img + '\')" id="detail-save-btn" style="flex:1;padding:13px;border-radius:12px;background:var(--gray-light);border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">&#9825; Collezione</button>'
-    + '<button type="button" onclick="toggleCompare(\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + '\',\'' + r.img + '\')" style="flex:1;padding:13px;border-radius:12px;background:var(--navy);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif;">&#9878; Confronta</button>'
+    + '<button type="button" onclick="toggleCollection(document.getElementById(\'detail-save-btn\'),\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + ' ' + r.year + '\',\'' + r.img + '\')" id="detail-save-btn" style="flex:1;padding:13px;border-radius:12px;background:var(--gray-light);border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">&#9825; Collezione</button>'
+    + '<button type="button" onclick="toggleCompare(\'' + racketId + '\',\'' + r.brand + '\',\'' + r.name + '\',\'' + r.img + '\')" style="flex:1;padding:13px;border-radius:12px;background:var(--navy);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">&#9878; Confronta</button>'
     + '</div>'
 
     + '</div>';
@@ -7931,9 +7951,9 @@ function pfCompute() {
     }).join('');
   }
 
-  // Aggiungi pulsante condivisione dopo i risultati
+  var oldShr = document.getElementById('pf-share-btn'); if (oldShr) oldShr.remove();
   if (results.length > 0) {
-    var shareHtml = '<div style="margin-top:16px;">'
+    var shareHtml = '<div id="pf-share-btn" style="margin-top:16px;">'
       + '<div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Condividi le racchette col tuo partner</div>'
       + '<button type="button" onclick="sharePartnerResults()" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#14532d,#166534);color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;"><span>🤝</span><span>Invia le 3 racchette al partner</span></button>'
       + '</div>';
@@ -8306,9 +8326,72 @@ function _trackList(key, val) {
 var _adminBuffer = '';
 document.addEventListener('keydown', function(e) {
   _adminBuffer += e.key.toLowerCase();
-  if (_adminBuffer.length > 10) _adminBuffer = _adminBuffer.slice(-10);
+  if (_adminBuffer.length > 12) _adminBuffer = _adminBuffer.slice(-12);
   if (_adminBuffer.endsWith('admin2026')) showAdminPanel();
+  if (_adminBuffer.endsWith('paffo')) showPaffo();
 });
+
+// ── Easter egg: Paffo mode 🎵 ──
+var _paffoActive = false;
+var _paffoAudio = null;
+
+function showPaffo() {
+  if (_paffoActive) { closePaffo(); return; }
+  _paffoActive = true;
+
+  // Crea audio
+  _paffoAudio = new Audio('https://cdn1.suno.ai/0aad058e-5831-4c8a-905d-31ac08e16b35.mp3');
+  _paffoAudio.loop = true;
+  _paffoAudio.volume = 0.7;
+  _paffoAudio.play().catch(function() {});
+
+  // Overlay a tutto schermo
+  var overlay = document.createElement('div');
+  overlay.id = 'paffo-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:999999;background:#0d1b2a;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;';
+  overlay.onclick = closePaffo;
+
+  // Emoji che ballano
+  var emojis = ['🏓','🎾','🏆','⚡','🎯','🔥','💪'];
+  var dancingHTML = '<div id="paffo-dancers" style="display:flex;gap:16px;margin-bottom:24px;font-size:48px;"></div>';
+
+  overlay.innerHTML = dancingHTML +
+    '<div style="font-family:Bebas Neue,cursive;font-size:64px;color:#f4650a;letter-spacing:4px;text-shadow:0 0 30px rgba(244,101,10,0.8);">PAFFO MODE</div>' +
+    '<div style="font-size:18px;color:rgba(255,255,255,0.7);margin-top:8px;font-family:DM Sans,sans-serif;">🎵 O Come Lhe AndaHAAA? 🎵</div>' +
+    '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:32px;">Clicca per uscire</div>';
+
+  document.body.appendChild(overlay);
+
+  // Anima le emoji
+  var dancersEl = document.getElementById('paffo-dancers');
+  var emojiList = emojis.concat(emojis).slice(0,7);
+  emojiList.forEach(function(em, idx) {
+    var span = document.createElement('span');
+    span.textContent = em;
+    span.style.cssText = 'display:inline-block;animation:paffoBounce 0.6s ease-in-out infinite alternate;animation-delay:' + (idx * 0.1) + 's;';
+    dancersEl.appendChild(span);
+  });
+
+  // Stelle che cadono
+  for (var i = 0; i < 20; i++) {
+    (function(i) {
+      setTimeout(function() {
+        if (!document.getElementById('paffo-overlay')) return;
+        var star = document.createElement('div');
+        star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        star.style.cssText = 'position:absolute;font-size:' + (16+Math.random()*24) + 'px;left:' + (Math.random()*100) + '%;top:-40px;animation:paffoFall ' + (2+Math.random()*3) + 's linear forwards;pointer-events:none;';
+        overlay.appendChild(star);
+      }, i * 200);
+    })(i);
+  }
+}
+
+function closePaffo() {
+  _paffoActive = false;
+  if (_paffoAudio) { _paffoAudio.pause(); _paffoAudio = null; }
+  var overlay = document.getElementById('paffo-overlay');
+  if (overlay) overlay.remove();
+}
 
 function closeAdmin(){var p=document.getElementById('rai-admin-panel');if(p)p.remove();}
 function _adminResetStats(){if(window.confirm('Azzera tutte le statistiche?')){localStorage.removeItem('rai_stats');localStorage.removeItem('rai_stats_list');closeAdmin();showToast('✅ Statistiche azzerate');}}
