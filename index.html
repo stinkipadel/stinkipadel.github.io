@@ -538,11 +538,12 @@
     width: 100%;
     flex-shrink: 0;
     grid-column: 1 / -1;
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 12px;
-    margin: 8px 0 4px;
+    margin: 16px 0 8px;
     padding: 0 4px;
+    box-sizing: border-box;
   }
   .racket-card {
     background: var(--white);
@@ -2130,6 +2131,7 @@
   [data-theme=dark] .tag-orange { background: rgba(244,101,10,0.2); color: #fb923c; }
   [data-theme=dark] .tag-green { background: rgba(34,197,94,0.15); color: #4ade80; }
   [data-theme=dark] .racket-card { background: var(--white); }
+  [data-theme=dark] .racket-card[style*="rgba(233,30,140"] { border-color: rgba(233,30,140,0.4) !important; }
   [data-theme=dark] .match-reason { background: rgba(30,95,168,0.08); }
   [data-theme=dark] #buy-modal-sheet { background: var(--white); }
   [data-theme=dark] .buy-option { border-color: var(--gray-light); background: rgba(255,255,255,0.03); }
@@ -4398,7 +4400,11 @@ function navigate(id) {
 
   if (id === 'screen-loading') { setTimeout(function() { try { navigate('screen-home'); } catch(e) {} }, 600); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 1500); setTimeout(function() { if (currentScreen==='screen-loading') { try { navigate('screen-home'); } catch(e) {} } }, 3500); }
   if (id === 'screen-loading-results') { setTimeout(function() { try { runAIAnalysis(); } catch(e) { navigate('screen-results'); } }, 300); }
-  if (id === 'screen-results') setTimeout(function() { try { renderResults(); } catch(e) {} }, 50);
+  if (id === 'screen-results') {
+    setTimeout(function() {
+      try { renderResults(); } catch(e) { console.error('renderResults error:', e); }
+    }, 200); // delay aumentato per sicurezza
+  }
   if (id === 'screen-purchase') renderPurchaseList();
   if (id === 'screen-success')  renderSuccess();
   if (id === 'screen-profile')  { renderProfile(); renderCollection(); }
@@ -5808,101 +5814,121 @@ function scoreRacket(r, rawAns) {
   // r = [id, name, brand, year, level, side, shape, style, physical_ok, price_tier, img_id, img_file, price_eur, player]
   var score = 0; var total = 0;
 
-  // LEVEL (weight 25) — from fq-level or level
-  total += 25;
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LIVELLO (peso 30) — criterio più importante
+  // Racchetta del livello sbagliato = grossa penalità
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 30;
   var lvl = ans['fq-level'] || ans.level;
-  if (!lvl || r[4] === lvl) score += 25;
-  else if (lvl==='intermediate' && r[4]==='advanced') score += 12;
-  else if (lvl==='beginner' && r[4]==='intermediate') score += 8;
-  else if (lvl==='beginner' && r[4]==='advanced') score += 2;
+  if (!lvl) { score += 30; }
+  else if (r[4] === lvl) { score += 30; }                            // match esatto
+  else if (lvl==='intermediate' && r[4]==='advanced') score += 15;  // un po' troppo difficile
+  else if (lvl==='intermediate' && r[4]==='beginner') score += 12;  // un po' troppo facile
+  else if (lvl==='advanced'     && r[4]==='intermediate') score += 10; // sotto livello
+  else if (lvl==='beginner'     && r[4]==='intermediate') score += 5;  // sopra il livello
+  else score += 0; // beginner→advanced o advanced→beginner: incompatibile
 
-  // STYLE (weight 20) — from fq-smash or style
-  total += 20;
-  var style = ans.style;
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // STILE DI GIOCO (peso 25)
+  // Difensore vs Attaccante: differenza netta
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 25;
+  var style = ans['fq-style'] || ans.style;
   var smash = ans['fq-smash'];
   if (!style && smash) {
     style = smash==='high' ? 'aggressive' : smash==='low' ? 'defensive' : 'balanced';
   }
-  if (!style || r[7]===style) score += 20;
-  else if (style==='balanced' || r[7]==='balanced') score += 10;
+  if (!style) { score += 25; }
+  else if (r[7] === style) { score += 25; }                         // match esatto
+  else if (r[7] === 'balanced') { score += 14; }                   // balanced va bene per tutti
+  else if (style === 'balanced') { score += 14; }                  // utente balanced → accetta tutto
+  else { score += 2; }                                             // aggressive↔defensive: penalità forte
 
-  // SIDE (weight 20)
-  total += 20;
-  var side = ans['fq-side'] || ans.side;
-  if (!side) score += 20;
-  else if (r[5]==='both' || side==='both') score += 20;
-  else if (r[5]===side) score += 20;
-  else score += 4;
-
-  // BUDGET (weight 15) — hard filter already in computeMatches, here reward best value
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // LATO (peso 15)
+  // Importante ma non decisivo — molte racchette sono 'both'
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   total += 15;
-  var bud = ans['fq-budget'] || ans.budget;
-  if (!bud || bud === 'top') {
-    score += 15; // no preference
-  } else {
-    // Get real price
-    var rPrice = 9999;
-    var rbl = BUY_LINKS[r[0]];
-    if (rbl && rbl.price) { rPrice = rbl.price; }
-    else { var rpm = (r[12]||'').match(/\d+/); if(rpm) rPrice = parseInt(rpm[0]); }
-    // Reward being well within budget (not just barely under)
-    var ceilings = {budget:160, mid:260, premium:390};
-    var ceil = ceilings[bud] || 9999;
-    var margin = (ceil - rPrice) / ceil; // 0..1, higher = more budget room
-    if (margin >= 0.3) score += 15;      // well within budget
-    else if (margin >= 0) score += 10;   // just within
-    // (over budget already excluded by computeMatches)
-  }
+  var side = ans['fq-side'] || ans.side;
+  if (!side || side === 'both') { score += 15; }
+  else if (r[5] === side) { score += 15; }                          // match lato esatto
+  else if (r[5] === 'both') { score += 10; }                        // 'both' perde alcuni punti vs specifico
+  else { score += 2; }                                             // lato sbagliato: penalità
 
-  // PHYSICAL (weight 10)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // GENERE (peso 10) — racchette donna specifiche
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   total += 10;
-  var phys = ans['fq-physical'] || ans.physical;
-  if (!phys || phys==='none') { score += 10; }
-  else {
-    var okFor = r[8].split(',');
-    if (okFor.indexOf('all') >= 0 || okFor.indexOf(phys) >= 0) score += 10;
-    else score += 2;
-  }
-
-  // SHAPE bonus (weight 5) — from fq-shape
-  total += 5;
-  var shp = ans['fq-shape'];
-  if (!shp || shp==='ai' || r[6]===shp) score += 5;
-  else score += 1;
-
-  // BALANCE bonus (weight 5) — from fq-balance
-  total += 5;
-  var bal = ans['fq-balance'];
-  var rBal = r[8] || 'neutral'; // approximate from physical field
-  if (!bal) score += 5;
-  else {
-    var balMap = {head_heavy:['aggressive','right'], head_light:['defensive','left'], neutral:['balanced','both']};
-    var balMatch = balMap[bal] || [];
-    if (balMatch.indexOf(r[5]) >= 0 || balMatch.indexOf(r[7]) >= 0) score += 5;
-    else score += 2;
-  }
-
-  // GOAL bonus (weight 5) — from fq-goal
-  total += 5;
-  var goal = ans['fq-goal'];
-  if (!goal || goal==='all' || goal==='unknown') score += 5; // unknown = no preference → full pts
-  else if (goal==='control' && (r[7]==='defensive' || r[6]==='round')) score += 5;
-  else if (goal==='power'   && (r[7]==='aggressive' || r[6]==='diamond')) score += 5;
-  else if (goal==='comfort' && (r[4]==='beginner' || r[4]==='intermediate')) score += 5;
-  else score += 2;
-
-  // GENDER (weight 10) — boost racchette donna se selezionato
-  var gender = ans['gender'] || 'any';
+  var gender = ans.gender || ans['fq-gender'] || 'any';
   var sc2 = RACKET_SCORES[r[0]];
   var rg = sc2 ? (sc2.gender || 'all') : 'all';
-  total += 10;
-  if (gender === 'female') {
-    score += (rg === 'woman') ? 10 : 6;
-  } else if (gender === 'male') {
-    score += (rg === 'woman') ? 3 : 10;
-  } else {
-    score += 10; // any = neutro
+  if (gender === 'female') { score += (rg === 'woman') ? 10 : 4; }
+  else if (gender === 'male') { score += (rg === 'woman') ? 0 : 10; } // racchetta donna → non per uomo
+  else { score += (rg === 'woman') ? 7 : 10; }                        // any → leggera preferenza unisex
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // FORMA (peso 8) — hard filter già in computeMatches se specificata
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 8;
+  var shp = ans['fq-shape'] || ans.shape;
+  if (!shp || shp === 'ai') { score += 8; }
+  else if (r[6] === shp) { score += 8; }
+  else { score += 0; } // forma sbagliata (già filtrata, ma per sicurezza)
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SENSAZIONE / ZONA DI GIOCO (peso 7)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 7;
+  var sensation = ans['fq-sensation'] || ans.sensation;
+  var zone = ans['fq-zone'];
+  // Sensazione e stile si sovrappongono
+  if (!sensation && !zone) { score += 7; }
+  else {
+    var senStyle = 0;
+    if (sensation === 'power' || zone === 'net') {
+      senStyle += (r[7] === 'aggressive') ? 7 : (r[7] === 'balanced') ? 4 : 1;
+    } else if (sensation === 'control' || zone === 'back') {
+      senStyle += (r[7] === 'defensive') ? 7 : (r[7] === 'balanced') ? 4 : 1;
+    } else if (sensation === 'balanced' || zone === 'both') {
+      senStyle += (r[7] === 'balanced') ? 7 : 4;
+    } else {
+      senStyle += 7;
+    }
+    score += Math.min(7, senStyle);
   }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // BILANCIAMENTO (peso 5)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 5;
+  var bal = ans['fq-balance'] || ans.balance;
+  if (!bal) { score += 5; }
+  else {
+    var sc3 = RACKET_SCORES[r[0]];
+    var rBal = sc3 ? (sc3.balance || '').toLowerCase() : '';
+    var balOk = (bal==='head_heavy' && rBal.indexOf('pes')>=0) ||
+                (bal==='head_light' && rBal.indexOf('leg')>=0) ||
+                (bal==='neutral'    && (rBal==='neutro'||rBal===''||rBal==='—'));
+    score += balOk ? 5 : (rBal === '' || rBal === '—' ? 3 : 0);
+  }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // FISICO / PROBLEMI (peso 5)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  total += 5;
+  var phys = ans['fq-physical'] || ans.physical;
+  if (!phys || phys === 'none') { score += 5; }
+  else {
+    var okFor = (r[8] || '').split(',');
+    score += (okFor.indexOf('all') >= 0 || okFor.indexOf(phys) >= 0) ? 5 : 0;
+  }
+
+  // OVERALL quality bonus — differenzia racchette con stesso profilo
+  // Varia da 0 a 5 punti (overall è 0-10 nel DB)
+  total += 5;
+  var sc_ov = RACKET_SCORES[r[0]];
+  var rOverall = sc_ov ? (sc_ov.overall || 7) : 7;
+  score += Math.round((rOverall / 10) * 5);
 
   return Math.round((score / total) * 100);
 }
@@ -6179,18 +6205,62 @@ function renderResults() {
 
   // ── Build cards ─────────────────────────────────
   var icons    = ['🥇','🥈','🥉'];
+
+  // Calcola il ceiling del budget per la separazione
+  var _ans2 = normalizeAnswers(quizAnswers);
+  var _bud2 = _ans2['fq-budget'] || _ans2.budget;
+  var _ceil2 = null;
+  if (_bud2 === 'budget') _ceil2 = 100;
+  if (_bud2 === 'mid')    _ceil2 = 180;
+  // top = nessun ceiling → tutte nel budget → no separatore
+
+  // Separa matches in base al prezzo reale (indipendente dai filtri)
+  var inBudgetCards = [], outBudgetCards = [];
+  allMatches.forEach(function(m) {
+    var bl2 = BUY_LINKS[m.r[0]] || {};
+    var rp2 = bl2.price || m.price || 9999;
+    if (_ceil2 === null || rp2 <= _ceil2) {
+      inBudgetCards.push(m);
+    } else {
+      outBudgetCards.push(m);
+    }
+  });
+  // Genere selezionato per ordinamento
+  var _gender2 = _ans2.gender || _ans2['fq-gender'] || 'any';
+  function sortByGenderThenScore(a, b) {
+    var rgA = (RACKET_SCORES[a.r[0]] || {}).gender || 'all';
+    var rgB = (RACKET_SCORES[b.r[0]] || {}).gender || 'all';
+    if (_gender2 === 'female') {
+      if (rgA === 'woman' && rgB !== 'woman') return -1;
+      if (rgB === 'woman' && rgA !== 'woman') return 1;
+    }
+    if (_gender2 === 'male') {
+      if (rgA === 'woman' && rgB !== 'woman') return 1;
+      if (rgB === 'woman' && rgA !== 'woman') return -1;
+    }
+    if (b.pct === a.pct) {
+      var ovA = (RACKET_SCORES[a.r[0]] || {}).overall || 0;
+      var ovB = (RACKET_SCORES[b.r[0]] || {}).overall || 0;
+      return ovB - ovA;
+    }
+    return b.pct - a.pct;
+  }
+  inBudgetCards.sort(sortByGenderThenScore);
+  outBudgetCards.sort(sortByGenderThenScore);
+  inBudgetCards = inBudgetCards.slice(0, 10);
+  outBudgetCards = outBudgetCards.slice(0, 5);
+
+  // inBudget per check card
   var inBudget = {};
-  matches.forEach(function(m){ inBudget[m.r[0]] = m; });
-  var outBudget = allMatches.filter(function(m){ return !inBudget[m.r[0]]; }).slice(0, 5);
+  inBudgetCards.forEach(function(m){ inBudget[m.r[0]] = m; });
 
   var cardsHtml = '<div id="results-empty" style="display:none;text-align:center;padding:40px 20px;color:var(--gray);"><div style="font-size:40px;margin-bottom:10px;">🔍</div><div style="font-weight:700;">Nessuna racchetta trovata</div></div>';
 
-  // Prima le racchette nel budget
-  var allCards = matches.slice(0, 10).map(function(m){ return {m:m, isOOB:false}; });
-  // Poi separatore + racchette fuori budget (se presenti)
-  if (outBudget.length > 0) {
+  // Prima le racchette nel budget, poi separatore, poi fuori budget
+  var allCards = inBudgetCards.map(function(m){ return {m:m, isOOB:false}; });
+  if (outBudgetCards.length > 0) {
     allCards.push({separator:true});
-    outBudget.forEach(function(m){ allCards.push({m:m, isOOB:true}); });
+    outBudgetCards.forEach(function(m){ allCards.push({m:m, isOOB:true}); });
   }
 
   allCards.forEach(function(item, i) {
@@ -6208,11 +6278,13 @@ function renderResults() {
     var r     = m.r;
     var sc    = RACKET_SCORES[r[0]] || {};
     var pct   = m.pct;
-    var rank  = !isOOB && i < 3 ? i : -1;
+    var rankIdx = allCards.slice(0, i+1).filter(function(x){ return !x.separator && !x.isOOB; }).length - 1;
+    var rank  = !isOOB && rankIdx < 3 ? rankIdx : -1;
     var imgSrc = sc.img || (r[10] ? ('https://cdn.racketpedia.com/media/padel-rackets-data-sheets/' + r[10] + '/300x300/' + r[11]) : '');
     var price  = m.price || sc.price || '';
     var lvl    = r[4] || sc.level || '';
     var badgeBg = isOOB ? '#94a3b8' : (pct >= 85 ? 'var(--orange)' : pct >= 70 ? 'var(--blue)' : '#64748b');
+    var isWoman = !isOOB && (RACKET_SCORES[r[0]] || {}).gender === 'woman';
     var badgeTxt = isOOB ? '💸 Fuori budget' : (rank >= 0 ? icons[rank] + ' ' : '') + pct + '% affinità';
 
     // 3-price row
@@ -6242,9 +6314,10 @@ function renderResults() {
       + ' data-oob="' + (isOOB?'1':'0') + '"'
       + (isOOB ? ' style="opacity:0.75;"' : rank===0 ? ' style="border:2px solid var(--orange);"' : '')
       + '>'
-      + '<div class="racket-img-wrap" style="background:' + (isOOB?'var(--gray-light)':'rgba(30,95,168,0.06)') + ';">'
+      + '<div class="racket-img-wrap" style="background:' + (isOOB?'var(--gray-light)':isWoman?'linear-gradient(135deg,#fce4ec,#f8bbd0)':'rgba(30,95,168,0.06)') + ';">'
       + '<div class="racket-match-badge" style="background:' + badgeBg + ';">' + badgeTxt + '</div>'
       + (imgSrc ? '<img src="' + imgSrc + '" onerror="this.style.display=\'none\'" style="height:180px;object-fit:contain;padding:10px;max-width:100%;' + (isOOB?'opacity:0.35;':'') + '">' : '<div style="height:180px;display:flex;align-items:center;justify-content:center;font-size:56px;">🏓</div>')
+      + (isWoman ? '<div style="position:absolute;top:8px;right:8px;background:#e91e8c;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:0.5px;">♀ Donna</div>' : '')
       + '<div class="racket-img-brand">' + (r[2]||sc.brand||'') + '</div>'
       + '</div>'
       + '<div class="racket-body">'
@@ -6254,13 +6327,14 @@ function renderResults() {
       + '<span style="background:rgba(30,95,168,0.1);color:var(--blue);font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700;">' + (lvl==='advanced'?'🏆 Avanzato':lvl==='intermediate'?'🎯 Intermedio':'🌱 Principiante') + '</span>'
       + '</div>'
       + priceRow
-      + (!isOOB ? '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;">'
-        + '<div style="flex:1;height:5px;background:var(--gray-light);border-radius:999px;overflow:hidden;">'
-        + '<div class="affinity-bar-fill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:999px;transition:width 0.7s;"></div>'
-        + '</div><span style="font-size:12px;font-weight:800;color:var(--orange);">' + pct + '%</span>'
-        + '</div>' : '')
+      + (!isOOB ? '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;margin-bottom:4px;">'
+        + '<div style="display:flex;align-items:baseline;gap:2px;background:' + (pct>=85?'rgba(244,101,10,0.12)':pct>=70?'rgba(30,95,168,0.1)':'rgba(138,146,158,0.1)') + ';border-radius:999px;padding:5px 12px;">'
+        + '<span style="font-size:22px;font-weight:900;line-height:1;color:' + (pct>=85?'var(--orange)':pct>=70?'var(--blue)':'var(--gray)') + ';">' + pct + '</span>'
+        + '<span style="font-size:12px;font-weight:700;color:' + (pct>=85?'var(--orange)':pct>=70?'var(--blue)':'var(--gray)') + ';">%</span>'
+        + '</div><div style="flex:1;"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;">Compatibilità</div>'
+        + '<div style="height:5px;background:var(--gray-light);border-radius:999px;overflow:hidden;"><div class="affinity-bar-fill" style="height:100%;width:0%;background:' + (pct>=85?'var(--orange)':pct>=70?'var(--blue)':'var(--gray)') + ';border-radius:999px;transition:width 0.8s ease;"></div></div>'
+        + '</div></div>' : '')
       + (_aiExplanations[r[0]] ? '<div style="background:var(--white);border-radius:10px;padding:10px 12px;margin-top:10px;border-left:3px solid var(--orange);">'
-        + '<div style="font-size:10px;font-weight:700;color:var(--orange);margin-bottom:4px;letter-spacing:0.5px;">🤖 PERCHÉ FA PER TE</div>'
         + '<div style="font-size:12px;color:var(--text);line-height:1.6;">' + _aiExplanations[r[0]] + '</div>'
         + '</div>' : '')
       + '<div class="racket-actions">'
@@ -6271,8 +6345,9 @@ function renderResults() {
   });
 
   // ── Set DOM ──────────────────────────────────────
-  var rl = document.getElementById('rackets-list');
+  var rl = document.getElementById('rackets-list') || document.querySelector('[id="rackets-list"]');
   if (rl) {
+    rl.innerHTML = ''; // reset prima
     rl.innerHTML = cardsHtml;
     setTimeout(function(){
       var bars = Array.prototype.slice.call(rl.querySelectorAll('.affinity-bar-fill'));
