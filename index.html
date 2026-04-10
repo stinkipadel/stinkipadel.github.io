@@ -1362,9 +1362,11 @@
   }
   .compare-score-val {
     font-size:14px; font-weight:800; min-width:28px; text-align:center;
+    color:var(--text); /* colore neutro di default — sempre visibile */
   }
   .compare-score-val.winner { color:var(--orange); }
   .compare-score-val.loser  { color:var(--gray); }
+  .compare-score-val.tie    { color:var(--text); font-style:italic; } /* parità — neutro */
   .compare-spec-row {
     display:flex; align-items:flex-start; gap:8px; padding:8px 0;
     border-bottom:1px solid var(--gray-light);
@@ -2191,7 +2193,7 @@
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.22</div>
+  <div id="app-version">v3.23</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -7685,7 +7687,8 @@ function renderCompare() {
   function scoreVal(v1, v2, col) {
     var val = col === 0 ? v1 : v2;
     var isWin = col === 0 ? (v1 > v2) : (v2 > v1);
-    var cls = isWin ? 'winner' : (v1 === v2 ? '' : 'loser');
+    var isTie = (v1 === v2);
+    var cls = isWin ? 'winner' : isTie ? 'tie' : 'loser';
     return '<div class="compare-score-val ' + cls + '">' + (val || '—') + '</div>';
   }
 
