@@ -2191,7 +2191,7 @@
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.21</div>
+  <div id="app-version">v3.22</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -4635,444 +4635,6 @@ function switchTab(tab) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 // Racket database for scoring (key subset — shape/level/side/style tags)
-var BUY_LINKS = {
-  'adidas-metalbone-3-3':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+3.3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-3-3-2024-110141-p',price:353,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-3-3-ctrl':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+3.3+CTRL+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-ctrl-3-3-2024-110144-p',price:325,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-hrd-':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+HRD++padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-hrd-2024',price:372,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-ctrl-3-3':{amazon:'https://www.amazon.it/s?k=adidas+Adipower+CTRL+3.3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-ctrl-3-3-2024',price:260,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-ctrl-3-2':{amazon:'https://www.amazon.it/s?k=adidas+Adipower+CTRL+3.2+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-ctrl-3-2-2023',price:325,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-ctrl-3-1':{amazon:'https://www.amazon.it/s?k=adidas+Adipower+CTRL+3.1+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-ctrl-3-1-2022',price:325,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-ctrl-light-3-1':{amazon:'https://www.amazon.it/s?k=adidas+Adipower+CTRL+Light+3.1+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-ctrl-light-3-1-2022',price:279,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-light-3-2':{amazon:'https://www.amazon.it/s?k=adidas+Adipower+Light+3.2+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-light-3-2-2023',price:279,best:'padelnuestro',decathlon:''},
-  'adidas-cross-it':{amazon:'https://www.amazon.it/s?k=adidas+Cross+IT+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-2025',price:268,best:'padelnuestro',decathlon:''},
-  'adidas-cross-it-ctrl':{amazon:'https://www.amazon.it/s?k=adidas+Cross+IT+CTRL+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-ctrl-2025',price:325,best:'padelnuestro',decathlon:''},
-  'adidas-cross-it-light':{amazon:'https://www.amazon.it/s?k=adidas+Cross+IT+Light+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-light-2025',price:279,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-3-4-2024':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+3.4+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-3-4-2025',price:353,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-hrd-3-4-2025':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+HRD+3.4+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-hrd-3-4-2025',price:297,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-carbon-ctrl-3-4-2025':{amazon:'https://www.amazon.it/s?k=adidas+Metalbone+Carbon+CTRL+3.4+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-ctrl-3-4-2025',price:279,best:'padelnuestro',decathlon:''},
-  'babolat-technical-viper-2024':{amazon:'https://www.amazon.it/s?k=babolat+Technical+Viper+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-2024-2024',price:297,best:'padelnuestro',decathlon:''},
-  'babolat-technical-viper-2023':{amazon:'https://www.amazon.it/s?k=babolat+Technical+Viper+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-2023-2023',price:260,best:'padelnuestro',decathlon:''},
-  'babolat-air-viper-2025':{amazon:'https://www.amazon.it/s?k=babolat+Air+Viper+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-viper-2025-2025',price:260,best:'padelnuestro',decathlon:''},
-  'babolat-air-viper-2023':{amazon:'https://www.amazon.it/s?k=babolat+Air+Viper+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-viper-2023-2023',price:223,best:'both',decathlon:''},
-  'babolat-counter-viper-2023':{amazon:'https://www.amazon.it/s?k=babolat+Counter+Viper+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-counter-viper-2023-2023',price:167,best:'both',decathlon:''},
-  'babolat-counter-viper-2025':{amazon:'https://www.amazon.it/s?k=babolat+Counter+Viper+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-counter-viper-2025-2025',price:186,best:'both',decathlon:''},
-  'babolat-air-veron-2025':{amazon:'https://www.amazon.it/s?k=babolat+Air+Veron+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-veron-2025-2025',price:204,best:'both',decathlon:''},
-  'babolat-air-veron-2023':{amazon:'https://www.amazon.it/s?k=babolat+Air+Veron+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-veron-2023-2023',price:148,best:'amazon',decathlon:''},
-  'babolat-air-vertuo-2023':{amazon:'https://www.amazon.it/s?k=babolat+Air+Vertuo+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-vertuo-2023-2023',price:130,best:'amazon',decathlon:''},
-  'babolat-dyna-energy-2023':{amazon:'https://www.amazon.it/s?k=babolat+Dyna+Energy+2023+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-dyna-energy-2023-2023',price:111,best:'amazon',decathlon:''},
-  'babolat-technical-viper-2025':{amazon:'https://www.amazon.it/s?k=babolat+Technical+Viper+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-2025-2025',price:279,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-04-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+04+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-04-2024-2024',price:279,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-04-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+04+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-04-2025-2025',price:362,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-05-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+05+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-2026-2026',price:353,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-04-hybrid-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+04+Hybrid+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-04-hybrid-2024-2024',price:297,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-04-hybrid-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+04+Hybrid+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-04-hybrid-2025-2025',price:325,best:'padelnuestro',decathlon:''},
-  'bullpadel-hack-03-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Hack+03+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-03-2024-2024',price:334,best:'padelnuestro',decathlon:''},
-  'bullpadel-hack-04-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+Hack+04+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-2025-2025',price:372,best:'padelnuestro',decathlon:''},
-  'bullpadel-hack-04-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+Hack+04+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-2026-2026',price:390,best:'padelnuestro',decathlon:''},
-  'bullpadel-neuron-24-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Neuron+24+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-24-2024-2024',price:316,best:'padelnuestro',decathlon:''},
-  'bullpadel-neuron-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+Neuron+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-2025-2025',price:344,best:'padelnuestro',decathlon:''},
-  'bullpadel-elite-w-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Elite+W+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-elite-w-2024-2024',price:186,best:'both',decathlon:''},
-  'bullpadel-flow-w-2024':{amazon:'https://www.amazon.it/s?k=bullpadel+Flow+W+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-flow-w-2024-2024',price:241,best:'both',decathlon:''},
-  'bullpadel-vertex-04-w-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+Vertex+04+W+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-04-w-2025-2025',price:213,best:'both',decathlon:''},
-  'head-extreme-elite':{amazon:'https://www.amazon.it/s?k=head+Extreme+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-elite-2024',price:186,best:'both',decathlon:''},
-  'head-extreme-motion':{amazon:'https://www.amazon.it/s?k=head+Extreme+Motion+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-motion-2024',price:223,best:'both',decathlon:''},
-  'head-extreme-pro':{amazon:'https://www.amazon.it/s?k=head+Extreme+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-pro-2024',price:260,best:'padelnuestro',decathlon:''},
-  'head-extreme-one':{amazon:'https://www.amazon.it/s?k=head+Extreme+One+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-one-2024',price:260,best:'padelnuestro',decathlon:''},
-  'head-radical-elite':{amazon:'https://www.amazon.it/s?k=head+Radical+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-elite-2024',price:186,best:'both',decathlon:''},
-  'head-radical-pro':{amazon:'https://www.amazon.it/s?k=head+Radical+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-pro-2024',price:297,best:'padelnuestro',decathlon:''},
-  'head-gravity-elite':{amazon:'https://www.amazon.it/s?k=head+Gravity+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-gravity-elite-2024',price:186,best:'both',decathlon:''},
-  'head-delta-elite':{amazon:'https://www.amazon.it/s?k=head+Delta+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-delta-elite-2024',price:204,best:'both',decathlon:''},
-  'head-zephyr-pro':{amazon:'https://www.amazon.it/s?k=head+Zephyr+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-zephyr-pro-2024',price:316,best:'padelnuestro',decathlon:''},
-  'siux-electra-pro-st3-2024':{amazon:'https://www.amazon.it/s?k=siux+Electra+Pro+ST3+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-pro-st3-2024-2024',price:325,best:'padelnuestro',decathlon:''},
-  'siux-electra-pro-2026':{amazon:'https://www.amazon.it/s?k=siux+Electra+Pro+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-pro-2026-2026',price:241,best:'both',decathlon:''},
-  'siux-trilogy-pro-4-2024':{amazon:'https://www.amazon.it/s?k=siux+Trilogy+Pro+4+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-pro-4-2024-2024',price:223,best:'both',decathlon:''},
-  'siux-fenix-pro-4-2024':{amazon:'https://www.amazon.it/s?k=siux+Fenix+Pro+4+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-fenix-pro-4-2024-2024',price:274,best:'padelnuestro',decathlon:''},
-  'siux-fenix-pro-5-2026':{amazon:'https://www.amazon.it/s?k=siux+Fenix+Pro+5+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-fenix-pro-5-2026-2026',price:260,best:'padelnuestro',decathlon:''},
-  'siux-diablo-revolution-pro-3-2024':{amazon:'https://www.amazon.it/s?k=siux+Diablo+Revolution+Pro+3+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-revolution-pro-3-2024-2024',price:232,best:'both',decathlon:''},
-  'siux-diablo-pro-2026':{amazon:'https://www.amazon.it/s?k=siux+Diablo+Pro+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-pro-2026-2026',price:251,best:'padelnuestro',decathlon:''},
-  'siux-spyder-lite-3-2024':{amazon:'https://www.amazon.it/s?k=siux+Spyder+Lite+3+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-spyder-lite-3-2024-2024',price:204,best:'both',decathlon:''},
-  'siux-valkiria-pro-2026':{amazon:'https://www.amazon.it/s?k=siux+Valkiria+Pro+2026+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-valkiria-pro-2026-2026',price:241,best:'both',decathlon:''},
-  'wilson-bela-elite-v2-5':{amazon:'https://www.amazon.it/s?k=wilson+Bela+Elite+V2.5+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-bela-elite-v2-5-2024',price:213,best:'both',decathlon:''},
-  'wilson-bela-lt-v2-5':{amazon:'https://www.amazon.it/s?k=wilson+Bela+LT+V2.5+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-bela-lt-v2-5-2024',price:251,best:'padelnuestro',decathlon:''},
-  'wilson-bela-pro-v2-5':{amazon:'https://www.amazon.it/s?k=wilson+Bela+Pro+V2.5+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-bela-pro-v2-5-2024',price:316,best:'padelnuestro',decathlon:''},
-  'wilson-blade-v3':{amazon:'https://www.amazon.it/s?k=wilson+Blade+V3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-blade-v3-2023',price:232,best:'both',decathlon:''},
-  'wilson-bela-lt-v3':{amazon:'https://www.amazon.it/s?k=wilson+Bela+LT+V3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-bela-lt-v3-2025',price:260,best:'padelnuestro',decathlon:''},
-  'nox-at-luxury-attack-18k-2024':{amazon:'https://www.amazon.it/s?k=nox+AT+Luxury+ATTACK+18K+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at-luxury-attack-18k-2024-2024',price:274,best:'padelnuestro',decathlon:''},
-  'nox-at-pro-cup':{amazon:'https://www.amazon.it/s?k=nox+AT+Pro+Cup+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at-pro-cup-2024',price:181,best:'both',decathlon:''},
-  'nox-at10-luxury-genius-12k-2024':{amazon:'https://www.amazon.it/s?k=nox+AT10+Luxury+GENIUS+12K+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-luxury-genius-12k-2024-2024',price:274,best:'padelnuestro',decathlon:''},
-  'nox-at10-luxury-genius-18k-alum-2024':{amazon:'https://www.amazon.it/s?k=nox+AT10+Luxury+Genius+18K+Alum+2024+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-luxury-genius-18k-alum-2024-2024',price:302,best:'padelnuestro',decathlon:''},
-  'nox-ml10-pro-cup-3-3':{amazon:'https://www.amazon.it/s?k=nox+ML10+Pro+Cup+3.3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ml10-pro-cup-3-3-2024',price:260,best:'padelnuestro',decathlon:''},
-  'nox-x-one-evo':{amazon:'https://www.amazon.it/s?k=nox+X+One+Evo+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-x-one-evo-2024',price:204,best:'both',decathlon:''},
-  'starvie-basalto-2025':{amazon:'https://www.amazon.it/s?k=starvie+Basalto+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-basalto-2025-2025',price:213,best:'both',decathlon:''},
-  'starvie-basalto-pro':{amazon:'https://www.amazon.it/s?k=starvie+Basalto+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-basalto-pro-2024',price:213,best:'both',decathlon:''},
-  'starvie-trit-n-2025':{amazon:'https://www.amazon.it/s?k=starvie+Tritón+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-triton-2025-2025',price:235,best:'both',decathlon:''},
-  'starvie-trit-n-pro-2025':{amazon:'https://www.amazon.it/s?k=starvie+Tritón+Pro+2025+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-triton-pro-2025-2025',price:235,best:'both',decathlon:''},
-  'starvie-astrum':{amazon:'https://www.amazon.it/s?k=starvie+Astrum+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-astrum-2024',price:245,best:'both',decathlon:''},
-  'starvie-kenta':{amazon:'https://www.amazon.it/s?k=starvie+Kenta+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-kenta-2024',price:255,best:'padelnuestro',decathlon:''},
-  'starvie-kenta-pro':{amazon:'https://www.amazon.it/s?k=starvie+Kenta+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-kenta-pro-2024',price:255,best:'padelnuestro',decathlon:''},
-  'starvie-kenta-speed':{amazon:'https://www.amazon.it/s?k=starvie+Kenta+Speed+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-kenta-speed-2024',price:255,best:'padelnuestro',decathlon:''},
-  'starvie-dronos-speed':{amazon:'https://www.amazon.it/s?k=starvie+Dronos+Speed+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-dronos-speed-2024',price:204,best:'both',decathlon:''},
-  'head-gravity-elite':{amazon:'https://www.amazon.it/s?k=head+Gravity+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-gravity-elite-2024',price:186,best:'both',decathlon:''},
-  'head-delta-elite':{amazon:'https://www.amazon.it/s?k=head+Delta+Elite+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-delta-elite-2024',price:204,best:'both',decathlon:''},
-  'oxdog-hyper-pro-2-0':{amazon:'https://www.amazon.it/s?k=oxdog+Hyper+Pro+2.0+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-hyper-pro-2-0-2024',price:316,best:'padelnuestro',decathlon:''},
-  'oxdog-sense-6-5':{amazon:'https://www.amazon.it/s?k=oxdog+Sense+6.5+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-sense-6-5-2024',price:232,best:'both',decathlon:''},
-  'stiga-axe-3':{amazon:'https://www.amazon.it/s?k=stiga+Axe+3+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/stiga-axe-3-2024',price:278,best:'padelnuestro',decathlon:''},
-  'osaka-custom-pro-control':{amazon:'https://www.amazon.it/s?k=osaka+Custom+Pro+Control+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/osaka-custom-pro-control-2024',price:227,best:'both',decathlon:''},
-  'puma-masters-flashspin':{amazon:'https://www.amazon.it/s?k=puma+Masters+Flashspin+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/puma-masters-flashspin-2024',price:260,best:'padelnuestro',decathlon:''},
-  'royal-padel-m27-carbon':{amazon:'https://www.amazon.it/s?k=royal+padel+M27+Carbon+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/royal-padel-m27-carbon-2024',price:260,best:'padelnuestro',decathlon:''},
-  'royal-padel-rp-m27-pro':{amazon:'https://www.amazon.it/s?k=royal+padel+RP+M27+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/royal-padel-rp-m27-pro-2024',price:325,best:'padelnuestro',decathlon:''},
-  'drop-shot-explorer-10-0':{amazon:'https://www.amazon.it/s?k=drop+shot+Explorer+10.0+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-10-0-2024',price:148,best:'amazon',decathlon:''},
-  'drop-shot-conqueror-10-0-carbon':{amazon:'https://www.amazon.it/s?k=drop+shot+Conqueror+10.0+Carbon+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-conqueror-10-0-carbon-2024',price:204,best:'both',decathlon:''},
-  'varlion-avant-carbon-smb':{amazon:'https://www.amazon.it/s?k=varlion+Avant+Carbon+SMB+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/varlion-avant-carbon-smb-2024',price:260,best:'padelnuestro',decathlon:''},
-  'varlion-lw-carbon':{amazon:'https://www.amazon.it/s?k=varlion+LW+Carbon+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/varlion-lw-carbon-2024',price:241,best:'both',decathlon:''},
-  'nox-nerbo-wpt-12k':{amazon:'https://www.amazon.it/s?k=nox+Nerbo+WPT+12K+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-nerbo-wpt-12k-2024',price:297,best:'padelnuestro',decathlon:''},
-  'nox-ml10-pro-cup-luxury':{amazon:'https://www.amazon.it/s?k=nox+ML10+Pro+Cup+Luxury+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ml10-pro-cup-luxury-2024',price:325,best:'padelnuestro',decathlon:''},
-  'wilson-carbon-force-pro':{amazon:'https://www.amazon.it/s?k=wilson+Carbon+Force+Pro+padel+racchetta&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-carbon-force-pro-2024',price:279,best:'padelnuestro',decathlon:''},
-  'kuikma-pr-190':{amazon:'https://www.amazon.it/s?k=kuikma+PR+190+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:25,best:'amazon'},
-  'kuikma-pr-530':{amazon:'https://www.amazon.it/s?k=kuikma+PR+530+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:50,best:'amazon'},
-  'kuikma-pr-560':{amazon:'https://www.amazon.it/s?k=kuikma+PR+560+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:70,best:'amazon'},
-  'kuikma-pr-590':{amazon:'https://www.amazon.it/s?k=kuikma+PR+590+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:90,best:'amazon'},
-  'kuikma-pr-900-power':{amazon:'https://www.amazon.it/s?k=kuikma+PR+900+power+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:120,best:'amazon'},
-  'kuikma-pr-990-power-hard':{amazon:'https://www.amazon.it/s?k=kuikma+PR+990+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:150,best:'amazon'},
-  'kuikma-pr-990-precision-hard':{amazon:'https://www.amazon.it/s?k=kuikma+PR+990+precision+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:150,best:'amazon'},
-  'kuikma-pr-990-precision-soft':{amazon:'https://www.amazon.it/s?k=kuikma+PR+990+precision+soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:150,best:'amazon'},
-  'kuikma-pr-power-light':{amazon:'https://www.amazon.it/s?k=kuikma+PR+power+light+padel&tag=stinkipadel-21',padelnuestro:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel-kuikma',price:80,best:'amazon'},
-  'kuikma-pr-open-blu':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Open+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Open%20padel',price:70,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-120-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+120+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20120%20Light%20padel',price:30,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-fun':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Fun+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Fun%20padel',price:25,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-react':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20React%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-react-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+React+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20React%20Soft%20padel',price:80,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-hybrid-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Hybrid%20Pro%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-hybrid-pro-coki':{amazon:'https://www.amazon.it/s?k=Kuikma+Hybrid+Pro+Coki+Nieto+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Hybrid%20Pro%20Coki%20Nieto%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Pro%20padel',price:100,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Carbon%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-control-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Control+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Control%20Metal%20padel',price:90,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-power-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Power+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Power%20Metal%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-hybrid-metal':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Hybrid%20Metal%20padel',price:95,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-hybrid-carbon':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Hybrid+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Hybrid%20Carbon%20padel',price:140,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-evolution':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Evolution+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Evolution%20padel',price:85,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-comfort-soft':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Comfort+Soft+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Comfort%20Soft%20padel',price:45,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-power-pro':{amazon:'https://www.amazon.it/s?k=Kuikma+Power+Pro+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20Power%20Pro%20padel',price:150,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-900-power-light':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+900+Power+Light+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20900%20Power%20Light%20padel',price:110,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'kuikma-pr-rental':{amazon:'https://www.amazon.it/s?k=Kuikma+PR+Rental+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kuikma%20PR%20Rental%20padel',price:20,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'dunlop-infinity-pro-g1-hl-black':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'dunlop-infinity-pro-g1-hl-metal':{amazon:'https://www.amazon.it/s?k=Dunlop+Infinity+Pro+G1+HL+Metal+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Infinity%20Pro%20G1%20HL%20Metal%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%202.0%20padel',price:150,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-pro-gold-2024':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Pro+Gold+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%20Pro%20Gold%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'dunlop-titan-killer-2-0':{amazon:'https://www.amazon.it/s?k=Dunlop+Titan+Killer+2.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Titan%20Killer%202.0%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'dunlop-nemesis-carbon':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Nemesis%20Carbon%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'dunlop-nemesis-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Dunlop+Nemesis+Carbon+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Nemesis%20Carbon%20Control%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'dunlop-inferno-elite-lt':{amazon:'https://www.amazon.it/s?k=Dunlop+Inferno+Elite+LT+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Inferno%20Elite%20LT%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'dunlop-gravity':{amazon:'https://www.amazon.it/s?k=Dunlop+Gravity+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Dunlop%20Gravity%20padel',price:180,best:'padelnuestro',decathlon:''},
-  'wilson-bela-v3':{amazon:'https://www.amazon.it/s?k=Wilson+Bela+V3+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Wilson%20Bela%20V3%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'wilson-defy-v1':{amazon:'https://www.amazon.it/s?k=Wilson+Defy+V1+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Wilson%20Defy%20V1%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'nox-at10-genius-attack-18k':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+Attack+18K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Genius%20Attack%2018K%20padel',price:320,best:'padelnuestro',decathlon:''},
-  'nox-at10-genius-12k-2025':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Genius+12K+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Genius%2012K%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'nox-at10-pro-cup-hard-26':{amazon:'https://www.amazon.it/s?k=Nox+AT10+Pro+Cup+Hard+26+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20AT10%20Pro%20Cup%20Hard%2026%20padel',price:230,best:'padelnuestro',decathlon:''},
-  'nox-x-hero':{amazon:'https://www.amazon.it/s?k=Nox+X-Hero+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20X-Hero%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'nox-next-gen-hybrid-3k':{amazon:'https://www.amazon.it/s?k=Nox+Next+Gen+Hybrid+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Next%20Gen%20Hybrid%203K%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'nox-nextgen-pro-attack-3k':{amazon:'https://www.amazon.it/s?k=Nox+NextGen+Pro+Attack+3K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20NextGen%20Pro%20Attack%203K%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'nox-quantum-12k':{amazon:'https://www.amazon.it/s?k=Nox+Quantum+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Quantum%2012K%20padel',price:250,best:'padelnuestro',decathlon:''},
-  'nox-equation-soft-2026':{amazon:'https://www.amazon.it/s?k=Nox+Equation+Soft+Advanced+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Equation%20Soft%20Advanced%202026%20padel',price:210,best:'padelnuestro',decathlon:''},
-  'nox-future-hybrid-12k':{amazon:'https://www.amazon.it/s?k=Nox+Future+Hybrid+12K+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Nox%20Future%20Hybrid%2012K%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'babolat-technical-vertuo-2-5':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Vertuo+2.5+Lebrón+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Technical%20Vertuo%202.5%20Lebrón%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'babolat-counter-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Counter%20Veron%202.6%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'babolat-air-v-inner':{amazon:'https://www.amazon.it/s?k=Babolat+Air+V-Inner+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Air%20V-Inner%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'babolat-stima-vita':{amazon:'https://www.amazon.it/s?k=Babolat+Stima+Vita+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Stima%20Vita%20padel',price:90,best:'padelnuestro',decathlon:''},
-  'babolat-counter-origin':{amazon:'https://www.amazon.it/s?k=Babolat+Counter+Origin+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Counter%20Origin%20padel',price:160,best:'padelnuestro',decathlon:''},
-  'babolat-technical-viper-soft-3':{amazon:'https://www.amazon.it/s?k=Babolat+Technical+Viper+Soft+3.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Technical%20Viper%20Soft%203.0%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'babolat-air-veron-2-6':{amazon:'https://www.amazon.it/s?k=Babolat+Air+Veron+2.6+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Babolat%20Air%20Veron%202.6%20padel',price:210,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-team-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Team+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%20Team%203.4%20padel',price:180,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-2026-galan':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+2026+Galán+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%202026%20Galán%20padel',price:370,best:'padelnuestro',decathlon:''},
-  'adidas-metalbone-carbon-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Metalbone+Carbon+2026+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Metalbone%20Carbon%202026%20padel',price:350,best:'padelnuestro',decathlon:''},
-  'adidas-cross-it-light-2026':{amazon:'https://www.amazon.it/s?k=Adidas+Cross+IT+Light+2026+Ortega+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Cross%20IT%20Light%202026%20Ortega%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'adidas-arrow-hit-carbon-ctrl':{amazon:'https://www.amazon.it/s?k=Adidas+Arrow+Hit+Carbon+CTRL+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Arrow%20Hit%20Carbon%20CTRL%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-multiweight-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Multiweight+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Adipower%20Multiweight%20CTRL%203.4%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'adidas-adipower-carbon-ctrl-3-4':{amazon:'https://www.amazon.it/s?k=Adidas+Adipower+Carbon+CTRL+3.4+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Adidas%20Adipower%20Carbon%20CTRL%203.4%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'bullpadel-play-power-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Play+Power+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Play%20Power%2025%20padel',price:80,best:'padelnuestro',decathlon:''},
-  'bullpadel-xplo-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Xplo%2025%20padel',price:320,best:'padelnuestro',decathlon:''},
-  'bullpadel-xplo-comfort-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Xplo+Comfort+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Xplo%20Comfort%2025%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'bullpadel-vertex-05-comfort':{amazon:'https://www.amazon.it/s?k=Bullpadel+Vertex+05+Comfort+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Vertex%2005%20Comfort%20padel',price:300,best:'padelnuestro',decathlon:''},
-  'bullpadel-elite-w-25':{amazon:'https://www.amazon.it/s?k=Bullpadel+Elite+W+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Elite%20W%2025%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'bullpadel-indiga-ctr':{amazon:'https://www.amazon.it/s?k=Bullpadel+Indiga+CTR+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Bullpadel%20Indiga%20CTR%20padel',price:310,best:'padelnuestro',decathlon:''},
-  'head-extreme-motion-josemaria':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Motion+Josemaría+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Extreme%20Motion%20Josemaría%20padel',price:250,best:'padelnuestro',decathlon:''},
-  'head-coello-pro-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Pro+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Coello%20Pro%202025%20padel',price:340,best:'padelnuestro',decathlon:''},
-  'head-coello-vibe-2025':{amazon:'https://www.amazon.it/s?k=Head+Coello+Vibe+2025+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Coello%20Vibe%202025%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'head-delta-tour-25':{amazon:'https://www.amazon.it/s?k=Head+Delta+Tour+25+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Delta%20Tour%2025%20padel',price:290,best:'padelnuestro',decathlon:''},
-  'head-extreme-pro-coello-2024':{amazon:'https://www.amazon.it/s?k=Head+Extreme+Pro+Coello+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Head%20Extreme%20Pro%20Coello%202024%20padel',price:290,best:'padelnuestro',decathlon:''},
-  'siux-black-carbon-revolution-2':{amazon:'https://www.amazon.it/s?k=Siux+Black+Carbon+Revolution+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Siux%20Black%20Carbon%20Revolution%202%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'siux-fenix-pro-5-black':{amazon:'https://www.amazon.it/s?k=Siux+Fenix+Pro+5+Black+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Siux%20Fenix%20Pro%205%20Black%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'drop-shot-canyon-pro-attack':{amazon:'https://www.amazon.it/s?k=Drop Shot+Canyon+Pro+Attack+1.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Canyon%20Pro%20Attack%201.0%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'drop-shot-axion-attack-2024':{amazon:'https://www.amazon.it/s?k=Drop Shot+Axion+Attack+2024+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Axion%20Attack%202024%20padel',price:220,best:'padelnuestro',decathlon:''},
-  'drop-shot-explorer-pro-6':{amazon:'https://www.amazon.it/s?k=Drop Shot+Explorer+Pro+6.0+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Drop Shot%20Explorer%20Pro%206.0%20padel',price:160,best:'padelnuestro',decathlon:''},
-  'munich-x-soul':{amazon:'https://www.amazon.it/s?k=Munich+X-Soul+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Munich%20X-Soul%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'lok-maxx-hype':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20padel',price:260,best:'padelnuestro',decathlon:''},
-  'lok-maxx-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20Gen%202%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'lok-be-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Be+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Be%20Hype%20Gen%202%20padel',price:200,best:'padelnuestro',decathlon:''},
-  'lok-carb-on-flow':{amazon:'https://www.amazon.it/s?k=LOK+Carb-On+Flow+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Carb-On%20Flow%20padel',price:240,best:'padelnuestro',decathlon:''},
-  'kombat-etna':{amazon:'https://www.amazon.it/s?k=Kombat+Etna+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kombat%20Etna%20padel',price:150,best:'padelnuestro',decathlon:''},
-  'starvie-kenta-eternal-ultra':{amazon:'https://www.amazon.it/s?k=Starvie+Kenta+Eternal+Ultra+Speed+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Starvie%20Kenta%20Eternal%20Ultra%20Speed%20padel',price:280,best:'padelnuestro',decathlon:''},
-  'virtufit-control':{amazon:'https://www.amazon.it/s?k=VirtuFit+Control+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=VirtuFit%20Control%20padel',price:120,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'virtufit-ibrida':{amazon:'https://www.amazon.it/s?k=VirtuFit+Ibrida+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=VirtuFit%20Ibrida%20padel',price:130,best:'amazon',decathlon:'https://www.decathlon.it/tutti-gli-sport/padel/racchette-padel'},
-  'bullpadel-impulse-pwr2026-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+impulse+pwr2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-impulse-pwr2026-2026',price:66,best:'both',decathlon:''},
-  'bullpadel-impulse-ctrl2026-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+impulse+ctrl2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-impulse-ctrl2026-2026',price:59,best:'both',decathlon:''},
-  'joma-valkiria-flex-blue-white-2026':{amazon:'https://www.amazon.it/s?k=joma+valkiria+flex+blue+white&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-valkiria-flex-blue-white-2026',price:90,best:'both',decathlon:''},
-  'joma-slam-pro-ionic-white-gold-2026':{amazon:'https://www.amazon.it/s?k=joma+slam+pro+ionic+white+gold&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-slam-pro-ionic-white-gold-2026',price:120,best:'both',decathlon:''},
-  'joma-hyper-pro-hrd-black-beige-2026':{amazon:'https://www.amazon.it/s?k=joma+hyper+pro+hrd+black+beige&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-hyper-pro-hrd-black-beige-2026',price:180,best:'both',decathlon:''},
-  'joma-valkiria-pro-sft-black-2026':{amazon:'https://www.amazon.it/s?k=joma+valkiria+pro+sft+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-valkiria-pro-sft-black-2026',price:150,best:'both',decathlon:''},
-  'joma-hyper-pro-sft-verde-black-2026':{amazon:'https://www.amazon.it/s?k=joma+hyper+pro+sft+verde+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-hyper-pro-sft-verde-black-2026',price:180,best:'both',decathlon:''},
-  'joma-blast-pro-sf-orange-black-2026':{amazon:'https://www.amazon.it/s?k=joma+blast+pro+sf+orange+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-blast-pro-sf-orange-black-2026',price:180,best:'both',decathlon:''},
-  'joma-valkiria-flex-black-rosa-2026':{amazon:'https://www.amazon.it/s?k=joma+valkiria+flex+black+rosa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-valkiria-flex-black-rosa-2026',price:90,best:'both',decathlon:''},
-  'joma-game-jr-black-verde-2026':{amazon:'https://www.amazon.it/s?k=joma+game+jr+black+verde&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-game-jr-black-verde-2026',price:68,best:'both',decathlon:''},
-  'joma-master-black-orange-2026':{amazon:'https://www.amazon.it/s?k=joma+master+black+orange&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-master-black-orange-2026',price:80,best:'both',decathlon:''},
-  'joma-master-white-blue-2026':{amazon:'https://www.amazon.it/s?k=joma+master+white+blue&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/joma-master-white-blue-2026',price:80,best:'both',decathlon:''},
-  'bullpadel-neuron-02-premiere-padel-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+neuron+02+premiere+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-02-premiere-padel-2026',price:341,best:'both',decathlon:''},
-  'bullpadel-xplo-premier-padel-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+xplo+premier+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-xplo-premier-padel-2026',price:341,best:'both',decathlon:''},
-  'bullpadel-hack-04-premier-padel-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+04+premier+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-premier-padel-2026',price:341,best:'both',decathlon:''},
-  'nox-at-genius-18k-ex-pps':{amazon:'https://www.amazon.it/s?k=nox+at+genius+18k+ex+pps&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at-genius-18k-ex-pps',price:169,best:'both',decathlon:''},
-  'nox-x-zero-nero-oro':{amazon:'https://www.amazon.it/s?k=nox+x+zero+nero+oro&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-x-zero-nero-oro',price:79,best:'both',decathlon:''},
-  'nox-ml-pro-cup-coor-ex-pps':{amazon:'https://www.amazon.it/s?k=nox+ml+pro+cup+coor+ex+pps&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ml-pro-cup-coor-ex-pps',price:119,best:'both',decathlon:''},
-  'bullpadel-vertex-05-light-premier-padel-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+light+premier+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-light-premier-padel-2026',price:256,best:'both',decathlon:''},
-  'bullpadel-vertex-05-geo2026-premier-padel-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+geo2026+premier+pade&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-geo2026-premier-padel-2026',price:339,best:'both',decathlon:''},
-  'drop-shot-explorer-pro-attack-2-0-campagnolo-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+explorer+pro+attack+2+0+campag&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-pro-attack-2-0-campagnolo-2026',price:339,best:'both',decathlon:''},
-  'drop-shot-canyon-pro-attack-2-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+canyon+pro+attack+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-canyon-pro-attack-2-0-2026',price:339,best:'both',decathlon:''},
-  'drop-shot-canyon-pro-attack-soft-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+canyon+pro+attack+soft&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-canyon-pro-attack-soft-2026',price:279,best:'both',decathlon:''},
-  'drop-shot-explorer-pro-attack-soft-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+explorer+pro+attack+soft&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-pro-attack-soft-2026',price:279,best:'both',decathlon:''},
-  'drop-shot-conqueror-attack-2-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+conqueror+attack+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-conqueror-attack-2-0-2026',price:339,best:'both',decathlon:''},
-  'drop-shot-axion-attack-soft-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+axion+attack+soft&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-axion-attack-soft-2026',price:279,best:'both',decathlon:''},
-  'drop-shot-canyon-pro-comfort-2-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+canyon+pro+comfort+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-canyon-pro-comfort-2-0-2026',price:229,best:'both',decathlon:''},
-  'drop-shot-explorer-9-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+explorer+9+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-9-0-2026',price:209,best:'both',decathlon:''},
-  'drop-shot-furia-attack-2-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+furia+attack+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-furia-attack-2-0-2026',price:299,best:'both',decathlon:''},
-  'drop-shot-axion-comfort-1-0-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+axion+comfort+1+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-axion-comfort-1-0-2026',price:239,best:'both',decathlon:''},
-  'drop-shot-explorer-pro-comfort-2-0-campagnolo-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+explorer+pro+comfort+2+0+campa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-pro-comfort-2-0-campagnolo-2026',price:219,best:'both',decathlon:''},
-  'drop-shot-fiamma-soft-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+fiamma+soft&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-fiamma-soft-2026',price:279,best:'both',decathlon:''},
-  'drop-shot-cibernetica-attack-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+cibernetica+attack&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-cibernetica-attack-2026',price:299,best:'both',decathlon:''},
-  'drop-shot-axion-attack-junior-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+axion+attack+junior&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-axion-attack-junior-2026',price:119,best:'both',decathlon:''},
-  'drop-shot-quantum-soft-donne-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+quantum+soft+donne&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-quantum-soft-donne-2026',price:239,best:'both',decathlon:''},
-  'drop-shot-explorer-soft-donne-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+explorer+soft+donne&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-explorer-soft-donne-2026',price:209,best:'both',decathlon:''},
-  'drop-shot-prime-attack-2026':{amazon:'https://www.amazon.it/s?k=drop+shot+prime+attack&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-prime-attack-2026',price:359,best:'both',decathlon:''},
-  'wilson-resistere-ls-v1-2026':{amazon:'https://www.amazon.it/s?k=wilson+resistere+ls+v1&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-resistere-ls-v1-2026',price:220,best:'both',decathlon:''},
-  'wilson-optix-v2-power-red-2026':{amazon:'https://www.amazon.it/s?k=wilson+optix+v2+power+red&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-optix-v2-power-red-2026',price:130,best:'both',decathlon:''},
-  'wilson-resistere-pro-v1-2026':{amazon:'https://www.amazon.it/s?k=wilson+resistere+pro+v1&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-resistere-pro-v1-2026',price:320,best:'both',decathlon:''},
-  'wilson-resisti-v1-2026':{amazon:'https://www.amazon.it/s?k=wilson+resisti+v1&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-resisti-v1-2026',price:270,best:'both',decathlon:''},
-  'head-coello-motion-2026-2026':{amazon:'https://www.amazon.it/s?k=head+coello+motion+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-motion-2026-2026',price:314,best:'both',decathlon:''},
-  'head-coello-team-2026-2026':{amazon:'https://www.amazon.it/s?k=head+coello+team+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-team-2026-2026',price:197,best:'both',decathlon:''},
-  'head-coello-junior-2026-2026':{amazon:'https://www.amazon.it/s?k=head+coello+junior+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-junior-2026-2026',price:98,best:'both',decathlon:''},
-  'head-coello-pro-2026-2026':{amazon:'https://www.amazon.it/s?k=head+coello+pro+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-pro-2026-2026',price:314,best:'both',decathlon:''},
-  'head-coello-vibe-2026-2026':{amazon:'https://www.amazon.it/s?k=head+coello+vibe+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-vibe-2026-2026',price:125,best:'both',decathlon:''},
-  'babolat-lamborghini-bl003-bianco-2026':{amazon:'https://www.amazon.it/s?k=babolat+lamborghini+bl003+bianco&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-lamborghini-bl003-bianco-2026',price:700,best:'both',decathlon:''},
-  'babolat-lamborghini-bl003-blu-2026':{amazon:'https://www.amazon.it/s?k=babolat+lamborghini+bl003+blu&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-lamborghini-bl003-blu-2026',price:700,best:'both',decathlon:''},
-  'head-vibe-bl-aa-2026':{amazon:'https://www.amazon.it/s?k=head+vibe+bl+aa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-vibe-bl-aa-2026',price:100,best:'both',decathlon:''},
-  'babolat-technical-viper-soft-3-0-2026':{amazon:'https://www.amazon.it/s?k=babolat+technical+viper+soft+3+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-soft-3-0-2026',price:251,best:'both',decathlon:''},
-  'babolat-air-viper-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+air+viper+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-viper-2026-2026',price:287,best:'both',decathlon:''},
-  'babolat-air-veron-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+air+veron+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-veron-2026-2026',price:215,best:'both',decathlon:''},
-  'babolat-air-vertuo-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+air+vertuo+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-vertuo-2026-2026',price:161,best:'both',decathlon:''},
-  'babolat-counter-viper-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+counter+viper+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-counter-viper-2026-2026',price:287,best:'both',decathlon:''},
-  'babolat-technical-veron-3-0-2026':{amazon:'https://www.amazon.it/s?k=babolat+technical+veron+3+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-veron-3-0-2026',price:197,best:'both',decathlon:''},
-  'babolat-technical-viper-3-0-2026':{amazon:'https://www.amazon.it/s?k=babolat+technical+viper+3+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-3-0-2026',price:332,best:'both',decathlon:''},
-  'babolat-counter-veron-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+counter+veron+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-counter-veron-2026-2026',price:215,best:'both',decathlon:''},
-  'babolat-counter-vertuo-2026-2026':{amazon:'https://www.amazon.it/s?k=babolat+counter+vertuo+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-counter-vertuo-2026-2026',price:161,best:'both',decathlon:''},
-  'head-bolt-red-black-2026':{amazon:'https://www.amazon.it/s?k=head+bolt+red+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-bolt-red-black-2026',price:78,best:'both',decathlon:''},
-  'head-bolt-bianco-grigio-2026':{amazon:'https://www.amazon.it/s?k=head+bolt+bianco+grigio&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-bolt-bianco-grigio-2026',price:78,best:'both',decathlon:''},
-  'head-vibe-verde-orange-2026':{amazon:'https://www.amazon.it/s?k=head+vibe+verde+orange&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-vibe-verde-orange-2026',price:92,best:'both',decathlon:''},
-  'bullpadel-vertex-advance-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+advance&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-advance-2026',price:125,best:'both',decathlon:''},
-  'bullpadel-hack-advance-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+advance&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-advance-2026',price:112,best:'both',decathlon:''},
-  'bullpadel-neuron-02-cloud-chingotto-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+neuron+02+cloud+chingotto&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-02-cloud-chingotto-2026',price:242,best:'both',decathlon:''},
-  'bullpadel-vertex-05-w-cloud-delfi-brea-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+w+cloud+delfi+brea&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-w-cloud-delfi-brea-2026',price:242,best:'both',decathlon:''},
-  'bullpadel-hack-04-hybrid-cloud-paquito-navarro-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+04+hybrid+cloud+paquito+n&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-hybrid-cloud-paquito-navarro-2026',price:242,best:'both',decathlon:''},
-  'siux-electra-st5-pro-shadow-stupaczuk-2026':{amazon:'https://www.amazon.it/s?k=siux+electra+st5+pro+shadow+stupacz&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-st5-pro-shadow-stupaczuk-2026',price:239,best:'both',decathlon:''},
-  'lok-maxx-hype-2-yanguas-world':{amazon:'https://www.amazon.it/s?k=lok+maxx+hype+2+yanguas+world&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-maxx-hype-2-yanguas-world',price:224,best:'both',decathlon:''},
-  'babolat-veron-3-0-lebron-2026':{amazon:'https://www.amazon.it/s?k=babolat+veron+3+0+lebron&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-veron-3-0-lebron-2026',price:215,best:'both',decathlon:''},
-  'babolat-viper-soft-3-0-lebron-2026':{amazon:'https://www.amazon.it/s?k=babolat+viper+soft+3+0+lebron&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-viper-soft-3-0-lebron-2026',price:269,best:'both',decathlon:''},
-  'babolat-viper-3-0-lebron-2026':{amazon:'https://www.amazon.it/s?k=babolat+viper+3+0+lebron&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-viper-3-0-lebron-2026',price:311,best:'both',decathlon:''},
-  'oxdog-pure-court-2026':{amazon:'https://www.amazon.it/s?k=oxdog+pure+court&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-pure-court-2026',price:149,best:'both',decathlon:''},
-  'oxdog-pure-tour-x-2026':{amazon:'https://www.amazon.it/s?k=oxdog+pure+tour+x&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-pure-tour-x-2026',price:249,best:'both',decathlon:''},
-  'oxdog-pure-pro-plus-2026':{amazon:'https://www.amazon.it/s?k=oxdog+pure+pro+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-pure-pro-plus-2026',price:299,best:'both',decathlon:''},
-  'oxdog-hyper-tour-x2-2026':{amazon:'https://www.amazon.it/s?k=oxdog+hyper+tour+x2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-hyper-tour-x2-2026',price:249,best:'both',decathlon:''},
-  'oxdog-hyper-pro-plus-2-0-2026':{amazon:'https://www.amazon.it/s?k=oxdog+hyper+pro+plus+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-hyper-pro-plus-2-0-2026',price:319,best:'both',decathlon:''},
-  'oxdog-ultimate-pro-smash-2026-2026':{amazon:'https://www.amazon.it/s?k=oxdog+ultimate+pro+smash+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-ultimate-pro-smash-2026-2026',price:329,best:'both',decathlon:''},
-  'oxdog-ultimate-pro-2026-2026':{amazon:'https://www.amazon.it/s?k=oxdog+ultimate+pro+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-ultimate-pro-2026-2026',price:329,best:'both',decathlon:''},
-  'oxdog-ultimate-pro-plus-2026':{amazon:'https://www.amazon.it/s?k=oxdog+ultimate+pro+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-ultimate-pro-plus-2026',price:339,best:'both',decathlon:''},
-  'siux-beat-hybrid-3-air-2026':{amazon:'https://www.amazon.it/s?k=siux+beat+hybrid+3+air&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-beat-hybrid-3-air-2026',price:79,best:'both',decathlon:''},
-  'siux-beat-hybrid-3-2026':{amazon:'https://www.amazon.it/s?k=siux+beat+hybrid+3&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-beat-hybrid-3-2026',price:98,best:'both',decathlon:''},
-  'siux-beat-control-3-2026':{amazon:'https://www.amazon.it/s?k=siux+beat+control+3&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-beat-control-3-2026',price:99,best:'both',decathlon:''},
-  'siux-astra-hybrid-2026':{amazon:'https://www.amazon.it/s?k=siux+astra+hybrid&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-astra-hybrid-2026',price:124,best:'both',decathlon:''},
-  'siux-astra-hybrid-air-2026':{amazon:'https://www.amazon.it/s?k=siux+astra+hybrid+air&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-astra-hybrid-air-2026',price:124,best:'both',decathlon:''},
-  'siux-astra-control-2026':{amazon:'https://www.amazon.it/s?k=siux+astra+control&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-astra-control-2026',price:119,best:'both',decathlon:''},
-  'siux-gea-2-2026':{amazon:'https://www.amazon.it/s?k=siux+gea+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-gea-2-2026',price:269,best:'both',decathlon:''},
-  'siux-fenix-elite-6-2026':{amazon:'https://www.amazon.it/s?k=siux+fenix+elite+6&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-fenix-elite-6-2026',price:269,best:'both',decathlon:''},
-  'siux-electra-elite-6-2026':{amazon:'https://www.amazon.it/s?k=siux+electra+elite+6&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-elite-6-2026',price:214,best:'both',decathlon:''},
-  'siux-trilogy-elite-6-2026':{amazon:'https://www.amazon.it/s?k=siux+trilogy+elite+6&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-elite-6-2026',price:269,best:'both',decathlon:''},
-  'siux-fenix-pro-black-2026':{amazon:'https://www.amazon.it/s?k=siux+fenix+pro+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-fenix-pro-black-2026',price:349,best:'both',decathlon:''},
-  'siux-fenix-pro-glow-viola-augsburger-2026':{amazon:'https://www.amazon.it/s?k=siux+fenix+pro+glow+viola+augsburge&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-fenix-pro-glow-viola-augsburger-2026',price:349,best:'both',decathlon:''},
-  'siux-electra-pro-fire-red-2026':{amazon:'https://www.amazon.it/s?k=siux+electra+pro+fire+red&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-pro-fire-red-2026',price:239,best:'both',decathlon:''},
-  'siux-trilogy-pro-noir-fog-2026':{amazon:'https://www.amazon.it/s?k=siux+trilogy+pro+noir+fog&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-pro-noir-fog-2026',price:279,best:'both',decathlon:''},
-  'siux-trilogy-pro-verde-cenere-2026':{amazon:'https://www.amazon.it/s?k=siux+trilogy+pro+verde+cenere&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-pro-verde-cenere-2026',price:269,best:'both',decathlon:''},
-  'adidas-arrow-hit-junior-bianco-blu-2026':{amazon:'https://www.amazon.it/s?k=adidas+arrow+hit+junior+bianco+blu&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-arrow-hit-junior-bianco-blu-2026',price:74,best:'both',decathlon:''},
-  'adidas-rx-series-2026':{amazon:'https://www.amazon.it/s?k=adidas+rx+series&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-rx-series-2026',price:120,best:'both',decathlon:''},
-  'adidas-match-light-2026':{amazon:'https://www.amazon.it/s?k=adidas+match+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-match-light-2026',price:59,best:'both',decathlon:''},
-  'adidas-match-black-verde-2026':{amazon:'https://www.amazon.it/s?k=adidas+match+black+verde&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-match-black-verde-2026',price:74,best:'both',decathlon:''},
-  'adidas-match-black-orange-2026':{amazon:'https://www.amazon.it/s?k=adidas+match+black+orange&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-match-black-orange-2026',price:74,best:'both',decathlon:''},
-  'adidas-drive-light-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+drive+light+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-drive-light-2026-2026',price:79,best:'both',decathlon:''},
-  'adidas-drive-black-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+drive+black+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-drive-black-2026-2026',price:79,best:'both',decathlon:''},
-  'adidas-drive-blu-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+drive+blu+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-drive-blu-2026-2026',price:79,best:'both',decathlon:''},
-  'adidas-rx-series-light-2026':{amazon:'https://www.amazon.it/s?k=adidas+rx+series+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-rx-series-light-2026',price:120,best:'both',decathlon:''},
-  'adidas-metalbone-superleggero-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+superleggero&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-superleggero-2026',price:149,best:'both',decathlon:''},
-  'adidas-cross-it-team-ctrl-2026':{amazon:'https://www.amazon.it/s?k=adidas+cross+it+team+ctrl&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-team-ctrl-2026',price:179,best:'both',decathlon:''},
-  'adidas-metalbone-team-light-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+team+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-team-light-2026',price:159,best:'both',decathlon:''},
-  'adidas-metalbone-team-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+team&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-team-2026',price:179,best:'both',decathlon:''},
-  'adidas-metalbone-carbon-ctrl-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+carbon+ctrl+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-carbon-ctrl-2026-2026',price:207,best:'both',decathlon:''},
-  'adidas-metalbone-carbon-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+carbon+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-carbon-2026-2026',price:242,best:'both',decathlon:''},
-  'adidas-arrow-hit-carbon-ctrl-2026':{amazon:'https://www.amazon.it/s?k=adidas+arrow+hit+carbon+ctrl&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-arrow-hit-carbon-ctrl-2026',price:215,best:'both',decathlon:''},
-  'adidas-arrow-hit-carbon-2026':{amazon:'https://www.amazon.it/s?k=adidas+arrow+hit+carbon&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-arrow-hit-carbon-2026',price:215,best:'both',decathlon:''},
-  'adidas-cross-it-carbon-ctrl-2026':{amazon:'https://www.amazon.it/s?k=adidas+cross+it+carbon+ctrl&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-carbon-ctrl-2026',price:279,best:'both',decathlon:''},
-  'adidas-cross-it-carbon-2026':{amazon:'https://www.amazon.it/s?k=adidas+cross+it+carbon&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-carbon-2026',price:279,best:'both',decathlon:''},
-  'adidas-cross-it-light-marta-ortega-2026':{amazon:'https://www.amazon.it/s?k=adidas+cross+it+light+marta+ortega&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-light-marta-ortega-2026',price:300,best:'both',decathlon:''},
-  'adidas-cross-it-ctrl-2026':{amazon:'https://www.amazon.it/s?k=adidas+cross+it+ctrl&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-cross-it-ctrl-2026',price:349,best:'both',decathlon:''},
-  'adidas-metalbone-hrd-plus-2026-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+hrd+plus+2026&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-hrd-plus-2026-2026',price:311,best:'both',decathlon:''},
-  'adidas-metalbone-3-5-ale-galan-2026':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+3+5+ale+galan&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-3-5-ale-galan-2026',price:311,best:'both',decathlon:''},
-  'adidas-arrow-hit-ctrl-2026':{amazon:'https://www.amazon.it/s?k=adidas+arrow+hit+ctrl&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-arrow-hit-ctrl-2026',price:399,best:'both',decathlon:''},
-  'adidas-arrow-hit-attacco-2026':{amazon:'https://www.amazon.it/s?k=adidas+arrow+hit+attacco&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-arrow-hit-attacco-2026',price:319,best:'both',decathlon:''},
-  'adidas-granite-2-0-pro-carbon':{amazon:'https://www.amazon.it/s?k=adidas+granite+2+0+pro+carbon&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-granite-2-0-pro-carbon',price:119,best:'both',decathlon:''},
-  'adidas-adipower-leggenda-seba-nerone-2025':{amazon:'https://www.amazon.it/s?k=adidas+adipower+leggenda+seba+nerone&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-leggenda-seba-nerone-2025',price:179,best:'both',decathlon:''},
-  'bullpadel-ionic-light-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+ionic+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-ionic-light-2026',price:134,best:'both',decathlon:''},
-  'bullpadel-ionic-control-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+ionic+control&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-ionic-control-2026',price:152,best:'both',decathlon:''},
-  'siux-valkiria-elite-2-2026':{amazon:'https://www.amazon.it/s?k=siux+valkiria+elite+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-valkiria-elite-2-2026',price:214,best:'both',decathlon:''},
-  'siux-pegasus-pro-storm-grigio-2026':{amazon:'https://www.amazon.it/s?k=siux+pegasus+pro+storm+grigio&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-pegasus-pro-storm-grigio-2026',price:349,best:'both',decathlon:''},
-  'siux-diablo-elite-6-2026':{amazon:'https://www.amazon.it/s?k=siux+diablo+elite+6&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-elite-6-2026',price:239,best:'both',decathlon:''},
-  'siux-pegasus-pro-lava-orange-chozas-2026':{amazon:'https://www.amazon.it/s?k=siux+pegasus+pro+lava+orange+chozas&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-pegasus-pro-lava-orange-chozas-2026',price:269,best:'both',decathlon:''},
-  'siux-diablo-pro-night-blu-2026':{amazon:'https://www.amazon.it/s?k=siux+diablo+pro+night+blu&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-pro-night-blu-2026',price:279,best:'both',decathlon:''},
-  'siux-pegasus-elite-4-2026':{amazon:'https://www.amazon.it/s?k=siux+pegasus+elite+4&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-pegasus-elite-4-2026',price:229,best:'both',decathlon:''},
-  'siux-diablo-pro-royal-blue-libaak-2026':{amazon:'https://www.amazon.it/s?k=siux+diablo+pro+royal+blue+libaak&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-pro-royal-blue-libaak-2026',price:314,best:'both',decathlon:''},
-  'lok-carb-on-hype-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+carb+on+hype+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-carb-on-hype-gen-2-2026',price:224,best:'both',decathlon:''},
-  'lok-easy-flow-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+easy+flow+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-easy-flow-gen-2-2026',price:180,best:'both',decathlon:''},
-  'lok-carb-on-hype-gen-2-fdb-2026':{amazon:'https://www.amazon.it/s?k=lok+carb+on+hype+gen+2+fdb&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-carb-on-hype-gen-2-fdb-2026',price:250,best:'both',decathlon:''},
-  'lok-be-hype-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+be+hype+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-be-hype-gen-2-2026',price:99,best:'both',decathlon:''},
-  'lok-easy-hype-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+easy+hype+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-easy-hype-gen-2-2026',price:180,best:'both',decathlon:''},
-  'lok-be-flow-gen-2-giallo-blu-2026':{amazon:'https://www.amazon.it/s?k=lok+be+flow+gen+2+giallo+blu&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-be-flow-gen-2-giallo-blu-2026',price:99,best:'both',decathlon:''},
-  'lok-be-flow-gen-2-rosa-verde-2026':{amazon:'https://www.amazon.it/s?k=lok+be+flow+gen+2+rosa+verde&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-be-flow-gen-2-rosa-verde-2026',price:99,best:'both',decathlon:''},
-  'lok-jungle-lite-2026':{amazon:'https://www.amazon.it/s?k=lok+jungle+lite&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-jungle-lite-2026',price:161,best:'both',decathlon:''},
-  'lok-jungle-2026':{amazon:'https://www.amazon.it/s?k=lok+jungle&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-jungle-2026',price:269,best:'both',decathlon:''},
-  'lok-carb-on-flow-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+carb+on+flow+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-carb-on-flow-gen-2-2026',price:250,best:'both',decathlon:''},
-  'lok-maxx-flow-gen-2-2026':{amazon:'https://www.amazon.it/s?k=lok+maxx+flow+gen+2&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-maxx-flow-gen-2-2026',price:269,best:'both',decathlon:''},
-  'lok-maxx-hype-gen-2-yanguas-2026':{amazon:'https://www.amazon.it/s?k=lok+maxx+hype+gen+2+yanguas&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-maxx-hype-gen-2-yanguas-2026',price:194,best:'both',decathlon:''},
-  'nox-at10-pro-cup-hard-tapia-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+pro+cup+hard+tapia&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-pro-cup-hard-tapia-2026',price:159,best:'both',decathlon:''},
-  'nox-ventus-hybrid-12k-lite-2026':{amazon:'https://www.amazon.it/s?k=nox+ventus+hybrid+12k+lite&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ventus-hybrid-12k-lite-2026',price:269,best:'both',decathlon:''},
-  'nox-at10-pro-cup-soft-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+pro+cup+soft&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-pro-cup-soft-2026',price:159,best:'both',decathlon:''},
-  'nox-vk10-ventus-control-12k-osoro-2026':{amazon:'https://www.amazon.it/s?k=nox+vk10+ventus+control+12k+osoro&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-vk10-ventus-control-12k-osoro-2026',price:269,best:'both',decathlon:''},
-  'nox-equation-hard-advanced-2026':{amazon:'https://www.amazon.it/s?k=nox+equation+hard+advanced&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-equation-hard-advanced-2026',price:112,best:'both',decathlon:''},
-  'nox-ml10-ventus-control-3k-lamperti-2026':{amazon:'https://www.amazon.it/s?k=nox+ml10+ventus+control+3k+lampert&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ml10-ventus-control-3k-lamperti-2026',price:259,best:'both',decathlon:''},
-  'nox-ea10-ventus-attack-12k-alonso-2026':{amazon:'https://www.amazon.it/s?k=nox+ea10+ventus+attack+12k+alonso&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ea10-ventus-attack-12k-alonso-2026',price:259,best:'both',decathlon:''},
-  'nox-ea10-ventus-hybrid-12k-alonso-2026':{amazon:'https://www.amazon.it/s?k=nox+ea10+ventus+hybrid+12k+alonso&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-ea10-ventus-hybrid-12k-alonso-2026',price:259,best:'both',decathlon:''},
-  'nox-at10-genius-attack-12k-tapia-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+genius+attack+12k+tapia&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-genius-attack-12k-tapia-2026',price:299,best:'both',decathlon:''},
-  'nox-x-hero-bianco-2026':{amazon:'https://www.amazon.it/s?k=nox+x+hero+bianco&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-x-hero-bianco-2026',price:65,best:'both',decathlon:''},
-  'nox-at10-genius-12k-tapia-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+genius+12k+tapia&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-genius-12k-tapia-2026',price:279,best:'both',decathlon:''},
-  'nox-x-zero-red-2026':{amazon:'https://www.amazon.it/s?k=nox+x+zero+red&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-x-zero-red-2026',price:65,best:'both',decathlon:''},
-  'nox-at10-genius-attack-18k-tapia-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+genius+attack+18k+tapia&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-genius-attack-18k-tapia-2026',price:299,best:'both',decathlon:''},
-  'nox-at10-genius-18k-tapia-2026':{amazon:'https://www.amazon.it/s?k=nox+at10+genius+18k+tapia&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-genius-18k-tapia-2026',price:390,best:'both',decathlon:''},
-  'nox-x-zero-blu-2026':{amazon:'https://www.amazon.it/s?k=nox+x+zero+blu&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-x-zero-blu-2026',price:65,best:'both',decathlon:''},
-  'vibor-a-3k-black-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+3k+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-3k-black-2026',price:323,best:'both',decathlon:''},
-  'starvie-triton-plus-power-2026':{amazon:'https://www.amazon.it/s?k=starvie+triton+plus+power&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-triton-plus-power-2026',price:219,best:'both',decathlon:''},
-  'starvie-raptor-plus-2026':{amazon:'https://www.amazon.it/s?k=starvie+raptor+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-raptor-plus-2026',price:267,best:'both',decathlon:''},
-  'starvie-kenta-plus-2026':{amazon:'https://www.amazon.it/s?k=starvie+kenta+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-kenta-plus-2026',price:224,best:'both',decathlon:''},
-  'starvie-polaris-2026':{amazon:'https://www.amazon.it/s?k=starvie+polaris&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-polaris-2026',price:149,best:'both',decathlon:''},
-  'starvie-nyra-2026':{amazon:'https://www.amazon.it/s?k=starvie+nyra&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-nyra-2026',price:127,best:'both',decathlon:''},
-  'starvie-drax-plus-2026':{amazon:'https://www.amazon.it/s?k=starvie+drax+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-drax-plus-2026',price:229,best:'both',decathlon:''},
-  'starvie-arkos-2026':{amazon:'https://www.amazon.it/s?k=starvie+arkos&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-arkos-2026',price:119,best:'both',decathlon:''},
-  'starvie-triton-plus-balance-2026':{amazon:'https://www.amazon.it/s?k=starvie+triton+plus+balance&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-triton-plus-balance-2026',price:219,best:'both',decathlon:''},
-  'starvie-black-titan-2026':{amazon:'https://www.amazon.it/s?k=starvie+black+titan&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-black-titan-2026',price:271,best:'both',decathlon:''},
-  'starvie-astrum-plus-2026':{amazon:'https://www.amazon.it/s?k=starvie+astrum+plus&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/starvie-astrum-plus-2026',price:239,best:'both',decathlon:''},
-  'head-arturo-coello-extreme-pro-ltd-2024':{amazon:'https://www.amazon.it/s?k=head+arturo+coello+extreme+pro+ltd&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-arturo-coello-extreme-pro-ltd-2024',price:160,best:'both',decathlon:''},
-  'vibor-a-black-mamba-yarara-radical-12k-3-0-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+yarara+radical+12k&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-yarara-radical-12k-3-0-2026',price:294,best:'both',decathlon:''},
-  'vibor-a-black-mamba-evo-pro-bianco-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+evo+pro+bianco&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-evo-pro-bianco-2026',price:224,best:'both',decathlon:''},
-  'vibor-a-black-mamba-radical-12k-3-0-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+radical+12k+3+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-radical-12k-3-0-2026',price:290,best:'both',decathlon:''},
-  'vibor-a-black-mamba-yarara-pro-bianco-2-0-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+yarara+pro+bianco+&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-yarara-pro-bianco-2-0-2026',price:291,best:'both',decathlon:''},
-  'vibor-a-black-mamba-pro-2-0-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+pro+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-pro-2-0-2026',price:299,best:'both',decathlon:''},
-  'vibor-a-black-mamba-evo-pro-black-2026':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+evo+pro+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-evo-pro-black-2026',price:212,best:'both',decathlon:''},
-  'bullpadel-indiga-donna-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+indiga+donna&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-indiga-donna-2026',price:89,best:'both',decathlon:''},
-  'bullpadel-indiga-ctr-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+indiga+ctr&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-indiga-ctr-2026',price:89,best:'both',decathlon:''},
-  'bullpadel-indiga-pwr-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+indiga+pwr&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-indiga-pwr-2026',price:89,best:'both',decathlon:''},
-  'drop-shot-axion-attack-1-0-ltd-jon-sanz-2025':{amazon:'https://www.amazon.it/s?k=drop+shot+axion+attack+1+0+ltd+jon+sanz&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-axion-attack-1-0-ltd-jon-sanz-2025',price:169,best:'both',decathlon:''},
-  'head-extreme-one-2025':{amazon:'https://www.amazon.it/s?k=head+extreme+one&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-one-2025',price:204,best:'both',decathlon:''},
-  'head-extreme-one-x-2025':{amazon:'https://www.amazon.it/s?k=head+extreme+one+x&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-one-x-2025',price:269,best:'both',decathlon:''},
-  'head-radical-pro-2026':{amazon:'https://www.amazon.it/s?k=head+radical+pro&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-pro-2026',price:215,best:'both',decathlon:''},
-  'head-radical-team-2026':{amazon:'https://www.amazon.it/s?k=head+radical+team&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-team-2026',price:161,best:'both',decathlon:''},
-  'head-radical-team-light-2026':{amazon:'https://www.amazon.it/s?k=head+radical+team+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-team-light-2026',price:134,best:'both',decathlon:''},
-  'head-radical-motion-2026':{amazon:'https://www.amazon.it/s?k=head+radical+motion&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-radical-motion-2026',price:179,best:'both',decathlon:''},
-  'oxdog-ultimate-pro-light-2026':{amazon:'https://www.amazon.it/s?k=oxdog+ultimate+pro+light&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-ultimate-pro-light-2026',price:319,best:'both',decathlon:''},
-  'bullpadel-neuron-02-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+neuron+02&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-02-2026',price:271,best:'both',decathlon:''},
-  'bullpadel-hack-04-comfort-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+04+comfort&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-comfort-2026',price:212,best:'both',decathlon:''},
-  'bullpadel-neuron-02-edge-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+neuron+02+edge&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-neuron-02-edge-2026',price:287,best:'both',decathlon:''},
-  'bullpadel-xplo-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+xplo&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-xplo-2026',price:271,best:'both',decathlon:''},
-  'bullpadel-hack-04-hybrid-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+04+hybrid&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-hybrid-2026',price:271,best:'both',decathlon:''},
-  'bullpadel-xplo-comfort-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+xplo+comfort&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-xplo-comfort-2026',price:203,best:'both',decathlon:''},
-  'bullpadel-hack-04-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+hack+04&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-hack-04-2026',price:271,best:'both',decathlon:''},
-  'bullpadel-icon-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+icon&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-icon-2026',price:251,best:'both',decathlon:''},
-  'bullpadel-vertex-05-donne-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+donne&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-donne-2026',price:237,best:'both',decathlon:''},
-  'bullpadel-wonder-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+wonder&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-wonder-2026',price:242,best:'both',decathlon:''},
-  'bullpadel-vertex-05-hybrid-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+hybrid&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-hybrid-2026',price:288,best:'both',decathlon:''},
-  'bullpadel-elite-woman-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+elite+woman&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-elite-woman-2026',price:229,best:'both',decathlon:''},
-  'bullpadel-vertex-05-geo-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05+geo&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-geo-2026',price:305,best:'both',decathlon:''},
-  'bullpadel-flow-legend-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+flow+legend&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-flow-legend-2026',price:224,best:'both',decathlon:''},
-  'bullpadel-vertex-05-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+vertex+05&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-vertex-05-2026',price:271,best:'both',decathlon:''},
-  'head-evo-extreme-2026':{amazon:'https://www.amazon.it/s?k=head+evo+extreme&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-evo-extreme-2026',price:69,best:'both',decathlon:''},
-  'head-extreme-team-2025':{amazon:'https://www.amazon.it/s?k=head+extreme+team&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-team-2025',price:149,best:'both',decathlon:''},
-  'head-extreme-motion-2025':{amazon:'https://www.amazon.it/s?k=head+extreme+motion&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-extreme-motion-2025',price:199,best:'both',decathlon:''},
-  'babolat-alioth-junior-2025':{amazon:'https://www.amazon.it/s?k=babolat+alioth+junior&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-alioth-junior-2025',price:98,best:'both',decathlon:''},
-  'babolat-alioth-pro-jr-2025':{amazon:'https://www.amazon.it/s?k=babolat+alioth+pro+jr&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-alioth-pro-jr-2025',price:136,best:'both',decathlon:''},
-  'babolat-alioth-mini-jr-2025':{amazon:'https://www.amazon.it/s?k=babolat+alioth+mini+jr&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-alioth-mini-jr-2025',price:74,best:'both',decathlon:''},
-  'drop-shot-blitz-attack-2025':{amazon:'https://www.amazon.it/s?k=drop+shot+blitz+attack&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-blitz-attack-2025',price:214,best:'both',decathlon:''},
-  'siux-electra-st2-stupa-pro':{amazon:'https://www.amazon.it/s?k=siux+electra+st2+stupa+pro&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-st2-stupa-pro',price:139,best:'both',decathlon:''},
-  'babolat-air-origin-2025':{amazon:'https://www.amazon.it/s?k=babolat+air+origin&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-air-origin-2025',price:99,best:'both',decathlon:''},
-  'nox-at10-luxury-genius-18k-buenos-aires-2025':{amazon:'https://www.amazon.it/s?k=nox+at10+luxury+genius+18k+buenos+&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-at10-luxury-genius-18k-buenos-aires-2025',price:259,best:'both',decathlon:''},
-  'bullpadel-pearl-bea-gonzalez-2026':{amazon:'https://www.amazon.it/s?k=bullpadel+pearl+bea+gonzalez&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-pearl-bea-gonzalez-2026',price:251,best:'both',decathlon:''},
-  'drop-shot-axion-attack-1-5-jon-sanz':{amazon:'https://www.amazon.it/s?k=drop+shot+axion+attack+1+5+jon+sanz&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-axion-attack-1-5-jon-sanz',price:189,best:'both',decathlon:''},
-  'drop-shot-conqueror-attack-1-5':{amazon:'https://www.amazon.it/s?k=drop+shot+conqueror+attack+1+5&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-conqueror-attack-1-5',price:189,best:'both',decathlon:''},
-  'lok-carb-on-hype-fdb-2025':{amazon:'https://www.amazon.it/s?k=lok+carb+on+hype+fdb&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-carb-on-hype-fdb-2025',price:189,best:'both',decathlon:''},
-  'siux-gea-2025':{amazon:'https://www.amazon.it/s?k=siux+gea&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-gea-2025',price:139,best:'both',decathlon:''},
-  'adidas-metalbone-09-2025':{amazon:'https://www.amazon.it/s?k=adidas+metalbone+09&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-metalbone-09-2025',price:109,best:'both',decathlon:''},
-  'drop-shot-yukon-pro-1-0':{amazon:'https://www.amazon.it/s?k=drop+shot+yukon+pro+1+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/drop-shot-yukon-pro-1-0',price:245,best:'both',decathlon:''},
-  'siux-beat-junior-2025':{amazon:'https://www.amazon.it/s?k=siux+beat+junior&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-beat-junior-2025',price:49,best:'both',decathlon:''},
-  'siux-trilogy-elite-5-2025':{amazon:'https://www.amazon.it/s?k=siux+trilogy+elite+5&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-elite-5-2025',price:112,best:'both',decathlon:''},
-  'siux-trilogy-go-5-2025':{amazon:'https://www.amazon.it/s?k=siux+trilogy+go+5&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-go-5-2025',price:69,best:'both',decathlon:''},
-  'siux-trilogy-pro-5-patty-llaguno-2025':{amazon:'https://www.amazon.it/s?k=siux+trilogy+pro+5+patty+llaguno&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-trilogy-pro-5-patty-llaguno-2025',price:129,best:'both',decathlon:''},
-  'adidas-adipower-a1padel-2025':{amazon:'https://www.amazon.it/s?k=adidas+adipower+a1padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/adidas-adipower-a1padel-2025',price:144,best:'both',decathlon:''},
-  'nox-future-attack-12k-nfa-2025':{amazon:'https://www.amazon.it/s?k=nox+future+attack+12k+nfa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-future-attack-12k-nfa-2025',price:154,best:'both',decathlon:''},
-  'nox-future-hybrid-12k-nfa-2025':{amazon:'https://www.amazon.it/s?k=nox+future+hybrid+12k+nfa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-future-hybrid-12k-nfa-2025',price:144,best:'both',decathlon:''},
-  'nox-future-control-12k-nfa-2025':{amazon:'https://www.amazon.it/s?k=nox+future+control+12k+nfa&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/nox-future-control-12k-nfa-2025',price:144,best:'both',decathlon:''},
-  'wilson-optix-v1-bianco-2025':{amazon:'https://www.amazon.it/s?k=wilson+optix+v1+bianco&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-optix-v1-bianco-2025',price:74,best:'both',decathlon:''},
-  'head-coello-motion-2025-2025':{amazon:'https://www.amazon.it/s?k=head+coello+motion+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-motion-2025-2025',price:174,best:'both',decathlon:''},
-  'head-coello-pro-2025-2025':{amazon:'https://www.amazon.it/s?k=head+coello+pro+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-pro-2025-2025',price:174,best:'both',decathlon:''},
-  'head-coello-team-2025-2025':{amazon:'https://www.amazon.it/s?k=head+coello+team+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-team-2025-2025',price:119,best:'both',decathlon:''},
-  'head-coello-vibe-2025-2025':{amazon:'https://www.amazon.it/s?k=head+coello+vibe+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-vibe-2025-2025',price:89,best:'both',decathlon:''},
-  'head-coello-junior-2025-2025':{amazon:'https://www.amazon.it/s?k=head+coello+junior+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-coello-junior-2025-2025',price:74,best:'both',decathlon:''},
-  'head-bolt-ne-pr-2025':{amazon:'https://www.amazon.it/s?k=head+bolt+ne+pr&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-bolt-ne-pr-2025',price:71,best:'both',decathlon:''},
-  'lok-easy-hype-2025':{amazon:'https://www.amazon.it/s?k=lok+easy+hype&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-easy-hype-2025',price:79,best:'both',decathlon:''},
-  'lok-be-hype-2025':{amazon:'https://www.amazon.it/s?k=lok+be+hype&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-be-hype-2025',price:71,best:'both',decathlon:''},
-  'lok-be-flow-2025':{amazon:'https://www.amazon.it/s?k=lok+be+flow&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-be-flow-2025',price:71,best:'both',decathlon:''},
-  'lok-easy-flow-2025':{amazon:'https://www.amazon.it/s?k=lok+easy+flow&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/lok-easy-flow-2025',price:79,best:'both',decathlon:''},
-  'babolat-technical-vertuo-2025':{amazon:'https://www.amazon.it/s?k=babolat+technical+vertuo&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-vertuo-2025',price:129,best:'both',decathlon:''},
-  'siux-electra-go-4-2025':{amazon:'https://www.amazon.it/s?k=siux+electra+go+4&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-electra-go-4-2025',price:94,best:'both',decathlon:''},
-  'platinum-wolf-control-sanyo-gutierrez-2025':{amazon:'https://www.amazon.it/s?k=platinum+wolf+control+sanyo+gutierrez&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/platinum-wolf-control-sanyo-gutierrez-2025',price:199,best:'both',decathlon:''},
-  'bullpadel-icon-cloud-juan-martin-diaz-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+icon+cloud+juan+martin+diaz&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-icon-cloud-juan-martin-diaz-2025',price:189,best:'both',decathlon:''},
-  'bullpadel-pearl-cloud-bea-gonzalez-2025':{amazon:'https://www.amazon.it/s?k=bullpadel+pearl+cloud+bea+gonzalez&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/bullpadel-pearl-cloud-bea-gonzalez-2025',price:179,best:'both',decathlon:''},
-  'siux-diablo-go-4-2025':{amazon:'https://www.amazon.it/s?k=siux+diablo+go+4&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-go-4-2025',price:68,best:'both',decathlon:''},
-  'vibor-a-yarara-radical-12k-2-0-2025':{amazon:'https://www.amazon.it/s?k=vibor+a+yarara+radical+12k+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-yarara-radical-12k-2-0-2025',price:219,best:'both',decathlon:''},
-  'vibor-a-black-mamba-radical-12k-2-0-2025':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+radical+12k+2+0&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-radical-12k-2-0-2025',price:219,best:'both',decathlon:''},
-  'vibor-a-black-mamba-elite-3k-2025':{amazon:'https://www.amazon.it/s?k=vibor+a+black+mamba+elite+3k&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-black-mamba-elite-3k-2025',price:162,best:'both',decathlon:''},
-  'vibor-a-mamba-pro-black-2025':{amazon:'https://www.amazon.it/s?k=vibor+a+mamba+pro+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/vibor-a-mamba-pro-black-2025',price:259,best:'both',decathlon:''},
-  'oxdog-ultimate-pro-smash-2025-2025':{amazon:'https://www.amazon.it/s?k=oxdog+ultimate+pro+smash+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/oxdog-ultimate-pro-smash-2025-2025',price:250,best:'both',decathlon:''},
-  'wilson-defy-pro-v1-javi-garrido-2025':{amazon:'https://www.amazon.it/s?k=wilson+defy+pro+v1+javi+garrido&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-defy-pro-v1-javi-garrido-2025',price:249,best:'both',decathlon:''},
-  'wilson-defy-v1-2025':{amazon:'https://www.amazon.it/s?k=wilson+defy+v1&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-defy-v1-2025',price:169,best:'both',decathlon:''},
-  'wilson-defy-lsv1-2025':{amazon:'https://www.amazon.it/s?k=wilson+defy+lsv1&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/wilson-defy-lsv1-2025',price:179,best:'both',decathlon:''},
-  'siux-valkiria-go-2025':{amazon:'https://www.amazon.it/s?k=siux+valkiria+go&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-valkiria-go-2025',price:74,best:'both',decathlon:''},
-  'head-speed-pro-x-2025':{amazon:'https://www.amazon.it/s?k=head+speed+pro+x&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/head-speed-pro-x-2025',price:225,best:'both',decathlon:''},
-  'dunlop-megamax-black-2025':{amazon:'https://www.amazon.it/s?k=dunlop+megamax+black&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/dunlop-megamax-black-2025',price:66,best:'both',decathlon:''},
-  'dunlop-megamax-verde-2025':{amazon:'https://www.amazon.it/s?k=dunlop+megamax+verde&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/dunlop-megamax-verde-2025',price:72,best:'both',decathlon:''},
-  'babolat-technical-veron-2025-2025':{amazon:'https://www.amazon.it/s?k=babolat+technical+veron+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-veron-2025-2025',price:148,best:'both',decathlon:''},
-  'babolat-technical-viper-2025-2025':{amazon:'https://www.amazon.it/s?k=babolat+technical+viper+2025&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/babolat-technical-viper-2025-2025',price:225,best:'both',decathlon:''},
-  'siux-diablo-pro-4-2025':{amazon:'https://www.amazon.it/s?k=siux+diablo+pro+4&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.com/it/siux-diablo-pro-4-2025',price:139,best:'both',decathlon:''},
-};
 
 var RACKET_SCORES = {
   'adidas-metalbone-3-3':{brand:'Adidas',name:'Metalbone 3.3',year:'2024',shape:'diamond',weight:359,balance:'Testa pesante',price:353,overall:8.3,power:8.6,control:8.0,sweetspot:8.0,maneuverability:8.0,comfort:7.0,spin:5.0,surface:'Aluminized Carbon 16K',core:'Medium-Soft EVA',hardness:'Medium',level:'advanced',side:'right',style:'aggressive',img:'https://www.padelnuestro.com/media/catalog/product/1/1/110141_pala_adidas_metalbone_3_3_adrk1aa0u0016f_1500x1500_vista1_4b50.jpg',gender:'all'},
@@ -5256,7 +4818,6 @@ var RACKET_SCORES = {
   'munich-x-soul':{brand:'Munich',name:'X-Soul',year:'2024',shape:'teardrop',weight:358,balance:'Neutro',price:200,overall:8.4,power:8.2,control:8.2,sweetspot:8.5,maneuverability:8.8,comfort:7.5,spin:7.0,surface:'Carbon 12K',core:'EVA',hardness:'Medium',level:'advanced',side:'both',style:'balanced',img:'https://www.padelnuestro.com/media/catalog/product/cache/1/image/500x500/munich-x-soul.jpg',gender:'all'},
   'lok-maxx-hype':{brand:'LOK',name:'Maxx Hype',year:'2024',shape:'diamond',weight:365,balance:'Testa pesante',price:260,overall:8.4,power:9.0,control:7.5,sweetspot:8.0,maneuverability:7.8,comfort:7.5,spin:8.0,surface:'Carbon 12K',core:'Hard EVA',hardness:'Hard',level:'advanced',side:'right',style:'aggressive',img:'https://www.padelnuestro.com/media/catalog/product/cache/1/image/500x500/lok-maxx-hype.jpg',gender:'all'},
   'lok-maxx-hype-gen2':{brand:'LOK',name:'Maxx Hype Gen 2',year:'2025',shape:'diamond',weight:365,balance:'Testa pesante',price:270,overall:8.4,power:9.0,control:7.5,sweetspot:8.0,maneuverability:7.8,comfort:7.5,spin:8.0,surface:'Carbon 12K',core:'Hard EVA',hardness:'Hard',level:'advanced',side:'right',style:'aggressive',img:'https://www.padelnuestro.com/media/catalog/product/1/2/121729-pala-lok-maxx-hype-gen-2-lr1ha1u22-1500x1500-1.jpg',gender:'all'},
-  'lok-be-hype-gen2':{brand:'LOK',name:'Be Hype Gen 2',year:'2026',shape:'teardrop',weight:358,balance:'Neutro',price:200,overall:7.8,power:8.2,control:8.2,sweetspot:8.5,maneuverability:8.8,comfort:8.2,spin:7.0,surface:'Carbon 12K',core:'EVA',hardness:'Medium',level:'intermediate',side:'both',style:'balanced',img:'https://www.padelnuestro.com/media/catalog/product/1/2/121720-pala-lok-be-hype-gen-2-lr5ha0u2-1500x1500-1.jpg',gender:'all'},
   'lok-carb-on-flow':{brand:'LOK',name:'Carb-On Flow',year:'2024',shape:'teardrop',weight:358,balance:'Neutro',price:240,overall:8.4,power:8.2,control:8.2,sweetspot:8.5,maneuverability:8.8,comfort:7.5,spin:7.0,surface:'Carbon 12K',core:'EVA',hardness:'Medium',level:'advanced',side:'both',style:'balanced',img:'https://www.padelnuestro.com/media/catalog/product/cache/1/image/500x500/lok-carb-on-flow.jpg',gender:'all'},
   'kombat-etna':{brand:'Kombat',name:'Etna',year:'2024',shape:'teardrop',weight:358,balance:'Neutro',price:150,overall:7.8,power:8.2,control:8.2,sweetspot:8.5,maneuverability:8.8,comfort:8.2,spin:7.0,surface:'Carbon',core:'EVA',hardness:'Medium',level:'intermediate',side:'both',style:'balanced',img:'https://www.padelnuestro.com/media/catalog/product/cache/1/image/500x500/kombat-etna.jpg',gender:'all'},
   'starvie-kenta-eternal-ultra':{brand:'Starvie',name:'Kenta Eternal Ultra Speed',year:'2024',shape:'round',weight:358,balance:'Testa leggera',price:280,overall:8.4,power:7.5,control:9.0,sweetspot:9.2,maneuverability:9.2,comfort:7.5,spin:5.5,surface:'Carbon 12K',core:'Soft EVA',hardness:'Soft',level:'advanced',side:'left',style:'defensive',img:'https://cdn.racketpedia.com/media/padel-rackets-data-sheets/130/300x300/starvie-basalto-2025.webp',gender:'woman'},
@@ -5708,7 +5269,6 @@ var BUY_LINKS = {
   'munich-x-soul':{amazon:'https://www.amazon.it/s?k=Munich+X-Soul+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Munich%20X-Soul%20padel',price:200,best:'padelnuestro',decathlon:''},
   'lok-maxx-hype':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20padel',price:260,best:'padelnuestro',decathlon:''},
   'lok-maxx-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Maxx+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Maxx%20Hype%20Gen%202%20padel',price:270,best:'padelnuestro',decathlon:''},
-  'lok-be-hype-gen2':{amazon:'https://www.amazon.it/s?k=LOK+Be+Hype+Gen+2+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Be%20Hype%20Gen%202%20padel',price:200,best:'padelnuestro',decathlon:''},
   'lok-carb-on-flow':{amazon:'https://www.amazon.it/s?k=LOK+Carb-On+Flow+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=LOK%20Carb-On%20Flow%20padel',price:240,best:'padelnuestro',decathlon:''},
   'kombat-etna':{amazon:'https://www.amazon.it/s?k=Kombat+Etna+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Kombat%20Etna%20padel',price:150,best:'padelnuestro',decathlon:''},
   'starvie-kenta-eternal-ultra':{amazon:'https://www.amazon.it/s?k=Starvie+Kenta+Eternal+Ultra+Speed+padel&tag=stinkipadel-21',padelnuestro:'https://www.padelnuestro.es/es/catalogsearch/result/?q=Starvie%20Kenta%20Eternal%20Ultra%20Speed%20padel',price:280,best:'padelnuestro',decathlon:''},
@@ -6454,12 +6014,11 @@ function scoreRacket(r, rawAns) {
     else if (hand === 'left') side = 'left';
   }
 
-  // Inferisci stile da smash% se non dichiarato
+  // Inferisci stile da smash%, zone e goal se non dichiarato esplicitamente
   if (!style) {
-    if (smashPct === 'high') style = 'aggressive';
-    else if (smashPct === 'low') style = 'defensive';
-    else if (zone === 'net') style = 'aggressive';
-    else if (zone === 'back') style = 'defensive';
+    if (smashPct === 'high' || zone === 'net') style = 'aggressive';
+    else if (smashPct === 'low' || zone === 'back' || goal === 'control') style = 'defensive';
+    else if (goal === 'power') style = 'aggressive';
     else style = 'balanced';
   }
 
@@ -6491,20 +6050,27 @@ function scoreRacket(r, rawAns) {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   total += 24;
   var styleScore = 0;
+  // Consolida stile: combina dichiarazione esplicita + segnali impliciti
+  var effectiveStyle = style;
+  if (style === 'balanced') {
+    // Se balanced + zone=net o smash=high → inclina verso aggressive
+    if (zone === 'net' || smashPct === 'high') effectiveStyle = 'aggressive';
+    else if (zone === 'back' || smashPct === 'low') effectiveStyle = 'defensive';
+  }
   // A) Stile base (0-12 punti)
-  if (!style) { styleScore += 8; }
-  else if (rStyle === style) { styleScore += 12; }
-  else if (rStyle === 'balanced') { styleScore += (style === 'aggressive') ? 6 : 7; }
-  else if (style === 'balanced') { styleScore += 7; }
+  if (!effectiveStyle) { styleScore += 8; }
+  else if (rStyle === effectiveStyle) { styleScore += 12; }
+  else if (rStyle === 'balanced') { styleScore += (effectiveStyle === 'aggressive') ? 6 : 7; }
+  else if (effectiveStyle === 'balanced') { styleScore += 7; }
   else { styleScore += 0; } // aggressive↔defensive: opposti assoluti
 
   // B) Forma coerente con stile (0-8 punti)
   var formBonus = 0;
   if (!shp || shp === 'ai') {
     // Nessuna preferenza: forma ideale deriva dallo stile inferito
-    if (style === 'aggressive') {
+    if (effectiveStyle === 'aggressive') {
       formBonus = (rShp === 'diamond') ? 8 : (rShp === 'teardrop' || rShp === 'hybrid') ? 5 : 1;
-    } else if (style === 'defensive') {
+    } else if (effectiveStyle === 'defensive') {
       formBonus = (rShp === 'round') ? 8 : (rShp === 'teardrop' || rShp === 'hybrid') ? 5 : 1;
     } else {
       formBonus = (rShp === 'teardrop' || rShp === 'hybrid') ? 8 : (rShp === 'round' || rShp === 'diamond') ? 5 : 4;
@@ -6534,10 +6100,10 @@ function scoreRacket(r, rawAns) {
     else if (neutro) balBonus = 2; // neutro è sempre accettabile
     else balBonus = 0;
   } else {
-    // Senza preferenza: bilanciamento ideale deriva dallo stile
-    if (style === 'aggressive' && headH) balBonus = 4;
-    else if (style === 'defensive' && headL) balBonus = 4;
-    else if (style === 'balanced' && neutro) balBonus = 4;
+    // Senza preferenza: bilanciamento ideale deriva dall'effectiveStyle
+    if (effectiveStyle === 'aggressive' && headH) balBonus = 4;
+    else if (effectiveStyle === 'defensive' && headL) balBonus = 4;
+    else if (effectiveStyle === 'balanced' && neutro) balBonus = 4;
     else if (neutro) balBonus = 3;
     else balBonus = 1;
   }
@@ -6610,8 +6176,12 @@ function scoreRacket(r, rawAns) {
       // Molte ore: preferisce racchette con buon comfort (>6) e non troppo dure
       var hardPenalty = (rHard.indexOf('hard') >= 0 && rHard.indexOf('medium') < 0) ? 2 : 0;
       physScore = rComf >= 8 ? 8 : rComf >= 7 ? 7 : rComf >= 5 ? 5 - hardPenalty : 3 - hardPenalty;
+    } else if (medUsage) {
+      // Ore medie: piccola penalità su racchette molto dure
+      var hardPen2 = (rHard.indexOf('hard') >= 0 && rHard.indexOf('medium') < 0) ? 1 : 0;
+      physScore = 8 - hardPen2;
     } else {
-      physScore = 8; // poche ore → no vincoli comfort
+      physScore = 8; // poche ore → nessun vincolo comfort
     }
   } else {
     // Problemi fisici: comfort è critico
@@ -6620,8 +6190,11 @@ function scoreRacket(r, rawAns) {
       physScore = 8;
     } else {
       // Usa comfort e hardness come proxy
-      var isSoft = rHard.indexOf('soft') >= 0;
-      physScore = rComf >= 8 ? 6 : rComf >= 6 ? (isSoft ? 5 : 3) : 1;
+      var isSoft2 = rHard.indexOf('soft') >= 0 || rHard === 'medium';
+      var isHard2 = rHard.indexOf('hard') >= 0 && rHard.indexOf('medium') < 0;
+      physScore = rComf >= 8 ? (isHard2 ? 4 : 6) :
+                  rComf >= 7 ? (isSoft2 ? 5 : isHard2 ? 2 : 4) :
+                  rComf >= 5 ? (isSoft2 ? 3 : 1) : 0;
     }
   }
   score += physScore;
@@ -6671,11 +6244,11 @@ function scoreRacket(r, rawAns) {
   //    Meno critica per avanzati attaccanti
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   total += 5;
-  var needsManeuv = (lvl === 'beginner' || style === 'defensive' || zone === 'back' || lightBuild);
+  var needsManeuv = (lvl === 'beginner' || effectiveStyle === 'defensive' || zone === 'back' || lightBuild);
   if (needsManeuv) {
     // Alta maneggevolezza (>8) = molto importante
     score += rManeuv >= 9 ? 5 : rManeuv >= 8 ? 4 : rManeuv >= 7 ? 2 : 1;
-  } else if (style === 'aggressive' && lvl === 'advanced') {
+  } else if (effectiveStyle === 'aggressive' && lvl === 'advanced') {
     // Attaccante avanzato: maneggevolezza meno critica
     score += 4; // quasi sempre ok
   } else {
@@ -6711,10 +6284,11 @@ function scoreRacket(r, rawAns) {
   //     Utente vuole nuovo 2026 → racchette 2026 avvantaggiate
   //     Utente vuole value → anni precedenti avvantaggiati
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  var yearPref = ans['fq-year_pref'] || ans.year_pref;
+  // year_pref: 'any'=nuove 2025-26, 'value'=2023-, 'none'=nessuna pref
+  var yearPref = ans['fq-year_pref'] || ans['fq-year'] || ans.year_pref;
   var rYear = parseInt(r[3] || sc.year || '2024');
   if (yearPref === 'none' || !yearPref) {
-    // nessuna preferenza: nessun bonus
+    // nessuna preferenza: nessun bonus né penalità
   } else if (yearPref === 'value') {
     // Vuole risparmio: anni 2022-2023 avvantaggiati
     total += 3;
@@ -6726,7 +6300,10 @@ function scoreRacket(r, rawAns) {
   }
 
   var pct = Math.round((score / total) * 100);
-  return Math.min(99, Math.max(1, pct));
+  // Normalizzazione non-lineare: scala i punteggi alti per raggiungere ~99%
+  // nelle situazioni di match perfetto (>90% raw)
+  var pctScaled = pct < 70 ? pct : Math.round(70 + (pct - 70) * 1.5);
+  return Math.min(99, Math.max(1, pctScaled));
 }
 
 
@@ -6889,8 +6466,9 @@ function computeMatches() {
 
     // Hard exclude if outside budget range
     // Se non ha prezzo definito ed esiste un ceiling, escludiamo per sicurezza
-    if (budgetCeiling !== null && realPrice >= 9999) {
-      return null; // prezzo sconosciuto con budget limitato → escludi
+    // Prezzo sconosciuto: escludi solo per budget 'budget' (<€120), non per 'mid'
+    if (bud === 'budget' && realPrice >= 9999) {
+      return null; // budget stretto + prezzo sconosciuto → escludi per sicurezza
     }
     if (budgetCeiling !== null && realPrice > budgetCeiling) {
       return null; // sopra il massimo
@@ -6909,19 +6487,30 @@ function computeMatches() {
       // head_light → testa leggera/low/head-light
       // neutral → neutro/neutral/medium
       var balOk = false;
-      if (balAns === 'head_heavy') balOk = rBalance.indexOf('pes') >= 0; // 'Testa pesante'
-      else if (balAns === 'head_light') balOk = rBalance.indexOf('leg') >= 0; // 'Testa leggera'
-      else if (balAns === 'neutral') balOk = rBalance === 'neutro' || rBalance === '—' || rBalance === '';
-      // Se balance non definito nel DB (—), non escludere
+      if (balAns === 'head_heavy') {
+        // headH: testa pesante, heavy, alto, medio-alto
+        balOk = rBalance.indexOf('pes') >= 0 || rBalance.indexOf('heavy') >= 0 ||
+                rBalance === 'alto' || rBalance === 'medio-alto';
+      } else if (balAns === 'head_light') {
+        // headL: testa leggera, light, basso
+        balOk = rBalance.indexOf('leg') >= 0 || rBalance.indexOf('light') >= 0 ||
+                rBalance === 'basso';
+      } else if (balAns === 'neutral') {
+        // neutro: neutro, medio, vuoto
+        balOk = rBalance === 'neutro' || rBalance === 'medio' ||
+                rBalance === '—' || rBalance === '';
+      }
+      // Se balance non definito nel DB (—), non escludere mai
       if (rBalance && rBalance !== '—' && !balOk) return null;
     }
 
-    // Hard exclude if year_pref = new (solo 2025-2026)
-    var yearPref = ans['fq-year'] || ans['year_pref'] || '';
-    if (yearPref === 'new') {
-      var sc = RACKET_SCORES[r[0]];
-      var yr = sc ? parseInt(sc.year) : 0;
-      if (!yr || yr < 2025) return null; // escludi tutto < 2025
+    // Hard exclude se year_pref = 'any' (preferisce 2025-26):
+    // Escludi solo modelli molto vecchi (pre-2024) per tenerli fuori dal top
+    var yearPref = ans['fq-year'] || ans['fq-year_pref'] || ans['year_pref'] || '';
+    if (yearPref === 'any') {
+      var sc_yr = RACKET_SCORES[r[0]];
+      var yr = sc_yr ? parseInt(sc_yr.year) : 2024;
+      if (yr < 2024) return null; // escludi modelli pre-2024
     }
 
     // Hard exclude if shape selected (not 'ai' = let algorithm decide)
@@ -7036,6 +6625,21 @@ function runAIAnalysis() {
     if (m.pct >= 90) reasons.push('Compatibilità eccezionale: ' + m.pct + '%');
     else if (m.pct >= 80) reasons.push('Alta compatibilità: ' + m.pct + '%');
 
+    // Terzo motivo: la caratteristica più distintiva della racchetta
+    if (reasons.length < 2) {
+      var overall_r = parseFloat(sc.overall || 0);
+      var power_r   = parseFloat(sc.power || 0);
+      var ctrl_r    = parseFloat(sc.control || 0);
+      var comf_r    = parseFloat(sc.comfort || 0);
+      var spin_r    = parseFloat(sc.spin || 0);
+      // Trova la metrica più alta
+      var best = Math.max(overall_r, power_r, ctrl_r, comf_r, spin_r);
+      if (best === power_r && power_r >= 8.5) reasons.push('Potenza ' + power_r + '/10');
+      else if (best === ctrl_r && ctrl_r >= 8.5) reasons.push('Controllo ' + ctrl_r + '/10');
+      else if (best === comf_r && comf_r >= 8.5) reasons.push('Comfort ' + comf_r + '/10');
+      else if (best === spin_r && spin_r >= 8.5) reasons.push('Spin ' + spin_r + '/10');
+      else if (overall_r >= 8.5) reasons.push('Top di gamma: overall ' + overall_r + '/10');
+    }
     if (reasons.length) _aiExplanations[m.r[0]] = reasons.slice(0, 2).join(' · ');
   });
 
@@ -8712,9 +8316,14 @@ function getSimilarRackets(racketId, count) {
       else if (pd < 0.40) sim += 0.5;
       // Same brand bonus (peso 0.5)
       if (s.brand === r.brand) sim += 0.5;
+      // Anno simile bonus (peso 0.5): evita suggerire modelli vecchi come alternative
+      var rYr = parseInt(r.year || '2024');
+      var sYr = parseInt(s.year || '2024');
+      if (Math.abs(rYr - sYr) <= 1) sim += 0.5;
+      else if (Math.abs(rYr - sYr) >= 3) sim -= 0.5; // penalizza modelli molto datati
       return { id:id, s:s, sim:sim };
     })
-    .filter(function(x) { return x.sim >= 3; })
+    .filter(function(x) { return x.sim >= 3.5; })
     .sort(function(a,b) { return b.sim - a.sim; })
     .slice(0, count || 3);
 }
@@ -9079,6 +8688,10 @@ function pfCompute() {
       else if (r.side === 'both' || targetSide === 'both') score += 10;
       else score += 2;
       score += Math.round((r.overall || 7) / 10 * 10);
+      // Bonus se l'anno è recente (partner aggiornato = migliori consigli)
+      var rYear2 = parseInt((r.year || '2023'));
+      if (rYear2 >= 2026) score += 3;
+      else if (rYear2 >= 2025) score += 1;
       return { id:id, r:r, score:score, bl:bl };
     })
     .filter(Boolean)
