@@ -2186,14 +2186,176 @@
     letter-spacing: 0.5px;
     pointer-events: none;
   }
+
+  /* ══════════════════════════════════════════════ */
+  /* WIKI PADEL STYLES */
+  /* ══════════════════════════════════════════════ */
+  .wiki-tab-btn {
+    flex-shrink:0; padding:8px 14px; border-radius:20px;
+    border:1.5px solid rgba(124,58,237,0.3); background:var(--white);
+    color:var(--gray); font-size:12px; font-weight:700;
+    cursor:pointer; font-family:DM Sans,sans-serif;
+    white-space:nowrap; transition:all 0.15s;
+  }
+  .wiki-tab-active {
+    background:linear-gradient(135deg,#7c3aed,#5b21b6) !important;
+    color:white !important; border-color:transparent !important;
+  }
+  .wiki-card {
+    background:var(--white); border-radius:16px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    border:1.5px solid var(--gray-light);
+    margin-bottom:12px; overflow:hidden;
+  }
+  .wiki-card-warning { border-color:rgba(245,158,11,0.3); }
+  .wiki-card-header {
+    display:flex; align-items:center; gap:12px;
+    padding:14px 16px; border-bottom:1px solid var(--gray-light);
+  }
+  .wiki-card-icon { font-size:24px; flex-shrink:0; }
+  .wiki-card-title { font-size:15px; font-weight:800; color:var(--text); }
+  .wiki-card-level {
+    display:inline-block; font-size:10px; font-weight:700;
+    padding:2px 8px; border-radius:999px; margin-top:3px;
+    letter-spacing:0.5px; text-transform:uppercase;
+  }
+  .wiki-beginner   { background:#dcfce7; color:#166534; }
+  .wiki-intermediate { background:#fef3c7; color:#92400e; }
+  .wiki-advanced   { background:#fee2e2; color:#991b1b; }
+  .wiki-card-body  { padding:14px 16px; }
+  .wiki-card-body p { font-size:13px; color:var(--text); margin:0 0 10px; line-height:1.5; }
+  .wiki-tips { display:flex; flex-direction:column; gap:6px; }
+  .wiki-tip {
+    font-size:12px; color:var(--text); line-height:1.4;
+    padding:6px 10px; background:var(--cream);
+    border-radius:8px; border-left:3px solid #e5e7eb;
+  }
+  .wiki-tip:has(✅) { border-left-color:#22c55e; }
+  .wiki-tip:has(❌) { border-left-color:#ef4444; }
+  .wiki-error-list { display:flex; flex-direction:column; gap:8px; }
+  .wiki-error { display:flex; gap:8px; align-items:flex-start; }
+  .wiki-error-icon { flex-shrink:0; font-size:14px; margin-top:1px; }
+  .wiki-error div { font-size:12px; color:var(--text); line-height:1.4; }
+  .wiki-glossary { display:flex; flex-direction:column; gap:0; }
+  .wiki-gloss-item {
+    display:flex; gap:12px; padding:10px 0;
+    border-bottom:1px solid var(--gray-light); align-items:flex-start;
+  }
+  .wiki-gloss-item:last-child { border-bottom:none; }
+  .wiki-gloss-term {
+    flex-shrink:0; font-size:13px; font-weight:800; color:#7c3aed;
+    min-width:100px;
+  }
+  .wiki-gloss-def { font-size:12px; color:var(--text); line-height:1.4; }
+  [data-theme=dark] .wiki-card { background:var(--white); }
+  [data-theme=dark] .wiki-tab-btn { background:var(--white); }
+
+  /* ══ WIKI LOCK SYSTEM ══ */
+  .wiki-locked {
+    position: relative;
+    user-select: none;
+  }
+  .wiki-locked .wiki-card-body {
+    filter: blur(4px);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .wiki-locked .wiki-card-header {
+    filter: blur(0px); /* header sempre visibile */
+  }
+  .wiki-locked::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 60%);
+    pointer-events: none;
+  }
+  .wiki-lock-overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .wiki-lock-btn {
+    background: linear-gradient(135deg,#7c3aed,#5b21b6);
+    color: white; border: none; border-radius: 20px;
+    padding: 8px 18px; font-size: 12px; font-weight: 700;
+    cursor: pointer; font-family: DM Sans,sans-serif;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.35);
+  }
+  .wiki-lock-note {
+    font-size:11px; color:var(--gray); margin-top:4px;
+  }
+  /* Modal sblocco */
+  #wiki-unlock-modal {
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(0,0,0,0.6); display:none;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  #wiki-unlock-modal.open { display:flex; }
+  .wiki-modal-box {
+    background:var(--white); border-radius:24px; padding:28px 24px;
+    max-width:340px; width:100%; text-align:center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .wiki-modal-icon { font-size:40px; margin-bottom:12px; }
+  .wiki-modal-title { font-size:18px; font-weight:800; color:var(--text); margin-bottom:6px; }
+  .wiki-modal-sub { font-size:13px; color:var(--gray); margin-bottom:20px; line-height:1.5; }
+  .wiki-modal-input {
+    width:100%; padding:12px 16px; border-radius:12px;
+    border:2px solid var(--gray-light); font-size:15px;
+    font-weight:700; text-align:center; letter-spacing:2px;
+    font-family:DM Sans,sans-serif; color:var(--text);
+    background:var(--cream); box-sizing:border-box;
+    margin-bottom:12px; outline:none;
+  }
+  .wiki-modal-input:focus { border-color:#7c3aed; }
+  .wiki-modal-input.error { border-color:#ef4444; }
+  .wiki-modal-error { font-size:12px; color:#ef4444; margin-bottom:10px; display:none; }
+  .wiki-modal-btn-unlock {
+    width:100%; padding:13px; border-radius:12px;
+    background:linear-gradient(135deg,#7c3aed,#5b21b6);
+    color:white; border:none; font-size:15px; font-weight:700;
+    cursor:pointer; font-family:DM Sans,sans-serif; margin-bottom:10px;
+  }
+  .wiki-modal-btn-kofi {
+    width:100%; padding:11px; border-radius:12px;
+    background:linear-gradient(135deg,#f97316,#ea580c);
+    color:white; border:none; font-size:13px; font-weight:700;
+    cursor:pointer; font-family:DM Sans,sans-serif; margin-bottom:10px;
+  }
+  .wiki-modal-btn-close {
+    background:none; border:none; color:var(--gray);
+    font-size:13px; cursor:pointer; font-family:DM Sans,sans-serif;
+  }
+  [data-theme=dark] .wiki-locked .wiki-card-body { opacity:0.4; }
+  [data-theme=dark] .wiki-locked::after {
+    background: linear-gradient(180deg, rgba(30,42,58,0) 0%, rgba(30,42,58,0.9) 60%);
+  }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"RacketAI","url":"https://stinkipadel.github.io","description":"Test AI gratuito per trovare la racchetta da padel perfetta. 467 racchette.","applicationCategory":"SportsApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":"it-IT"}
 </script>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f4650a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RacketAI">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="RacketAI">
+  <!-- Splash screens iOS (opzionale) -->
+  <meta name="msapplication-TileColor" content="#0d1b2a">
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.27</div>
+  <div id="app-version">v3.30</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -2257,6 +2419,17 @@
           </div>
           <div class="test-btn-arrow">›</div>
         </button>
+        <!-- Bottone Wiki Padel -->
+        <button type="button" class="test-btn" onclick="navigate('screen-wiki')" style="background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%);position:relative;">
+          <div class="test-btn-icon">📖</div>
+          <div class="test-btn-content">
+            <div class="test-btn-title">Wiki Padel <span id="wiki-lock-badge" style="font-size:10px;background:rgba(255,255,255,0.25);padding:2px 6px;border-radius:999px;">🔓 Gratis</span></div>
+            <div class="test-btn-sub">Colpi, tattiche, regole — guida per principianti e intermedi</div>
+          </div>
+          <div class="test-btn-arrow">›</div>
+        </button>
+
+
 
         <!-- Banner novità 2026 -->
         <div onclick="showNew2026()" style="cursor:pointer;background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(16,185,129,0.07));border:1.5px solid rgba(34,197,94,0.3);border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">
@@ -4578,6 +4751,9 @@ function navigate(id) {
   }
   if (id === 'screen-profile') {
       renderNavbar();
+  }
+  if (id === 'screen-wiki') {
+    setTimeout(wikiOnShow, 50);
   }
 }
 
@@ -9458,6 +9634,618 @@ function addToCompareFromSearch(racketId) {
     sc.scrollTop += e.deltaY * 1.2;
   }, { passive: false });
 })();
+
+// ═══════════════════════════════════════
+// WIKI PADEL — Tab switching
+// ═══════════════════════════════════════
+function wikiTab(tab) {
+  var tabs = ['colpi','tattiche','regole','errori','glossario'];
+  tabs.forEach(function(t) {
+    var sec = document.getElementById('wiki-' + t);
+    var btn = document.getElementById('wiki-tab-' + t);
+    if (sec) sec.style.display = (t === tab) ? 'block' : 'none';
+    if (btn) {
+      if (t === tab) btn.classList.add('wiki-tab-active');
+      else btn.classList.remove('wiki-tab-active');
+    }
+  });
+}
+
+// ═══════════════════════════════════════
+// WIKI UNLOCK SYSTEM
+// ═══════════════════════════════════════
+var WIKI_VALID_CODES = ['PADEL2026', 'STINKIPADEL', 'RACKETAI26', 'KOFI2026'];
+var WIKI_UNLOCK_KEY = 'rai_wiki_unlocked';
+
+function wikiIsUnlocked() {
+  try { return localStorage.getItem(WIKI_UNLOCK_KEY) === '1'; } catch(e) { return false; }
+}
+
+function wikiApplyUnlock() {
+  // Rimuovi classe wiki-locked da tutte le card
+  var locked = document.querySelectorAll('.wiki-locked');
+  Array.prototype.slice.call(locked).forEach(function(el) {
+    el.classList.remove('wiki-locked');
+    el.onclick = null;
+  });
+  // Aggiorna badge nel bottone home
+  var badge = document.getElementById('wiki-lock-badge');
+  if (badge) { badge.textContent = '✅ Sbloccata'; badge.style.background = 'rgba(34,197,94,0.3)'; }
+}
+
+function wikiShowUnlock() {
+  if (wikiIsUnlocked()) return;
+  var modal = document.getElementById('wiki-unlock-modal');
+  if (modal) modal.classList.add('open');
+  var inp = document.getElementById('wiki-code-input');
+  if (inp) { inp.value = ''; inp.classList.remove('error'); }
+  var err = document.getElementById('wiki-code-error');
+  if (err) err.style.display = 'none';
+}
+
+function wikiCloseUnlock() {
+  var modal = document.getElementById('wiki-unlock-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+function wikiTryUnlock() {
+  var inp = document.getElementById('wiki-code-input');
+  var err = document.getElementById('wiki-code-error');
+  if (!inp) return;
+  var code = (inp.value || '').trim().toUpperCase();
+  if (WIKI_VALID_CODES.indexOf(code) >= 0) {
+    // Codice valido!
+    try { localStorage.setItem(WIKI_UNLOCK_KEY, '1'); } catch(e) {}
+    wikiCloseUnlock();
+    wikiApplyUnlock();
+    showToast('🎉 Wiki sbloccata! Buon padel!');
+    try { _gaTrack('wiki_unlock', 'success', code); } catch(e2) {}
+  } else {
+    inp.classList.add('error');
+    if (err) err.style.display = 'block';
+    try { _gaTrack('wiki_unlock', 'fail', code); } catch(e2) {}
+  }
+}
+
+// Controlla al caricamento della schermata wiki
+function wikiOnShow() {
+  if (wikiIsUnlocked()) {
+    wikiApplyUnlock();
+  }
+}
 </script>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WIKI PADEL SCREEN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="screen" id="screen-wiki" style="display:none;flex-direction:column;height:100vh;max-height:100vh;overflow:hidden;background:var(--cream);">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:16px 20px 16px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;max-width:480px;margin:0 auto;">
+        <button type="button" onclick="navigateWithHistory('screen-home')" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">‹</button>
+        <div style="flex:1;">
+          <div style="font-size:18px;font-weight:800;color:white;">📖 Wiki Padel</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);">Guida completa per migliorare il tuo gioco</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll content -->
+    <div style="flex:1;overflow-y:auto;padding:16px 20px 32px;max-width:480px;margin:0 auto;width:100%;">
+
+      <!-- Tab navigation -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;">
+        <button type="button" onclick="wikiTab('colpi')" id="wiki-tab-colpi" class="wiki-tab-btn wiki-tab-active">🎯 Colpi</button>
+        <button type="button" onclick="wikiTab('tattiche')" id="wiki-tab-tattiche" class="wiki-tab-btn">♟️ Tattiche</button>
+        <button type="button" onclick="wikiTab('regole')" id="wiki-tab-regole" class="wiki-tab-btn">📋 Regole</button>
+        <button type="button" onclick="wikiTab('errori')" id="wiki-tab-errori" class="wiki-tab-btn">⚠️ Errori</button>
+        <button type="button" onclick="wikiTab('glossario')" id="wiki-tab-glossario" class="wiki-tab-btn">🔤 Glossario</button>
+      </div>
+
+      <!-- ═══ TAB: COLPI ═══ -->
+      <div id="wiki-colpi" class="wiki-section">
+
+        <!-- Drive (Diritto) -->
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">💪</span>
+            <div>
+              <div class="wiki-card-title">Drive (Diritto)</div>
+              <div class="wiki-card-level wiki-beginner">Principiante</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Il colpo di base dal lato destro (per destrorsi). È il tuo colpo più naturale e il primo da padroneggiare.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Tieni il polso fermo all'impatto — non "mollare" la racchetta</div>
+              <div class="wiki-tip">✅ Colpisci la palla all'altezza della vita, non troppo in alto né in basso</div>
+              <div class="wiki-tip">✅ Accompagna il colpo verso il bersaglio, non fermarti subito</div>
+              <div class="wiki-tip">❌ Evita di piegare troppo il gomito — il braccio rimane semisteso</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revés (Rovescio) -->
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🔄</span>
+            <div>
+              <div class="wiki-card-title">Revés (Rovescio)</div>
+              <div class="wiki-card-level wiki-beginner">Principiante</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Il colpo dal lato sinistro. Nel padel si gioca quasi sempre a due mani sul revés — più controllo e meno fatica al gomito.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Usa due mani: mano dominante in basso, l'altra sopra per guidare</div>
+              <div class="wiki-tip">✅ Ruota le spalle verso la palla prima di colpire</div>
+              <div class="wiki-tip">✅ Tieni le ginocchia piegate — il revés viene dal basso verso l'alto</div>
+              <div class="wiki-tip">❌ Non colpire con il gomito lontano dal corpo (rischio epicondilite)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volee -->
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">⚡</span>
+            <div>
+              <div class="wiki-card-title">Volee</div>
+              <div class="wiki-card-level wiki-beginner">Principiante</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Colpo diretto a rete, prima che la palla tocchi terra. È l'arma principale quando sei a rete.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Blocca la racchetta — non fare swing, solo un "push" fermo</div>
+              <div class="wiki-tip">✅ Posizione: racchetta davanti, gomiti piegati, peso in avanti</div>
+              <div class="wiki-tip">✅ Mira agli angoli bassi — la palla deve rimbalzare due volte prima del vetro</div>
+              <div class="wiki-tip">❌ Non tirare indietro la racchetta — la volee è un colpo compatto</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lob -->
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🌙</span>
+            <div>
+              <div class="wiki-card-title">Lob (Pallonetto)</div>
+              <div class="wiki-card-level wiki-intermediate">Intermedio</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Colpo alto che "sorpassa" gli avversari a rete. È il modo principale per recuperare la rete e ribaltare il punto.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Deve cadere a ¾ del campo, non troppo corto né sulla parete di fondo</div>
+              <div class="wiki-tip">✅ Usalo quando sei in difficoltà o per sorprendere chi attacca</div>
+              <div class="wiki-tip">✅ Il lob difensivo deve avere altezza — non una traiettoria piatta</div>
+              <div class="wiki-tip">❌ Non lobbare troppo corto: regalo uno smash facile agli avversari</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bandeja -->
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🫓</span>
+            <div>
+              <div class="wiki-card-title">Bandeja</div>
+              <div class="wiki-card-level wiki-intermediate">Intermedio</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Lo "smash di controllo" del padel. Si colpisce dall'alto come uno smash, ma con traiettoria piatta verso gli angoli invece che sul vetro.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Usata per mantenere la rete dopo il lob avversario</div>
+              <div class="wiki-tip">✅ Colpisci verso il lato debole avversario (spesso il rovescio)</div>
+              <div class="wiki-tip">✅ Il punto di contatto è davanti alla spalla, non sopra la testa</div>
+              <div class="wiki-tip">❌ Non farla troppo forte — l'obiettivo è posizione, non potenza</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Víbora -->
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🐍</span>
+            <div>
+              <div class="wiki-card-title">Víbora</div>
+              <div class="wiki-card-level wiki-advanced">Avanzato</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>La víbora è una bandeja con effetto laterale (slice), tipicamente dal lato sinistro. Crea un rimbalzo imprevedibile sulle pareti.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Fondamentale per il giocatore di sinistra (revés)</div>
+              <div class="wiki-tip">✅ L'effetto laterale porta la palla verso l'esterno dopo il rimbalzo</div>
+              <div class="wiki-tip">✅ Richiede una racchetta con buon spin (peso 8+/10)</div>
+              <div class="wiki-tip">❌ Difficile da padroneggiare — inizia con la bandeja prima</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smash -->
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">💥</span>
+            <div>
+              <div class="wiki-card-title">Smash (X3, X4)</div>
+              <div class="wiki-card-level wiki-intermediate">Intermedio</div>
+            </div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Colpo potente dall'alto verso il vetro di fondo. Lo smash X3 tocca terra + parete laterale, l'X4 tocca terra + parete di fondo + fuori campo (punto diretto).</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Lo smash X3 (fuori laterale) è più frequente e più sicuro</div>
+              <div class="wiki-tip">✅ Colpisci il più in alto possibile — usa tutto il braccio</div>
+              <div class="wiki-tip">✅ Palla corta al centro? Questo è il momento dello smash</div>
+              <div class="wiki-tip">❌ Non tentare l'X4 se non sei sicuro — spesso va in rete</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fine wiki-colpi -->
+
+      <!-- ═══ TAB: TATTICHE ═══ -->
+      <div id="wiki-tattiche" class="wiki-section" style="display:none;">
+
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🎯</span>
+            <div><div class="wiki-card-title">La rete domina</div><div class="wiki-card-level wiki-beginner">Concetto fondamentale</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Nel padel, <strong>chi controlla la rete controlla il punto</strong>. La coppia a rete può colpire verso il basso con volee e smash, mentre chi è al fondo è costretto a tirare in alto.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Appena puoi, avanzate a rete insieme come coppia</div>
+              <div class="wiki-tip">✅ Il lob avversario vi riporta al fondo — recuperate subito dopo</div>
+              <div class="wiki-tip">✅ Non andare a rete da soli: il partner deve muoversi con te</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🔁</span>
+            <div><div class="wiki-card-title">Costruire il punto</div><div class="wiki-card-level wiki-intermediate">Tattica base</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Non esistono punti "diretti" nel padel — o quasi. La sequenza tipica è: <strong>difesa → lob → avanzata → volee → smash</strong>.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Difesa: lob alto verso il fondo, recupera posizione</div>
+              <div class="wiki-tip">✅ Costruzione: volee bassa verso i piedi degli avversari</div>
+              <div class="wiki-tip">✅ Chiusura: quando sale una palla corta, smash o bandeja</div>
+              <div class="wiki-tip">❌ Non tentare il "winner" dal fondo — troppo rischio</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🤝</span>
+            <div><div class="wiki-card-title">Coordinazione con il partner</div><div class="wiki-card-level wiki-beginner">Lavoro di coppia</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Il padel è un gioco di coppia. La comunicazione è fondamentale — anche solo con i movimenti del corpo.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Muovetevi insieme: se uno avanza, avanza anche l'altro</div>
+              <div class="wiki-tip">✅ "Mia!" — annuncia le palle al centro per evitare confusione</div>
+              <div class="wiki-tip">✅ Copri il centro: la palla al centro è la più pericolosa</div>
+              <div class="wiki-tip">❌ Non lasciate buchi al centro — i pro li sfruttano sempre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🎭</span>
+            <div><div class="wiki-card-title">Giocare le pareti</div><div class="wiki-card-level wiki-intermediate">Skill chiave</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Le pareti sono uniche nel padel. Imparare a usarle in attacco e a difendersi dai rimbalzi è ciò che separa principianti da intermedi.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ La palla può rimbalzare a terra e poi sul vetro — è ancora in gioco</div>
+              <div class="wiki-tip">✅ Dopo il vetro di fondo, la palla può uscire lenta — momento per il lob</div>
+              <div class="wiki-tip">✅ I lati: la palla sulle pareti laterali crea angoli difficili da gestire</div>
+              <div class="wiki-tip">❌ Non arretrare troppo — lascia spazio tra te e il vetro di fondo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">📍</span>
+            <div><div class="wiki-card-title">Dove stare in campo</div><div class="wiki-card-level wiki-beginner">Posizionamento</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>La posizione di default dipende da dove è la palla e dove sono gli avversari.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ A rete: posizionati a circa 2 metri dal vetro, al centro della tua metà</div>
+              <div class="wiki-tip">✅ Al fondo: 1-1.5 metri davanti al vetro di fondo, non addossato</div>
+              <div class="wiki-tip">✅ Dopo il lob: avanziamo entrambi insieme verso la rete</div>
+              <div class="wiki-tip">✅ Dopo lo smash avversario: torna al fondo, poi costruisci da capo</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fine wiki-tattiche -->
+
+      <!-- ═══ TAB: REGOLE ═══ -->
+      <div id="wiki-regole" class="wiki-section" style="display:none;">
+
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🔢</span>
+            <div><div class="wiki-card-title">Punteggio</div><div class="wiki-card-level wiki-beginner">Base</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Il punteggio è identico al tennis: 15, 30, 40, game. Si gioca al meglio dei 3 set (6 game ciascuno, tie-break a 6 pari).</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ 6-6 nel set → tie-break a 7 punti (con 2 di scarto)</div>
+              <div class="wiki-tip">✅ Deuce (40-40) → serve 2 punti consecutivi per vincere il game</div>
+              <div class="wiki-tip">✅ 3° set → super tie-break a 10 punti in molti tornei amatoriali</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🎾</span>
+            <div><div class="wiki-card-title">Il servizio</div><div class="wiki-card-level wiki-beginner">Base</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Il servizio si effettua da sotto il fianco, diagonalmente nell'area avversaria. Due tentativi come nel tennis.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ La palla deve rimbalzare a terra prima di essere colpita (sotto il fianco)</div>
+              <div class="wiki-tip">✅ Deve cadere nella casella diagonale avversaria</div>
+              <div class="wiki-tip">✅ Se tocca la riga laterale della casella = fallo</div>
+              <div class="wiki-tip">❌ Non puoi servire sopra il fianco — è fallo diretto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🪟</span>
+            <div><div class="wiki-card-title">Le pareti e quando si vince</div><div class="wiki-card-level wiki-beginner">Regole pareti</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>La palla può rimbalzare sui vetri dopo aver toccato terra, ma ci sono limiti da conoscere.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Palla che tocca: rete → colpa di chi ha colpito (punto avversari)</div>
+              <div class="wiki-tip">✅ Palla che esce dal campo lateralmente (dopo vetro) → punto valido per chi ha colpito</div>
+              <div class="wiki-tip">✅ Puoi colpire la palla dopo il vetro di fondo — non deve rimbalzare 2 volte a terra</div>
+              <div class="wiki-tip">❌ Se la palla tocca terra due volte = punto per gli avversari</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-locked" onclick="wikiShowUnlock()">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">↔️</span>
+            <div><div class="wiki-card-title">Rotazione lato</div><div class="wiki-card-level wiki-beginner">Organizzazione</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <p>Ogni coppia ha un giocatore sul lato destro e uno sul sinistro. Di solito si mantiene lo stesso lato per tutta la partita.</p>
+            <div class="wiki-tips">
+              <div class="wiki-tip">✅ Chi serve bene dal fondo → spesso gioca a destra</div>
+              <div class="wiki-tip">✅ Chi è bravo con il rovescio aggressivo → spesso gioca a sinistra</div>
+              <div class="wiki-tip">✅ Il lato sinistro (revés) è spesso il più "difensivo" nel padel amatoriale</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fine wiki-regole -->
+
+      <!-- ═══ TAB: ERRORI ═══ -->
+      <div id="wiki-errori" class="wiki-section" style="display:none;">
+
+        <div class="wiki-card wiki-card-warning">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🔰</span>
+            <div><div class="wiki-card-title">Errori da Principiante</div><div class="wiki-card-level wiki-beginner">Livello: Principiante</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <div class="wiki-error-list">
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Stare attaccati al vetro di fondo</strong> — ti toglie tempo di reazione. Mantieni 1-1.5m di distanza.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Giocare sempre al fondo</strong> — nel padel la rete è vincente. Impara ad avanzare anche se sei principiante.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Tirare forte dal fondo</strong> — la forza non conta quanto il posizionamento. Usa il lob e costruisci.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Grip troppo stretto</strong> — irrigidisce il braccio e aumenta le vibrazioni. Il manico si stringe solo all'impatto.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Non guardare la palla fino all'impatto</strong> — occhi sulla palla, non sugli avversari.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiki-card wiki-card-warning">
+          <div class="wiki-card-header">
+            <span class="wiki-card-icon">🎯</span>
+            <div><div class="wiki-card-title">Errori da Intermedio</div><div class="wiki-card-level wiki-intermediate">Livello: Intermedio</div></div>
+          </div>
+          <div class="wiki-card-body">
+            <div class="wiki-error-list">
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Smash sempre verso il centro</strong> — gli avversari se lo aspettano. Varia sugli angoli e sulle pareti laterali.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Bandeja troppo alta</strong> — una bandeja lenta e alta è una palla regalo. Deve essere rapida e angolata.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Non comunicare col partner</strong> — le palle al centro si dividono con un accordo prima della partita.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Volee con troppo swing</strong> — la volee è un blocco, non uno smash. Meno movimento = più precisione.</div>
+              </div>
+              <div class="wiki-error">
+                <span class="wiki-error-icon">❌</span>
+                <div><strong>Giocare sempre sullo stesso pattern</strong> — varia direzione, velocità e altezza. La prevedibilità è il peggior nemico.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fine wiki-errori -->
+
+      <!-- ═══ TAB: GLOSSARIO ═══ -->
+      <div id="wiki-glossario" class="wiki-section" style="display:none;">
+        <div class="wiki-card">
+          <div class="wiki-card-body">
+            <div class="wiki-glossary">
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Bandeja</span><span class="wiki-gloss-def">Smash di controllo, colpo dall'alto verso gli angoli</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Víbora</span><span class="wiki-gloss-def">Bandeja con effetto laterale (slice), tipica del lato sinistro</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Bajada</span><span class="wiki-gloss-def">Colpo su palla bassa dopo il rimbalzo sul vetro di fondo</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Globo / Lob</span><span class="wiki-gloss-def">Pallonetto alto per sorpassare gli avversari a rete</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">X3</span><span class="wiki-gloss-def">Smash che fa uscire la palla dal campo lateralmente</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">X4</span><span class="wiki-gloss-def">Smash che fa uscire la palla dal campo di fondo (punto diretto)</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Rulo</span><span class="wiki-gloss-def">Smash sul vetro di fondo con effetto — la palla rimbalza verso l'alto</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Chiquita</span><span class="wiki-gloss-def">Colpo basso e angolato verso i piedi degli avversari a rete</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Dejada</span><span class="wiki-gloss-def">Palla smorzata, colpo morbido che "muore" vicino alla rete</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Revés</span><span class="wiki-gloss-def">Colpo dal lato non dominante (rovescio) — quasi sempre a 2 mani</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Drive</span><span class="wiki-gloss-def">Colpo dal lato dominante (diritto o forehand)</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Globo defensivo</span><span class="wiki-gloss-def">Lob difensivo alto per recuperare la rete</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Gemido</span><span class="wiki-gloss-def">Colpo effettuato con la palla uscita dal campo (dopo il vetro)</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">WPT</span><span class="wiki-gloss-def">World Padel Tour — il principale circuito professionistico mondiale</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Premier Padel</span><span class="wiki-gloss-def">Il circuito pro attuale (ex-WPT), sostenuto da FIP e LaLiga</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Pala</span><span class="wiki-gloss-def">Come si chiama la racchetta in spagnolo (la lingua del padel)</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">Cristal</span><span class="wiki-gloss-def">Il vetro del campo — "el cristal" in spagnolo</span></div>
+              <div class="wiki-gloss-item"><span class="wiki-gloss-term">No look</span><span class="wiki-gloss-def">Colpo eseguito senza guardare la direzione — tattica avanzata</span></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- fine wiki-glossario -->
+
+      <!-- Footer supporto -->
+      <div style="margin-top:24px;padding:16px;background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(91,33,182,0.05));border:1px solid rgba(124,58,237,0.2);border-radius:16px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">💜</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">Ti è utile questa guida?</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:12px;">Supporta RacketAI con un caffè — ci aiuta a crescere e aggiornare i contenuti</div>
+        <button type="button" onclick="window.open('https://ko-fi.com/stinkipadel','_blank');_track('click_kofi_wiki');" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border:none;border-radius:12px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">
+          ☕ Offrimi un caffè su Ko-fi
+        </button>
+      </div>
+
+    </div><!-- fine scroll-content -->
+  </div><!-- fine screen-wiki -->
+
+  <!-- WIKI UNLOCK MODAL -->
+  <div id="wiki-unlock-modal" role="dialog" aria-modal="true">
+    <div class="wiki-modal-box">
+      <div class="wiki-modal-icon">🔓</div>
+      <div class="wiki-modal-title">Sblocca la Wiki completa</div>
+      <div class="wiki-modal-sub">
+        Hai già donato? Inserisci il codice ricevuto.<br>
+        Oppure offrimi un caffè su Ko-fi per ricevere il codice subito.
+      </div>
+      <input type="text" id="wiki-code-input" class="wiki-modal-input"
+        placeholder="INSERISCI CODICE"
+        oninput="this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter')wikiTryUnlock()" />
+      <div class="wiki-modal-error" id="wiki-code-error">Codice non valido. Controlla e riprova.</div>
+      <button type="button" class="wiki-modal-btn-unlock" onclick="wikiTryUnlock()">
+        ✓ Sblocca ora
+      </button>
+      <button type="button" class="wiki-modal-btn-kofi"
+        onclick="window.open('https://ko-fi.com/stinkipadel','_blank');_track('click_kofi_unlock');">
+        ☕ Dona su Ko-fi → ricevi il codice
+      </button>
+      <button type="button" class="wiki-modal-btn-close" onclick="wikiCloseUnlock()">
+        Chiudi
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Registra il Service Worker per PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+          console.log('SW registrato:', reg.scope);
+        }).catch(function(err) {
+          console.log('SW errore:', err);
+        });
+      });
+    }
+
+    // Gestisci prompt installazione PWA (banner "Aggiungi a schermata Home")
+    var deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Mostra il banner di installazione dopo 30 secondi
+      setTimeout(showInstallBanner, 30000);
+    });
+
+    function showInstallBanner() {
+      if (!deferredPrompt) return;
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'flex';
+    }
+
+    function pwaInstall() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(result) {
+        if (result.outcome === 'accepted') {
+          try { _gaTrack('pwa_install', 'accepted', ''); } catch(e) {}
+        }
+        deferredPrompt = null;
+        var banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.display = 'none';
+      });
+    }
+
+    function pwaDismiss() {
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'none';
+      deferredPrompt = null;
+    }
+
+    // Gestisci shortcut da URL (?screen=quiz o ?screen=database)
+    window.addEventListener('DOMContentLoaded', function() {
+      var params = new URLSearchParams(window.location.search);
+      var screen = params.get('screen');
+      if (screen === 'quiz') { setTimeout(function(){ navigate('screen-full-q1'); }, 300); }
+      else if (screen === 'database') { setTimeout(function(){ navigate('screen-database'); }, 300); }
+    });
+  </script>
+
+  <!-- PWA Install Banner -->
+  <div id="pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;
+    background:linear-gradient(135deg,#0d1b2a,#1a2d42);padding:14px 20px;
+    align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.3);
+    max-width:480px;margin:0 auto;">
+    <div style="background:rgba(244,101,10,0.2);border-radius:12px;width:44px;height:44px;
+      flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;">🎾</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:800;color:white;">Installa RacketAI</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.6);">Accesso rapido, funziona offline</div>
+    </div>
+    <button type="button" onclick="pwaInstall()"
+      style="background:#f4650a;color:white;border:none;border-radius:10px;
+      padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;
+      font-family:DM Sans,sans-serif;flex-shrink:0;">Installa</button>
+    <button type="button" onclick="pwaDismiss()"
+      style="background:none;border:none;color:rgba(255,255,255,0.5);
+      font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;">×</button>
+  </div>
 </body>
 </html>

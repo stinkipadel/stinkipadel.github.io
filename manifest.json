@@ -1,0 +1,64 @@
+{
+  "name": "RacketAI – Trova la Racchetta Padel",
+  "short_name": "RacketAI",
+  "description": "Quiz AI gratuito: trova la racchetta da padel perfetta tra 471 modelli",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1b2a",
+  "theme_color": "#f4650a",
+  "orientation": "portrait",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "RacketAI – Trova la Racchetta Padel Perfetta"
+    }
+  ],
+  "categories": [
+    "sports",
+    "lifestyle"
+  ],
+  "shortcuts": [
+    {
+      "name": "Fai il Test",
+      "short_name": "Test",
+      "description": "Avvia il quiz racchette",
+      "url": "/?screen=quiz",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Database Racchette",
+      "short_name": "Database",
+      "description": "Sfoglia tutte le racchette",
+      "url": "/?screen=database",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
