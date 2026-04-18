@@ -9682,16 +9682,27 @@ function wikiTryUnlock() {
 
 function openWiki() {
   var el = document.getElementById('screen-wiki');
-  if (!el) return;
+  if (!el) { showToast('❌ screen-wiki non trovato'); return; }
   el.style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  el.style.zIndex = '5000';
+  document.documentElement.style.overflow = 'hidden';
+  showToast('✅ wiki aperta z=' + el.style.zIndex);
   wikiOnShow();
+  // Ri-mostra dopo 500ms nel caso venga nascosta
+  setTimeout(function(){
+    if(el.style.display !== 'block'){
+      showToast('⚠️ wiki sparita dopo 500ms! display=' + el.style.display);
+    } else {
+      showToast('✅ wiki ancora visibile dopo 500ms');
+    }
+  }, 500);
 }
 
 function closeWiki() {
   var el = document.getElementById('screen-wiki');
   if (!el) return;
   el.style.display = 'none';
+  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
 }
 
