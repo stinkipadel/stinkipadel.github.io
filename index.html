@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="Test AI gratuito · 467 racchette · Confronto prezzi">
 <link rel="canonical" href="https://stinkipadel.github.io">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>RacketAI v3.31 – Trova la Racchetta Padel</title>
+<title>RacketAI v3.32 – Trova la Racchetta Padel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -2355,7 +2355,7 @@
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.31</div>
+  <div id="app-version">v3.32</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -9682,20 +9682,11 @@ function wikiTryUnlock() {
 
 function openWiki() {
   var el = document.getElementById('screen-wiki');
-  if (!el) { showToast('❌ screen-wiki non trovato'); return; }
+  if (!el) return;
   el.style.display = 'block';
   el.style.zIndex = '5000';
   document.documentElement.style.overflow = 'hidden';
-  showToast('✅ wiki aperta z=' + el.style.zIndex);
   wikiOnShow();
-  // Ri-mostra dopo 500ms nel caso venga nascosta
-  setTimeout(function(){
-    if(el.style.display !== 'block'){
-      showToast('⚠️ wiki sparita dopo 500ms! display=' + el.style.display);
-    } else {
-      showToast('✅ wiki ancora visibile dopo 500ms');
-    }
-  }, 500);
 }
 
 function closeWiki() {
