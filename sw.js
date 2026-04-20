@@ -1,7 +1,7 @@
-// RacketAI Service Worker v3.33
+// RacketAI Service Worker v3.34
 // Aggiorna CACHE_NAME ad ogni release per forzare il refresh
 
-const CACHE_NAME = 'racketai-v3.33';
+const CACHE_NAME = 'racketai-v3.36';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="Test AI gratuito · 467 racchette · Confronto prezzi">
 <link rel="canonical" href="https://stinkipadel.github.io">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>RacketAI v3.35 – Trova la Racchetta Padel</title>
+<title>RacketAI v3.36 – Trova la Racchetta Padel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -2355,7 +2355,7 @@
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.35</div>
+  <div id="app-version">v3.36</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -2478,7 +2478,6 @@
             ☕ Ko-fi
           </a>
         </div>
-      </div>
       </div>
     </div>
   
@@ -9786,10 +9785,11 @@ function wikiOnShow() {
       <button type="button" class="wiki-modal-btn-unlock" onclick="wikiTryUnlock()">
         ✓ Sblocca ora
       </button>
-      <button type="button" class="wiki-modal-btn-kofi"
-        onclick="window.open('https://ko-fi.com/stinkipadel','_blank');_track('click_kofi_unlock');">
+      <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener"
+        onclick="_track('click_kofi_unlock')"
+        class="wiki-modal-btn-kofi" style="display:block;text-decoration:none;text-align:center;">
         ☕ Dona su Ko-fi → ricevi il codice
-      </button>
+      </a>
       <button type="button" class="wiki-modal-btn-close" onclick="wikiCloseUnlock()">
         Chiudi
       </button>
@@ -10401,9 +10401,11 @@ function renderShareProfileCard(matches, ans) {
         <div style="font-size:22px;margin-bottom:6px;">💜</div>
         <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">Ti è utile questa guida?</div>
         <div style="font-size:12px;color:var(--gray);margin-bottom:12px;">Supporta RacketAI con un caffè — ci aiuta a crescere e aggiornare i contenuti</div>
-        <button type="button" onclick="window.open('https://ko-fi.com/stinkipadel','_blank');_track('click_kofi_wiki');" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border:none;border-radius:12px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">
+        <a href="https://ko-fi.com/stinkipadel" target="_blank" rel="noopener"
+          onclick="_track('click_kofi_wiki')"
+          style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-radius:12px;padding:10px 24px;font-size:13px;font-weight:700;text-decoration:none;font-family:DM Sans,sans-serif;">
           ☕ Offrimi un caffè su Ko-fi
-        </button>
+        </a>
       </div>
 
     </div><!-- fine scroll-content -->
