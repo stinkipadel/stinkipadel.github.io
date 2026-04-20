@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="Test AI gratuito · 467 racchette · Confronto prezzi">
 <link rel="canonical" href="https://stinkipadel.github.io">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>RacketAI v3.33 – Trova la Racchetta Padel</title>
+<title>RacketAI v3.34 – Trova la Racchetta Padel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -2355,7 +2355,7 @@
 </head>
 <body>
 <div class="phone-shell">
-  <div id="app-version">v3.33</div>
+  <div id="app-version">v3.34</div>
 
   <!-- LOADING SCREEN -->
   <div class="screen active" id="screen-loading">
@@ -3473,6 +3473,38 @@
         </div>
       </div>
       <!-- ── PRO TEASER ── -->
+      <!-- ── CARD PROFILO CONDIVISIBILE ── -->
+      <div id="share-profile-card" style="display:none;background:linear-gradient(135deg,#0d1b2a,#1e3a5f);border-radius:20px;padding:20px;margin-bottom:12px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(244,101,10,0.1);border-radius:50%;pointer-events:none;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="spc-badge-icon" style="font-size:22px;">⚡</span>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;">Livello</div>
+              <div id="spc-badge-level" style="font-size:14px;font-weight:800;color:white;">—</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);">stinkipadel.github.io</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:64px;height:64px;background:rgba(255,255,255,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+            <img id="spc-img" src="" style="width:60px;height:60px;object-fit:contain;" onerror="this.style.opacity=0.1">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:3px;">La mia racchetta ideale 🎾</div>
+            <div id="spc-name" style="font-size:15px;font-weight:800;color:white;line-height:1.2;margin-bottom:6px;">—</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="flex:1;height:4px;background:rgba(255,255,255,0.15);border-radius:999px;overflow:hidden;">
+                <div id="spc-bar" style="height:100%;background:#f4650a;border-radius:999px;width:0%;transition:width 0.8s ease;"></div>
+              </div>
+              <div id="spc-pct" style="font-size:13px;font-weight:800;color:#f4650a;">—%</div>
+            </div>
+          </div>
+        </div>
+        <div id="spc-tags" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;"></div>
+      </div>
+
+
       <div class="pro-teaser" id="pro-teaser" style="display:none;">
         <div class="pro-teaser-label">🚀 Prossimamente &mdash; RacketAI Pro</div>
         <div class="pro-teaser-body"><b>Sblocca le funzionalità avanzate</b></div>
@@ -4694,7 +4726,14 @@ function navigate(id) {
   if (id === 'screen-results') {
     setTimeout(function() {
       try { renderResults(); } catch(e) { console.error('renderResults error:', e); }
-    }, 200); // delay aumentato per sicurezza
+    }, 200);
+    setTimeout(function() {
+      try {
+        var matches = computeMatches();
+        var ans = normalizeAnswers(_savedAnswers || quizAnswers);
+        renderShareProfileCard(matches, ans);
+      } catch(e) {}
+    }, 600); // delay aumentato per sicurezza
   }
   if (id === 'screen-purchase') renderPurchaseList();
   if (id === 'screen-success')  renderSuccess();
@@ -7288,6 +7327,7 @@ function submitFeedback(purchaseIdx) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function renderProfile() {
   try { showCoffeCardIfNeeded(); } catch(e) {}
+  setTimeout(renderPlayerBadge, 100);
   if (!currentUser) return;
   var users = getUsers();
   var ud = users[currentUser.email] || {};
@@ -7513,9 +7553,19 @@ function shareWhatsAppResults() {
 }
 
 function shareResults() {
+  // Racchetta top + % + livello
   var topCard = document.querySelector('.result-card-dyn .racket-name');
-  var topName = topCard ? topCard.textContent : 'la mia racchetta';
-  var text = '🎾 RacketAI mi ha consigliato ' + topName + ' — scopri anche tu la tua racchetta padel perfetta!';
+  var topName = topCard ? topCard.textContent.trim() : 'la mia racchetta';
+  var pctEl   = document.getElementById('tm-pct');
+  var pct     = pctEl ? pctEl.textContent.replace('% affinità','').trim() : '';
+  var lvl     = (quizAnswers.level||_savedAnswers&&_savedAnswers.level||'');
+  var lvlLabel= lvl==='advanced'?'avanzato':lvl==='intermediate'?'intermedio':'principiante';
+  var style   = (quizAnswers.style||_savedAnswers&&_savedAnswers.style||'');
+  var styleLabel = style==='aggressive'?'attaccante':style==='defensive'?'difensore':'equilibrato';
+  var badge   = lvl==='advanced'?'🏆':lvl==='intermediate'?'⚡':'🌱';
+  var text = badge + ' Sono un giocatore ' + lvlLabel + ' ' + styleLabel + '\n'
+           + '🎾 La mia racchetta ideale: ' + topName + (pct?' ('+pct+'% affinità)':'') + '\n'
+           + '\nTrova anche tu la tua → stinkipadel.github.io';
   var url  = 'https://stinkipadel.github.io';
   if (navigator.share) {
     navigator.share({ title: 'RacketAI – La tua racchetta perfetta', text: text, url: url })
@@ -9795,7 +9845,90 @@ function wikiOnShow() {
       if (screen === 'quiz') { setTimeout(function(){ navigate('screen-full-q1'); }, 300); }
       else if (screen === 'database') { setTimeout(function(){ navigate('screen-database'); }, 300); }
     });
-  </script>
+  
+// ═══════════════════════════════════════
+// BADGE LIVELLO GIOCATORE
+// ═══════════════════════════════════════
+function getPlayerBadge(ud) {
+  var tests = (ud.tests || []).length;
+  var purchases = (ud.purchases || []).length;
+  var level = '';
+  // Prendi il livello dall'ultimo test
+  if (ud.tests && ud.tests.length > 0) {
+    var lastTest = ud.tests[ud.tests.length - 1];
+    level = (lastTest.answers || {}).level || '';
+  }
+  // Badge basato su livello + attività
+  if (level === 'advanced' || tests >= 10) return { icon: '🏆', label: 'Pro Player', color: '#f4650a' };
+  if (level === 'intermediate' || tests >= 3) return { icon: '⚡', label: 'Intermedio', color: '#3b82f6' };
+  return { icon: '🌱', label: 'Principiante', color: '#22c55e' };
+}
+
+function renderPlayerBadge() {
+  var users = getUsers();
+  if (!currentUser) return;
+  var ud = users[currentUser.email] || {};
+  var badge = getPlayerBadge(ud);
+  var el = document.getElementById('prf-badge');
+  if (el) {
+    el.innerHTML = '<span style="font-size:20px;">' + badge.icon + '</span>'
+      + '<span style="font-size:13px;font-weight:700;color:' + badge.color + ';">' + badge.label + '</span>';
+  }
+}
+
+// ═══════════════════════════════════════
+// CARD PROFILO CONDIVISIBILE
+// ═══════════════════════════════════════
+function renderShareProfileCard(matches, ans) {
+  var card = document.getElementById('share-profile-card');
+  if (!card || !matches || !matches.length) return;
+
+  var best = matches[0];
+  var sc   = RACKET_SCORES[best.r[0]] || {};
+  var bl   = BUY_LINKS[best.r[0]] || {};
+
+  // Nome racchetta
+  var name = document.getElementById('spc-name');
+  if (name) name.textContent = sc.brand + ' ' + sc.name + ' ' + (sc.year||'');
+
+  // % affinità
+  var pct = document.getElementById('spc-pct');
+  var bar = document.getElementById('spc-bar');
+  if (pct) pct.textContent = best.pct + '%';
+  if (bar) setTimeout(function(){ bar.style.width = Math.min(best.pct, 99) + '%'; }, 300);
+
+  // Immagine
+  var img = document.getElementById('spc-img');
+  if (img && sc.img) img.src = sc.img;
+
+  // Badge livello
+  var lvl = (ans['fq-level']||ans.level||'');
+  var style = (ans['fq-style']||ans.style||'');
+  var badgeIcon = document.getElementById('spc-badge-icon');
+  var badgeLevel = document.getElementById('spc-badge-level');
+  var icons = {advanced:'🏆', intermediate:'⚡', beginner:'🌱'};
+  var labels = {advanced:'Avanzato', intermediate:'Intermedio', beginner:'Principiante'};
+  if (badgeIcon) badgeIcon.textContent = icons[lvl] || '🎾';
+  if (badgeLevel) badgeLevel.textContent = labels[lvl] || 'Giocatore';
+
+  // Tags stile
+  var tagsEl = document.getElementById('spc-tags');
+  if (tagsEl) {
+    var tags = [];
+    if (style==='aggressive') tags.push({l:'⚔️ Attaccante', c:'rgba(244,101,10,0.3)'});
+    else if (style==='defensive') tags.push({l:'🛡️ Difensore', c:'rgba(59,130,246,0.3)'});
+    else tags.push({l:'⚖️ Equilibrato', c:'rgba(34,197,94,0.3)'});
+    var side = (ans['fq-side']||ans.side||'');
+    if (side==='left') tags.push({l:'🤚 Sinistro', c:'rgba(255,255,255,0.1)'});
+    else if (side==='right') tags.push({l:'✋ Destro', c:'rgba(255,255,255,0.1)'});
+    tagsEl.innerHTML = tags.map(function(t){
+      return '<span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:'+t.c+';color:white;">'+t.l+'</span>';
+    }).join('');
+  }
+
+  card.style.display = 'block';
+}
+</script>
 
   <!-- PWA iOS Hint -->
   <div id="pwa-ios-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9997;
